@@ -1,0 +1,74 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    {% render 'breadcrumbs' %}
+    <div class="sd-section__header" data-sd-reveal>
+      <p class="sd-eyebrow">Support & Information</p>
+      <h1 class="sd-heading sd-heading--xl">{{ section.settings.heading | escape }}</h1>
+      <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+    </div>
+
+    <div class="sd-faq-list">
+      {%- for block in section.blocks -%}
+        <details class="sd-faq-item" data-sd-reveal {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary class="sd-faq-item__q">
+            <span>{{ block.settings.question | escape }}</span>
+            {% render 'icon', name: 'chevron-down' %}
+          </summary>
+          <div class="sd-faq-item__a sd-prose">
+            {{ block.settings.answer }}
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Intro Text",
+      "default": "Answers to common questions about ordering, custom quotations, timelines and school installations."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "Question & Answer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I request a bulk or custom school furniture quote?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Click any Request a Quote button on our product or collection pages, or message us directly via WhatsApp with your school name, location and approximate quantities.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        { "type": "faq", "settings": { "question": "How do I request a custom school quotation?", "answer": "<p>Use the Request a Quote button on any product, collection, or header menu to send your institution name, city, and quantities. Our team will respond with tailored pricing.</p>" } },
+        { "type": "faq", "settings": { "question": "Do you support both direct online orders and institutional quotes?", "answer": "<p>Yes. Standard catalog items can be added directly to your cart and checked out online, while customized classroom packages, labs and outdoor playgrounds offer direct Quotation & WhatsApp enquiry options.</p>" } },
+        { "type": "faq", "settings": { "question": "Can we customize dimensions or colors for our school?", "answer": "<p>Many furniture, storage and play systems support custom sizing and finish coordination. Share your classroom measurements when requesting a quote.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

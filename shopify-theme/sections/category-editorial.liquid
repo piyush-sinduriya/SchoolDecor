@@ -1,0 +1,169 @@
+<section
+  class="sd-section sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#FFFFFF' }}; --sd-pad-y: {{ section.settings.padding_y | default: 64 }}px;"
+>
+  <div class="sd-container">
+    <div class="sd-split sd-split--editorial{% if section.settings.image_position == 'right' %} sd-split--reverse{% endif %}">
+      <div class="sd-split__media" data-sd-reveal>
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+        {%- else -%}
+          {%- assign fallback_asset = section.settings.fallback_asset | default: 'sd-hero-classroom.jpg' -%}
+          <img src="{{ fallback_asset | asset_url }}" alt="{{ section.settings.heading | escape }}" loading="lazy">
+        {%- endif -%}
+      </div>
+
+      <div class="sd-split__content sd-align--{{ section.settings.text_alignment | default: 'left' }}" data-sd-reveal style="--sd-stagger: 1;">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+        <p class="sd-editorial-desc">{{ section.settings.description | escape }}</p>
+        {%- if section.settings.spec_points != blank -%}
+          {%- assign pts = section.settings.spec_points | split: '|' -%}
+          <ul class="sd-editorial-specs">
+            {%- for pt in pts -%}
+              <li>{{ pt | strip | escape }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="sd-split__actions">
+          {%- assign target_url = section.settings.collection.url | default: section.settings.button_link | default: '/collections' -%}
+          <a href="{{ target_url }}" class="sd-btn sd-btn--primary">
+            {{ section.settings.button_label | default: 'Explore Collection' | escape }}
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
+          {%- if section.settings.show_quote_button -%}
+            <button
+              type="button"
+              class="sd-btn sd-btn--outline"
+              data-open-quote
+              data-product-title="{{ section.settings.heading | escape }}"
+            >
+              Request a Quote
+            </button>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Showcase Editorial",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Showcase Image"
+    },
+    {
+      "type": "select",
+      "id": "fallback_asset",
+      "label": "Default Theme Image (When No Image Uploaded)",
+      "options": [
+        { "value": "sd-hero-classroom.jpg", "label": "Modern Classroom" },
+        { "value": "sd-hero-preschool.jpg", "label": "Preschool & Play" },
+        { "value": "sd-science-lab.jpg", "label": "School Laboratory" },
+        { "value": "sd-outdoor-play.jpg", "label": "Outdoor Playground" },
+        { "value": "sd-school-library.jpg", "label": "School Library & Flooring" }
+      ],
+      "default": "sd-hero-classroom.jpg"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image Placement",
+      "options": [
+        { "value": "left", "label": "Image Left / Text Right" },
+        { "value": "right", "label": "Text Left / Image Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Category Label",
+      "default": "Classroom Architecture"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Furniture for Modern Classrooms"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Ergonomic student desks, collaborative tables, modular storage and library seating designed to grow with learners from kindergarten to senior school."
+    },
+    {
+      "type": "text",
+      "id": "spec_points",
+      "label": "Specification Highlights (Separate with |)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Linked Shopify Collection"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Text",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Fallback Button Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quote_button",
+      "label": "Show Request a Quote Button",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 28,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Showcase Editorial"
+    }
+  ]
+}
+{% endschema %}

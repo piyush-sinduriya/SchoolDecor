@@ -1,0 +1,86 @@
+{%- comment -%}
+  School Decor Architectural Split-Shutter Entry Logo Animation
+  Uses the untouched original School Decor logo (custom logo override or bundled asset).
+  Automatically skipped inside Shopify Theme Editor, for reduced-motion users, and once per browser session.
+{%- endcomment -%}
+
+<div
+  id="sd-entry-logo"
+  class="sd-entry-logo"
+  role="presentation"
+  aria-hidden="true"
+  data-entry-logo
+>
+  <div class="sd-entry-logo__shutter sd-entry-logo__shutter--top" aria-hidden="true">
+    <div class="sd-entry-logo__top-ribbon">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="sd-entry-logo__shutter sd-entry-logo__shutter--bottom" aria-hidden="true"></div>
+
+  <div class="sd-entry-logo__stage">
+    <span class="sd-entry-logo__corner sd-entry-logo__corner--tl" aria-hidden="true"></span>
+    <span class="sd-entry-logo__corner sd-entry-logo__corner--tr" aria-hidden="true"></span>
+    <span class="sd-entry-logo__corner sd-entry-logo__corner--bl" aria-hidden="true"></span>
+    <span class="sd-entry-logo__corner sd-entry-logo__corner--br" aria-hidden="true"></span>
+
+    <div class="sd-entry-logo__dots" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="sd-entry-logo__mask">
+      <div class="sd-entry-logo__brand">
+        {%- if settings.logo != blank -%}
+          <img
+            src="{{ settings.logo | image_url: width: 560 }}"
+            alt="{{ shop.name | default: 'School Decor' | escape }}"
+            width="270"
+            height="auto"
+            class="sd-entry-logo__img"
+            loading="eager"
+            fetchpriority="high"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'school-decor-logo.png' | asset_url }}"
+            alt="{{ shop.name | default: 'School Decor' | escape }}"
+            width="270"
+            height="auto"
+            class="sd-entry-logo__img"
+            loading="eager"
+            fetchpriority="high"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="sd-entry-logo__bar" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    {%- if settings.entry_logo_tagline != blank -%}
+      <p class="sd-entry-logo__tagline">{{ settings.entry_logo_tagline | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  <button type="button" class="sd-entry-logo__skip" data-entry-logo-skip tabindex="-1">
+    Skip Intro
+  </button>
+</div>
+
+<script>
+  (function () {
+    var el = document.getElementById('sd-entry-logo');
+    if (!el) return;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var inDesignMode = Boolean(window.Shopify && window.Shopify.designMode);
+    var alreadySeen = false;
+    try {
+      alreadySeen = window.sessionStorage && window.sessionStorage.getItem('sd_logo_intro_done') === '1';
+    } catch (e) {}
+    if (reduceMotion || inDesignMode || alreadySeen) {
+      el.hidden = true;
+      el.style.display = 'none';
+    }
+  })();
+</script>

@@ -1,0 +1,125 @@
+<section
+  class="sd-section sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#FFFFFF' }}; --sd-pad-y: {{ section.settings.padding_y | default: 80 }}px;"
+>
+  <div class="sd-container">
+    <div class="sd-section__header sd-align--{{ section.settings.text_alignment | default: 'left' }}" data-sd-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="sd-pillars-grid">
+      {%- for block in section.blocks -%}
+        <div class="sd-pillar-card" data-sd-reveal style="--sd-stagger: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <div class="sd-pillar-card__icon">
+            {% render 'icon', name: block.settings.icon %}
+          </div>
+          <h3 class="sd-pillar-card__title">{{ block.settings.title | escape }}</h3>
+          <p class="sd-pillar-card__desc">{{ block.settings.description | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Why Choose School Decor",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Lead-in Text",
+      "default": "Our Approach"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose School Decor"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Practical institutional planning combined with functional product design across every stage of school setup."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 32,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Feature Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "layers", "label": "Layers" },
+            { "value": "compass", "label": "Compass" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "sliders", "label": "Sliders" },
+            { "value": "headphones", "label": "Headphones" }
+          ],
+          "default": "layers"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Educational Environment Solutions"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Integrated planning across classrooms, play rooms, labs, outdoor areas and flooring."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose School Decor",
+      "blocks": [
+        { "type": "pillar", "settings": { "icon": "layers", "title": "Educational Environment Solutions", "description": "Coordinated equipment for preschools, primary wings, senior classrooms, labs and campuses." } },
+        { "type": "pillar", "settings": { "icon": "compass", "title": "Wide Product Selection", "description": "Specialized ranges spanning Montessori materials, soft play, STEM labs and outdoor parks." } },
+        { "type": "pillar", "settings": { "icon": "shield", "title": "Functional and Practical Designs", "description": "Thoughtful ergonomics, rounded child-safe edges and materials built for daily school routines." } },
+        { "type": "pillar", "settings": { "icon": "sliders", "title": "Customized Project Support", "description": "Flexible sizing, finishes and quantity planning tailored to your institution's floor plan." } },
+        { "type": "pillar", "settings": { "icon": "headphones", "title": "Dedicated Customer Assistance", "description": "Direct consultation from product selection and quotation through delivery coordination." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

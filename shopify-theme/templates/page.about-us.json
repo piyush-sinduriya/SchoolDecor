@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "main": { "type": "page-about", "settings": {} },
+    "pillars": { "type": "why-choose-us", "settings": { "bg_color": "#F7F7F5" } },
+    "cta": { "type": "cta-banner", "settings": {} }
+  },
+  "order": ["main", "pillars", "cta"]
+}

@@ -1,0 +1,147 @@
+<section
+  class="sd-section sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#F7F7F5' }}; --sd-pad-y: {{ section.settings.padding_y | default: 72 }}px;"
+  data-tabbed-products
+>
+  <div class="sd-container">
+    <div class="sd-section__header-row" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+      </div>
+
+      <div class="sd-tabs" role="tablist" aria-label="Product collections">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            role="tab"
+            class="sd-tab-btn{% if forloop.first %} is-active{% endif %}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="sd-panel-{{ section.id }}-{{ forloop.index0 }}"
+            data-tab-trigger="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.tab_label | escape }}
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- assign tab_collection = block.settings.collection -%}
+      <div
+        id="sd-panel-{{ section.id }}-{{ forloop.index0 }}"
+        role="tabpanel"
+        class="sd-tab-panel{% if forloop.first %} is-active{% endif %}"
+        data-tab-panel="{{ forloop.index0 }}"
+        {% unless forloop.first %}hidden{% endunless %}
+      >
+        {%- if tab_collection != blank and tab_collection.products_count > 0 -%}
+          <div class="sd-product-grid sd-cols--{{ section.settings.products_per_row | default: 4 }}">
+            {%- for prod in tab_collection.products limit: section.settings.products_limit -%}
+              {% render 'product-card', card_product: prod, collection: tab_collection %}
+            {%- endfor -%}
+          </div>
+          <div class="sd-section__footer-cta">
+            <a href="{{ tab_collection.url }}" class="sd-btn sd-btn--outline">
+              View All {{ block.settings.tab_label | escape }}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          </div>
+        {%- else -%}
+          <div class="sd-empty-collection-note">
+            <p>Connect a Shopify collection to the <strong>"{{ block.settings.tab_label | escape }}"</strong> tab in Theme Editor to display live products here automatically.</p>
+            <a href="{{ routes.all_products_collection_url }}" class="sd-btn sd-btn--outline">Browse Catalog</a>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Lead-in Text",
+      "default": "Curated Catalog"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Featured School Equipment & Furniture"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "label": "Products Per Tab",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "products_per_row",
+      "label": "Desktop Columns",
+      "options": [
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#F7F7F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 32,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tab",
+      "name": "Product Tab",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab Title",
+          "default": "Best Sellers"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Shopify Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products Tabs",
+      "blocks": [
+        { "type": "collection_tab", "settings": { "tab_label": "Best Sellers" } },
+        { "type": "collection_tab", "settings": { "tab_label": "New Arrivals" } },
+        { "type": "collection_tab", "settings": { "tab_label": "Featured Products" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

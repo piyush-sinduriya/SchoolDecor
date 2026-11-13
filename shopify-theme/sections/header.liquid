@@ -1,0 +1,412 @@
+{%- liquid
+  assign nav_items = 'Furniture,Active Play,Laboratory,Outdoor,Flooring,School Decor,About Us,Contact' | split: ','
+-%}
+
+<header
+  class="sd-header{% if section.settings.sticky_header %} sd-header--sticky{% endif %}"
+  data-header
+>
+  <div class="sd-container sd-header__inner">
+    <button
+      type="button"
+      class="sd-icon-btn sd-header__mobile-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="sd-mobile-drawer"
+      data-mobile-menu-open
+    >
+      {% render 'icon', name: 'menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="sd-header__logo" aria-label="{{ shop.name | escape }}">
+      {%- if settings.logo != blank -%}
+        <img
+          src="{{ settings.logo | image_url: width: 420 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ settings.logo_width }}"
+          height="auto"
+          class="sd-logo-img"
+        >
+      {%- else -%}
+        <img
+          src="{{ 'school-decor-logo.png' | asset_url }}"
+          alt="{{ shop.name | default: 'School Decor' | escape }}"
+          width="{{ settings.logo_width }}"
+          height="auto"
+          class="sd-logo-img"
+        >
+      {%- endif -%}
+    </a>
+
+    <nav class="sd-nav" aria-label="Primary Navigation">
+      <ul class="sd-nav__list">
+        {%- if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0 -%}
+          {%- for link in linklists[section.settings.menu].links -%}
+            {%- liquid
+              assign matching_mega = null
+              assign link_title_down = link.title | downcase | strip
+              for block in section.blocks
+                assign trigger_down = block.settings.trigger_title | downcase | strip
+                if trigger_down == link_title_down
+                  assign matching_mega = block
+                  break
+                endif
+              endfor
+            -%}
+            <li class="sd-nav__item{% if matching_mega or link.links.size > 0 %} sd-nav__item--has-dropdown{% endif %}" data-nav-item>
+              <a
+                href="{{ link.url }}"
+                class="sd-nav__link{% if link.active %} is-active{% endif %}"
+                {% if matching_mega or link.links.size > 0 %}aria-expanded="false"{% endif %}
+              >
+                <span>{{ link.title }}</span>
+                {%- if matching_mega or link.links.size > 0 -%}
+                  {% render 'icon', name: 'chevron-down' %}
+                {%- endif -%}
+              </a>
+
+              {%- if matching_mega -%}
+                <div class="sd-megamenu" role="region" aria-label="{{ link.title }} submenu">
+                  <div class="sd-container sd-megamenu__grid">
+                    <div class="sd-megamenu__cols">
+                      {%- if matching_mega.settings.col_1_links != blank -%}
+                        <div class="sd-megamenu__col">
+                          <h3 class="sd-megamenu__heading">{{ matching_mega.settings.col_1_heading }}</h3>
+                          <ul>
+                            {%- assign rows = matching_mega.settings.col_1_links | newline_to_br | split: '<br />' -%}
+                            {%- for row in rows -%}
+                              {%- assign parts = row | strip | split: '|' -%}
+                              {%- if parts.size == 2 -%}
+                                <li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a></li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endif -%}
+                      {%- if matching_mega.settings.col_2_links != blank -%}
+                        <div class="sd-megamenu__col">
+                          <h3 class="sd-megamenu__heading">{{ matching_mega.settings.col_2_heading }}</h3>
+                          <ul>
+                            {%- assign rows = matching_mega.settings.col_2_links | newline_to_br | split: '<br />' -%}
+                            {%- for row in rows -%}
+                              {%- assign parts = row | strip | split: '|' -%}
+                              {%- if parts.size == 2 -%}
+                                <li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a></li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                    <a href="{{ matching_mega.settings.featured_link | default: link.url }}" class="sd-megamenu__feature">
+                      <div class="sd-megamenu__feature-img">
+                        {%- if matching_mega.settings.featured_image != blank -%}
+                          <img src="{{ matching_mega.settings.featured_image | image_url: width: 640 }}" alt="{{ matching_mega.settings.featured_heading | escape }}" loading="lazy">
+                        {%- else -%}
+                          <img src="{{ 'sd-hero-classroom.jpg' | asset_url }}" alt="{{ matching_mega.settings.featured_heading | escape }}" loading="lazy">
+                        {%- endif -%}
+                      </div>
+                      <div class="sd-megamenu__feature-copy">
+                        <strong>{{ matching_mega.settings.featured_heading }}</strong>
+                        <span>{{ matching_mega.settings.featured_subtext }}</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              {%- elsif link.links.size > 0 -%}
+                <div class="sd-dropdown">
+                  <ul>
+                    {%- for child_link in link.links -%}
+                      <li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Default structured navigation preserving all existing schooldecor.in URLs {%- endcomment -%}
+          {%- for nav_label in nav_items -%}
+            {%- liquid
+              assign matching_mega = null
+              assign nav_down = nav_label | downcase | strip
+              for block in section.blocks
+                assign trigger_down = block.settings.trigger_title | downcase | strip
+                if trigger_down == nav_down
+                  assign matching_mega = block
+                  break
+                endif
+              endfor
+              assign nav_href = '/collections'
+              case nav_label
+                when 'Furniture'
+                  assign nav_href = '/collections/kindergarten-furniture'
+                when 'Active Play'
+                  assign nav_href = '/collections/soft-play-zones'
+                when 'Laboratory'
+                  assign nav_href = '/collections/science-lab'
+                when 'Outdoor'
+                  assign nav_href = '/collections/outdoor-fun-equipment'
+                when 'Flooring'
+                  assign nav_href = '/products/squash-court'
+                when 'School Decor'
+                  assign nav_href = '/collections'
+                when 'About Us'
+                  assign nav_href = '/pages/about-us'
+                when 'Contact'
+                  assign nav_href = '/pages/contact'
+              endcase
+            -%}
+            <li class="sd-nav__item{% if matching_mega %} sd-nav__item--has-dropdown{% endif %}" data-nav-item>
+              <a href="{{ nav_href }}" class="sd-nav__link" {% if matching_mega %}aria-expanded="false"{% endif %}>
+                <span>{{ nav_label }}</span>
+                {%- if matching_mega -%}{% render 'icon', name: 'chevron-down' %}{%- endif -%}
+              </a>
+              {%- if matching_mega -%}
+                <div class="sd-megamenu" role="region" aria-label="{{ nav_label }} submenu">
+                  <div class="sd-container sd-megamenu__grid">
+                    <div class="sd-megamenu__cols">
+                      {%- if matching_mega.settings.col_1_links != blank -%}
+                        <div class="sd-megamenu__col">
+                          <h3 class="sd-megamenu__heading">{{ matching_mega.settings.col_1_heading }}</h3>
+                          <ul>
+                            {%- assign rows = matching_mega.settings.col_1_links | newline_to_br | split: '<br />' -%}
+                            {%- for row in rows -%}
+                              {%- assign parts = row | strip | split: '|' -%}
+                              {%- if parts.size == 2 -%}
+                                <li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a></li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endif -%}
+                      {%- if matching_mega.settings.col_2_links != blank -%}
+                        <div class="sd-megamenu__col">
+                          <h3 class="sd-megamenu__heading">{{ matching_mega.settings.col_2_heading }}</h3>
+                          <ul>
+                            {%- assign rows = matching_mega.settings.col_2_links | newline_to_br | split: '<br />' -%}
+                            {%- for row in rows -%}
+                              {%- assign parts = row | strip | split: '|' -%}
+                              {%- if parts.size == 2 -%}
+                                <li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a></li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                    <a href="{{ matching_mega.settings.featured_link | default: nav_href }}" class="sd-megamenu__feature">
+                      <div class="sd-megamenu__feature-img">
+                        {%- if matching_mega.settings.featured_image != blank -%}
+                          <img src="{{ matching_mega.settings.featured_image | image_url: width: 640 }}" alt="{{ matching_mega.settings.featured_heading | escape }}" loading="lazy">
+                        {%- else -%}
+                          <img src="{{ 'sd-hero-classroom.jpg' | asset_url }}" alt="{{ matching_mega.settings.featured_heading | escape }}" loading="lazy">
+                        {%- endif -%}
+                      </div>
+                      <div class="sd-megamenu__feature-copy">
+                        <strong>{{ matching_mega.settings.featured_heading }}</strong>
+                        <span>{{ matching_mega.settings.featured_subtext }}</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </nav>
+
+    <div class="sd-header__icons">
+      {%- if section.settings.show_search -%}
+        <button type="button" class="sd-icon-btn" aria-label="Search" data-search-open>
+          {% render 'icon', name: 'search' %}
+        </button>
+      {%- endif -%}
+      {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="sd-icon-btn" aria-label="Account">
+          {% render 'icon', name: 'user' %}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.show_cart -%}
+        <a
+          href="{{ routes.cart_url }}"
+          class="sd-icon-btn sd-header__cart-btn"
+          aria-label="Cart"
+          {% if settings.enable_cart_drawer %}data-open-cart-drawer{% endif %}
+        >
+          {% render 'icon', name: 'bag' %}
+          <span class="sd-cart-badge" data-cart-count>{{ cart.item_count }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div id="sd-predictive-search-bar" class="sd-search-bar" hidden>
+    <div class="sd-container sd-search-bar__inner">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="sd-search-form">
+        <label for="sd-search-input" class="sd-visually-hidden">Search products</label>
+        <input
+          id="sd-search-input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          data-predictive-input
+        >
+        <input type="hidden" name="type" value="product,collection,page">
+        <button type="submit" class="sd-btn sd-btn--primary sd-btn--sm">
+          {{ 'general.search.submit' | t }}
+        </button>
+        <button type="button" class="sd-icon-btn" data-search-close aria-label="{{ 'general.accessibility.close' | t }}">
+          {% render 'icon', name: 'close' %}
+        </button>
+      </form>
+      <div id="sd-predictive-results" class="sd-predictive-results" hidden></div>
+    </div>
+  </div>
+</header>
+
+<aside id="sd-mobile-drawer" class="sd-drawer sd-drawer--left" role="dialog" aria-modal="true" aria-label="Mobile Navigation" hidden>
+  <div class="sd-drawer__backdrop" data-close-mobile-drawer></div>
+  <div class="sd-drawer__panel">
+    <div class="sd-drawer__header">
+      <span class="sd-drawer__title">{{ shop.name | default: 'School Decor' }}</span>
+      <button type="button" class="sd-icon-btn" data-close-mobile-drawer aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <div class="sd-drawer__body">
+      <ul class="sd-mobile-nav">
+        {%- for block in section.blocks -%}
+          <li class="sd-mobile-nav__group">
+            <details>
+              <summary>{{ block.settings.trigger_title }}</summary>
+              <div class="sd-mobile-nav__sub">
+                {%- assign rows = block.settings.col_1_links | newline_to_br | split: '<br />' -%}
+                {%- for row in rows -%}
+                  {%- assign parts = row | strip | split: '|' -%}
+                  {%- if parts.size == 2 -%}
+                    <a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- assign rows2 = block.settings.col_2_links | newline_to_br | split: '<br />' -%}
+                {%- for row in rows2 -%}
+                  {%- assign parts = row | strip | split: '|' -%}
+                  {%- if parts.size == 2 -%}
+                    <a href="{{ parts[1] | strip }}">{{ parts[0] | strip }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </details>
+          </li>
+        {%- endfor -%}
+        <li><a href="/collections" class="sd-mobile-nav__link">School Decor Catalog</a></li>
+        <li><a href="/pages/about-us" class="sd-mobile-nav__link">About Us</a></li>
+        <li><a href="/pages/projects" class="sd-mobile-nav__link">Projects</a></li>
+        <li><a href="/pages/contact" class="sd-mobile-nav__link">Contact</a></li>
+        <li><button type="button" class="sd-btn sd-btn--primary sd-btn--full" data-open-quote data-close-mobile-drawer>Request a Quote</button></li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Header & Mega Menu",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu",
+      "info": "Leave blank to use School Decor's default 8-item architectural menu, or pick your Shopify Main Menu."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Predictive Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Customer Account Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart Drawer Icon",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega Menu Dropdown",
+      "settings": [
+        {
+          "type": "text",
+          "id": "trigger_title",
+          "label": "Matching Top Menu Item Name",
+          "default": "Furniture",
+          "info": "Exact name of the top navigation item (e.g., Furniture, Active Play, Laboratory, Outdoor, Flooring)"
+        },
+        {
+          "type": "text",
+          "id": "col_1_heading",
+          "label": "Column 1 Heading",
+          "default": "Categories"
+        },
+        {
+          "type": "textarea",
+          "id": "col_1_links",
+          "label": "Column 1 Links (Label|/url per line)",
+          "default": "Kindergarten Furniture|/collections/kindergarten-furniture\nSenior School Furniture|/collections/senior"
+        },
+        {
+          "type": "text",
+          "id": "col_2_heading",
+          "label": "Column 2 Heading",
+          "default": "More Solutions"
+        },
+        {
+          "type": "textarea",
+          "id": "col_2_links",
+          "label": "Column 2 Links (Label|/url per line)",
+          "default": "Library Furniture|/collections/library\nStorage Solutions|/collections/storage"
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_image",
+          "label": "Mega Menu Featured Photo"
+        },
+        {
+          "type": "text",
+          "id": "featured_heading",
+          "label": "Featured Card Heading",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "text",
+          "id": "featured_subtext",
+          "label": "Featured Card Subtext",
+          "default": "Thoughtfully crafted educational infrastructure."
+        },
+        {
+          "type": "url",
+          "id": "featured_link",
+          "label": "Featured Card Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

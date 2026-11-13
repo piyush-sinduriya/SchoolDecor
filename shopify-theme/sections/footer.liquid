@@ -1,0 +1,201 @@
+<footer class="sd-footer" style="--sd-footer-bg: {{ section.settings.bg_color | default: '#F7F7F5' }};">
+  <div class="sd-container sd-footer__grid">
+    <div class="sd-footer__brand">
+      <a href="{{ routes.root_url }}" class="sd-footer__logo" aria-label="{{ shop.name | escape }}">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 380 }}" alt="{{ shop.name | escape }}" width="{{ settings.logo_width }}" height="auto" class="sd-logo-img">
+        {%- else -%}
+          <img src="{{ 'school-decor-logo.png' | asset_url }}" alt="{{ shop.name | default: 'School Decor' | escape }}" width="{{ settings.logo_width }}" height="auto" class="sd-logo-img">
+        {%- endif -%}
+      </a>
+      <p class="sd-footer__desc">{{ section.settings.brand_description | escape }}</p>
+
+      <div class="sd-footer__social">
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener noreferrer">Instagram</a>{%- endif -%}
+        {%- if settings.social_facebook != blank -%}<a href="{{ settings.social_facebook }}" target="_blank" rel="noopener noreferrer">Facebook</a>{%- endif -%}
+        {%- if settings.social_linkedin != blank -%}<a href="{{ settings.social_linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{%- endif -%}
+        {%- if settings.social_youtube != blank -%}<a href="{{ settings.social_youtube }}" target="_blank" rel="noopener noreferrer">YouTube</a>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="sd-footer__col">
+      <h3 class="sd-footer__heading">{{ section.settings.col_1_heading | default: 'Quick Links' | escape }}</h3>
+      <ul class="sd-footer__links">
+        {%- if section.settings.quick_links_menu != blank -%}
+          {%- for link in linklists[section.settings.quick_links_menu].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/pages/about-us">About Us</a></li>
+          <li><a href="/pages/projects">Projects</a></li>
+          <li><a href="/pages/request-quote">Request a Quote</a></li>
+          <li><a href="/pages/faq">Frequently Asked Questions</a></li>
+          <li><a href="/blogs/news">Journal & Guides</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div class="sd-footer__col">
+      <h3 class="sd-footer__heading">{{ section.settings.col_2_heading | default: 'Product Categories' | escape }}</h3>
+      <ul class="sd-footer__links">
+        {%- if section.settings.categories_menu != blank -%}
+          {%- for link in linklists[section.settings.categories_menu].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/collections/kindergarten-furniture">Kindergarten & Preschool</a></li>
+          <li><a href="/collections/senior">School Furniture</a></li>
+          <li><a href="/collections/montessori-material">Montessori Materials</a></li>
+          <li><a href="/collections/soft-play-zones">Active Play & Sensory</a></li>
+          <li><a href="/collections/science-lab">Science & STEM Labs</a></li>
+          <li><a href="/collections/outdoor-fun-equipment">Outdoor Playgrounds</a></li>
+          <li><a href="/products/squash-court">School Flooring</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <div class="sd-footer__col">
+      <h3 class="sd-footer__heading">{{ section.settings.contact_heading | default: 'Contact & Newsletter' | escape }}</h3>
+      <div class="sd-footer__contact">
+        {%- if section.settings.contact_email != blank -%}
+          <p><a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></p>
+        {%- endif -%}
+        {%- if section.settings.contact_phone != blank -%}
+          <p><a href="tel:{{ section.settings.contact_phone | remove: ' ' }}">{{ section.settings.contact_phone }}</a></p>
+        {%- endif -%}
+        {%- if section.settings.contact_address != blank -%}
+          <p class="sd-footer__address">{{ section.settings.contact_address | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="sd-footer__newsletter">
+        <p class="sd-footer__newsletter-title">{{ section.settings.newsletter_heading | escape }}</p>
+        {% form 'customer', id: 'sd-footer-newsletter' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="sd-newsletter-row">
+            <label for="sd-newsletter-email" class="sd-visually-hidden">Email address</label>
+            <input
+              id="sd-newsletter-email"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="{{ 'newsletter.email_placeholder' | t }}"
+              required
+              autocomplete="email"
+            >
+            <button type="submit" class="sd-btn sd-btn--primary sd-btn--sm">
+              {{ 'newsletter.submit' | t }}
+            </button>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p class="sd-newsletter-msg sd-newsletter-msg--ok">{{ 'newsletter.success' | t }}</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="sd-newsletter-msg sd-newsletter-msg--err">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-footer__bottom">
+    <div class="sd-container sd-footer__bottom-inner">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text | default: shop.name | escape }}</p>
+      <ul class="sd-footer__policies">
+        <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/pages/terms-and-conditions">Terms & Conditions</a></li>
+        <li><a href="/pages/shipping-returns">Shipping & Returns</a></li>
+        {%- for policy in shop.policies -%}
+          {%- if policy != blank -%}
+            <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Short Company Description",
+      "default": "School Decor designs and supplies functional furniture, active play zones, laboratories, outdoor playground equipment and school flooring tailored for modern educational institutions."
+    },
+    {
+      "type": "text",
+      "id": "col_1_heading",
+      "label": "Column 1 Heading",
+      "default": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "quick_links_menu",
+      "label": "Quick Links Menu (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "col_2_heading",
+      "label": "Column 2 Heading",
+      "default": "Product Categories"
+    },
+    {
+      "type": "link_list",
+      "id": "categories_menu",
+      "label": "Categories Menu (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Contact Column Heading",
+      "default": "Contact & Updates"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact Email",
+      "default": "schooldecor1@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact Phone (Optional)",
+      "default": "+91 93122 54660"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Address / Service Coverage",
+      "default": "India — Serving Schools, Preschools & Institutions Nationwide"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Institutional Updates & Catalogues"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtext",
+      "label": "Newsletter Description",
+      "default": "Receive seasonal product launches and school planning guides."
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "School Decor. All rights reserved."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Footer Background",
+      "default": "#F7F7F5"
+    }
+  ]
+}
+{% endschema %}

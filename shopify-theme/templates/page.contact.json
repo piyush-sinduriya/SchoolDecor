@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": { "type": "page-contact", "settings": {} },
+    "campus_map": {
+      "type": "campus-map",
+      "settings": {
+        "eyebrow": "Pan-India Studios & Logistics Network",
+        "heading": "Visit Our Regional",
+        "heading_script": "Experience Studios",
+        "bg_color": "#FAF7F0",
+        "padding_y": 64
+      },
+      "blocks": {
+        "h1": { "type": "hub", "settings": { "region": "North India HQ & Studio", "city": "New Delhi NCR", "title": "School Decor Experience Studio & NCR Dispatch", "address": "Okhla Industrial Estate Phase III, New Delhi 110020", "hours": "Mon–Sat · 9:30 AM – 6:30 PM", "lat": "28.5494", "lng": "77.2722" } },
+        "h2": { "type": "hub", "settings": { "region": "West Zone Showroom", "city": "Mumbai", "title": "West Zone Preschool & Active Play Studio", "address": "Andheri East Institutional Corridor, Mumbai 400093", "hours": "Mon–Sat · 10:00 AM – 6:30 PM", "lat": "19.1136", "lng": "72.8697" } },
+        "h3": { "type": "hub", "settings": { "region": "South Zone STEM Hub", "city": "Bengaluru", "title": "STEM, Robotics & Sports Court Center", "address": "Peenya & Hebbal Innovation Belt, Bengaluru 560058", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "13.0285", "lng": "77.5197" } },
+        "h4": { "type": "hub", "settings": { "region": "Deccan Regional Logistics", "city": "Hyderabad", "title": "Institutional Lab & K-12 Supply Hub", "address": "Balanagar Educational Warehousing Park, Hyderabad 500037", "hours": "Mon–Sat · 9:00 AM – 6:00 PM", "lat": "17.4694", "lng": "78.4488" } },
+        "h5": { "type": "hub", "settings": { "region": "Outdoor & Play Engineering", "city": "Jaipur", "title": "Outdoor Multi-Play & Park Assembly Wing", "address": "Sitapura Industrial Area Phase II, Jaipur 302022", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "26.7745", "lng": "75.8473" } }
+      },
+      "block_order": ["h1", "h2", "h3", "h4", "h5"]
+    }
+  },
+  "order": ["main", "campus_map"]
+}

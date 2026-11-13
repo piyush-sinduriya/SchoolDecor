@@ -1,0 +1,73 @@
+<section
+  id="section-{{ section.id }}"
+  class="sd-marquee-band sd-marquee-band--light"
+  style="background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};"
+  aria-label="{{ section.settings.aria_label | default: 'School Decor Highlights' | escape }}"
+>
+  {%- assign row1_items = section.settings.row_1_words | split: ',' -%}
+  {%- assign row2_items = section.settings.row_2_words | split: ',' -%}
+  {%- assign palette = '#C22768,#007B36,#9E7900,#D91B22,#181A18,#C22768' | split: ',' -%}
+
+  <div class="sd-marquee-band__track sd-marquee-band__track--left">
+    {%- for dup in (1..2) -%}
+      <div class="sd-marquee-band__group">
+        {%- for word in row1_items -%}
+          {%- assign c_idx = forloop.index0 | modulo: 6 -%}
+          <span class="sd-marquee-band__word" style="color: {{ palette[c_idx] }};">
+            {{ word | strip | escape }}
+          </span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="sd-marquee-band__track sd-marquee-band__track--right">
+    {%- for dup in (1..2) -%}
+      <div class="sd-marquee-band__group">
+        {%- for word in row2_items -%}
+          {%- assign c_idx2 = forloop.index0 | plus: 2 | modulo: 6 -%}
+          <span class="sd-marquee-band__word" style="color: {{ palette[c_idx2] }};">
+            {{ word | strip | escape }}
+          </span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Kinetic Keyword Marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessibility Label",
+      "default": "School Decor Highlights"
+    },
+    {
+      "type": "text",
+      "id": "row_1_words",
+      "label": "Row 1 Keywords (Comma Separated)",
+      "default": "Ergonomic, Birchwood, Montessori, Active Play, STEM Labs, Sensory"
+    },
+    {
+      "type": "text",
+      "id": "row_2_words",
+      "label": "Row 2 Keywords (Comma Separated)",
+      "default": "Kindergarten, Outdoor Parks, Safe Edges, Modular, Campus Ready, Flooring"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Band Background Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kinetic Keyword Marquee"
+    }
+  ]
+}
+{% endschema %}

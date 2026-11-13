@@ -1,0 +1,40 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    {% render 'breadcrumbs' %}
+    <p class="sd-eyebrow">{{ section.settings.eyebrow | default: 'Policy' | escape }}</p>
+    <h1 class="sd-heading sd-heading--xl">{{ page.title | default: section.settings.fallback_title | escape }}</h1>
+    <div class="sd-prose sd-page-content">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        {{ section.settings.fallback_content }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Policy Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Label",
+      "default": "Store Policy"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Default Heading (If Page Body Empty)",
+      "default": "School Decor Policy"
+    },
+    {
+      "type": "richtext",
+      "id": "fallback_content",
+      "label": "Default Policy Text (Editable)",
+      "default": "<p>Update this page in Shopify Admin &rarr; Online Store &rarr; Pages or directly inside the Theme Editor.</p>"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,6 @@
+{
+  "name": "School Decor — Shopify OS 2.0 Theme & Live Preview",
+  "description": "Complete Shopify Online Store 2.0 theme package and interactive storefront preview for School Decor educational furniture, active play, laboratories, outdoor equipment and flooring.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

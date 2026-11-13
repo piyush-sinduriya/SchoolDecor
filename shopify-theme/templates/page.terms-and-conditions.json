@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-policy",
+      "settings": {
+        "eyebrow": "Store Terms",
+        "fallback_title": "Terms and Conditions"
+      }
+    }
+  },
+  "order": ["main"]
+}

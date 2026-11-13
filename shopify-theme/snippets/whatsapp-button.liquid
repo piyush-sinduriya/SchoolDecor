@@ -1,0 +1,22 @@
+{%- if settings.enable_whatsapp_floating -%}
+  {%- liquid
+    assign wa_num = settings.whatsapp_number | default: '919312254660' | remove: '+' | remove: ' ' | remove: '-'
+    assign wa_msg = settings.whatsapp_default_message | default: 'Hello School Decor team, I would like to enquire about your school furniture and infrastructure solutions.'
+    if template.name == 'product' and product
+      assign wa_msg = 'Hello School Decor team, I would like to enquire about: ' | append: product.title | append: ' (' | append: request.origin | append: product.url | append: ')'
+    elsif template.name == 'collection' and collection
+      assign wa_msg = 'Hello School Decor team, I would like to enquire about products in your ' | append: collection.title | append: ' collection (' | append: request.origin | append: collection.url | append: ')'
+    endif
+  -%}
+  <a
+    href="https://wa.me/{{ wa_num }}?text={{ wa_msg | url_encode }}"
+    class="sd-whatsapp-float"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="WhatsApp Enquiry"
+    title="Chat with School Decor on WhatsApp"
+  >
+    {% render 'icon', name: 'whatsapp' %}
+    <span class="sd-whatsapp-float__label">WhatsApp</span>
+  </a>
+{%- endif -%}

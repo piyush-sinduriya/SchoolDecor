@@ -1,0 +1,20 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    <h1 class="sd-heading sd-heading--xl">Customer Sign In</h1>
+    {% form 'customer_login', class: 'sd-quote-form' %}
+      {%- if form.errors -%}
+        <div class="sd-alert sd-alert--error">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="sd-field">
+        <label for="CustomerEmail">Email</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+      </div>
+      <div class="sd-field">
+        <label for="CustomerPassword">Password</label>
+        <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="sd-btn sd-btn--primary sd-btn--full">Sign In</button>
+      <p style="margin-top: 16px;"><a href="{{ routes.account_register_url }}" class="sd-text-link">Create an account</a></p>
+    {% endform %}
+  </div>
+</section>

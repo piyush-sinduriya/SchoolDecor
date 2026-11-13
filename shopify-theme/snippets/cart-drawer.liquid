@@ -1,0 +1,83 @@
+<aside
+  id="sd-cart-drawer"
+  class="sd-drawer sd-drawer--right"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'cart.general.title' | t }}"
+  hidden
+>
+  <div class="sd-drawer__backdrop" data-close-drawer></div>
+  <div class="sd-drawer__panel">
+    <div class="sd-drawer__header">
+      <h2 class="sd-drawer__title">
+        {{ 'cart.general.title' | t }}
+        <span class="sd-drawer__count" data-cart-count>({{ cart.item_count }})</span>
+      </h2>
+      <button type="button" class="sd-icon-btn" data-close-drawer aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+
+    <div class="sd-drawer__body" id="sd-cart-drawer-body">
+      {%- if cart.item_count == 0 -%}
+        <div class="sd-cart-empty">
+          <p>{{ 'cart.general.empty' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="sd-btn sd-btn--primary" data-close-drawer>
+            {{ 'cart.general.continue_shopping' | t }}
+          </a>
+        </div>
+      {%- else -%}
+        <ul class="sd-cart-items">
+          {%- for item in cart.items -%}
+            <li class="sd-cart-item" data-line="{{ forloop.index }}">
+              <a href="{{ item.url }}" class="sd-cart-item__img">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" loading="lazy" width="80" height="80">
+                {%- endif -%}
+              </a>
+              <div class="sd-cart-item__details">
+                <a href="{{ item.url }}" class="sd-cart-item__title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="sd-cart-item__variant">{{ item.variant.title }}</p>
+                {%- endunless -%}
+                <p class="sd-cart-item__price">{{ item.final_line_price | money }}</p>
+                <div class="sd-cart-item__controls">
+                  <div class="sd-qty-stepper">
+                    <button type="button" class="sd-qty-btn" data-cart-qty="{{ forloop.index }}" data-delta="-1" aria-label="Decrease quantity">{% render 'icon', name: 'minus' %}</button>
+                    <input type="number" class="sd-qty-input" value="{{ item.quantity }}" min="0" aria-label="Quantity" data-cart-qty-input="{{ forloop.index }}">
+                    <button type="button" class="sd-qty-btn" data-cart-qty="{{ forloop.index }}" data-delta="1" aria-label="Increase quantity">{% render 'icon', name: 'plus' %}</button>
+                  </div>
+                  <button type="button" class="sd-cart-remove" data-cart-remove="{{ forloop.index }}" aria-label="{{ 'cart.general.remove' | t }}">
+                    {% render 'icon', name: 'trash' %}
+                  </button>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="sd-drawer__footer" id="sd-cart-drawer-footer" {% if cart.item_count == 0 %}hidden{% endif %}>
+      {%- if settings.enable_cart_note -%}
+        <div class="sd-cart-note">
+          <label for="sd-cart-note-input">{{ 'cart.general.note' | t }}</label>
+          <textarea id="sd-cart-note-input" rows="2" placeholder="School name, delivery timelines or PO reference...">{{ cart.note }}</textarea>
+        </div>
+      {%- endif -%}
+      <div class="sd-cart-subtotal">
+        <span>{{ 'cart.general.subtotal' | t }}</span>
+        <strong data-cart-subtotal>{{ cart.total_price | money }}</strong>
+      </div>
+      <p class="sd-cart-tax-note">{{ 'cart.general.taxes_shipping_note' | t }}</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button type="submit" name="checkout" class="sd-btn sd-btn--primary sd-btn--full">
+          {{ 'cart.general.checkout' | t }}
+        </button>
+      </form>
+      <button type="button" class="sd-btn sd-btn--ghost sd-btn--full" data-close-drawer>
+        {{ 'cart.general.continue_shopping' | t }}
+      </button>
+    </div>
+  </div>
+</aside>

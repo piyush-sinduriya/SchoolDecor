@@ -1,0 +1,7 @@
+{
+  "sections": {
+    "main": { "type": "page-project-detail", "settings": {} },
+    "cta": { "type": "cta-banner", "settings": {} }
+  },
+  "order": ["main", "cta"]
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary | default: '#007B36' }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.font_heading.system? and settings.font_body.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    >
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+      >
+    </noscript>
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font = settings.font_body
+      assign heading_font = settings.font_heading
+    -%}
+
+    <style>
+      {{ body_font | font_face: font_display: 'swap' }}
+      {{ heading_font | font_face: font_display: 'swap' }}
+
+      :root {
+        --sd-primary: {{ settings.color_primary | default: '#007B36' }};
+        --sd-primary-hover: {{ settings.color_primary_hover | default: '#005D28' }};
+        --sd-accent-light: {{ settings.color_accent_light | default: '#EAF7EF' }};
+        --sd-accent-border: {{ settings.color_accent_border | default: '#BCE3CB' }};
+        --sd-rose: {{ settings.color_rose | default: '#C22768' }};
+        --sd-rose-soft: {{ settings.color_rose_soft | default: '#FDF1F6' }};
+        --sd-rose-border: {{ settings.color_rose_border | default: '#F5C7DA' }};
+        --sd-gold: {{ settings.color_gold | default: '#F5C800' }};
+        --sd-gold-soft: #FFFBE6;
+        --sd-gold-border: #F2DF7E;
+        --sd-red-soft: #FDECEC;
+        --sd-red-border: #F8C4C6;
+        --sd-logo-pink: #F088B0;
+        --sd-logo-red: #F01818;
+        --sd-logo-yellow: #F8D000;
+        --sd-logo-green: #00A048;
+        --sd-bg: {{ settings.color_background | default: '#FFFFFF' }};
+        --sd-surface: {{ settings.color_surface | default: '#F7F7F5' }};
+        --sd-text: {{ settings.color_text | default: '#181A18' }};
+        --sd-text-muted: {{ settings.color_text_muted | default: '#525852' }};
+        --sd-border: {{ settings.color_border | default: '#E3E5E0' }};
+        --sd-sale: {{ settings.color_sale | default: '#D91B22' }};
+        --sd-font-heading: 'Outfit', {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --sd-font-body: 'DM Sans', {{ body_font.family }}, {{ body_font.fallback_families }};
+        --sd-font-script: 'Caveat', cursive;
+        --sd-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+        --sd-base-size: {{ settings.type_base_size | default: 16 }}px;
+        --sd-logo-width: {{ settings.logo_width | default: 145 }}px;
+        --sd-logo-width-mobile: {{ settings.logo_width_mobile | default: 115 }}px;
+      }
+    </style>
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.SchoolDecor = {
+        routes: {
+          root_url: '{{ routes.root_url }}',
+          cart_url: '{{ routes.cart_url }}',
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          cart_update_url: '{{ routes.cart_update_url }}',
+          predictive_search_url: '{{ routes.predictive_search_url }}'
+        },
+        moneyFormat: {{ shop.money_format | json }},
+        whatsappNumber: {{ settings.whatsapp_number | default: '919312254660' | json }},
+        whatsappDefaultMessage: {{ settings.whatsapp_default_message | json }},
+        quoteWebhookUrl: {{ settings.quote_webhook_url | json }},
+        enableCartDrawer: {{ settings.enable_cart_drawer | default: true | json }},
+        enablePredictiveSearch: {{ settings.enable_predictive_search | default: true | json }}
+      };
+    </script>
+  </head>
+
+  <body class="sd-body template-{{ template.name | handle }}">
+    <div class="sd-scroll-progress" data-sd-scroll-progress aria-hidden="true"></div>
+    {%- if settings.enable_entry_logo_animation -%}
+      {% render 'entry-logo-overlay' %}
+    {%- endif -%}
+    <a class="sd-skip-link" href="#MainContent">
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
+
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
+
+    <main id="MainContent" class="sd-main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {%- if settings.enable_cart_drawer -%}
+      {% render 'cart-drawer' %}
+    {%- endif -%}
+
+    {% render 'quick-view-modal' %}
+    {% render 'quote-modal' %}
+    {% render 'whatsapp-button' %}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  </body>
+</html>

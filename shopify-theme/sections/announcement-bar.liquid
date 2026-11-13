@@ -1,0 +1,96 @@
+{%- if section.settings.show_announcement -%}
+  {%- liquid
+    assign wa_num = settings.whatsapp_number | default: '919312254660' | remove: '+' | remove: ' ' | remove: '-'
+    assign wa_msg = section.settings.whatsapp_text | default: 'Hello School Decor team, I have an enquiry.'
+  -%}
+  <div
+    class="sd-announcement"
+    style="--sd-ann-bg: {{ section.settings.bg_color | default: '#005D28' }}; --sd-ann-fg: {{ section.settings.text_color | default: '#FFFFFF' }};"
+    role="region"
+    aria-label="Announcement"
+  >
+    <div class="sd-container sd-announcement__inner">
+      <p class="sd-announcement__text">{{ section.settings.announcement_text | escape }}</p>
+      <div class="sd-announcement__actions">
+        {%- if section.settings.contact_phone != blank -%}
+          <a href="tel:{{ section.settings.contact_phone | remove: ' ' }}" class="sd-announcement__link">
+            {{ section.settings.contact_phone | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.contact_email != blank -%}
+          <a href="mailto:{{ section.settings.contact_email | escape }}" class="sd-announcement__link">
+            {{ section.settings.contact_email | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.show_whatsapp_link -%}
+          <a
+            href="https://wa.me/{{ wa_num }}?text={{ wa_msg | url_encode }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sd-announcement__link sd-announcement__wa"
+          >
+            {% render 'icon', name: 'whatsapp' %}
+            <span>WhatsApp Enquiry</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  <div class="sd-logo-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Enable Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Promotional Announcement",
+      "default": "Complete School Furniture, Play Zones, Laboratories & Campus Flooring Across India"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact Phone (Optional)",
+      "default": "+91 93122 54660"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact Email",
+      "default": "schooldecor1@gmail.com"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_whatsapp_link",
+      "label": "Show WhatsApp Enquiry Link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_text",
+      "label": "WhatsApp Greeting Text",
+      "default": "Hello School Decor team, I would like to discuss a school project."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#005D28"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    }
+  ]
+}
+{% endschema %}

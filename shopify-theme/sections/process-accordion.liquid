@@ -1,0 +1,209 @@
+<section
+  id="section-{{ section.id }}"
+  class="sd-section sd-section-pad sd-process-section"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#F5F1E6' }}; --sd-pad-y: {{ section.settings.padding_y | default: 76 }}px;"
+  data-process-accordion
+>
+  <div class="sd-container">
+    <div class="sd-process-grid">
+      <div class="sd-process-col">
+        {%- if section.settings.script_lead != blank -%}
+          <p class="sd-script-lead">{{ section.settings.script_lead | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+
+        <div class="sd-process-list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign cutout_src = ''
+              if block.settings.cutout_image != blank
+                assign cutout_src = block.settings.cutout_image | image_url: width: 800
+              elsif block.settings.fallback_asset != blank
+                assign cutout_src = block.settings.fallback_asset | asset_url
+              endif
+            -%}
+            <div
+              class="sd-process-item{% if forloop.first %} is-open{% endif %}"
+              data-process-item="{{ forloop.index0 }}"
+              data-cutout-src="{{ cutout_src }}"
+              data-cutout-title="{{ block.settings.preview_title | default: block.settings.title | escape }}"
+              data-cutout-specs="{{ block.settings.preview_specs | default: 'Institutional Grade Specification' | escape }}"
+              data-cutout-link="{{ block.settings.preview_link | default: '/collections' }}"
+              {{ block.shopify_attributes }}
+            >
+              <button
+                type="button"
+                class="sd-process-trigger"
+                aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                data-process-trigger="{{ forloop.index0 }}"
+              >
+                <span class="sd-process-num">{{ forloop.index }}</span>
+                <span class="sd-process-title">{{ block.settings.title | escape }}</span>
+                <span class="sd-process-toggle" aria-hidden="true"></span>
+              </button>
+              <div class="sd-process-panel" {% unless forloop.first %}hidden{% endunless %} data-process-panel="{{ forloop.index0 }}">
+                {%- if block.settings.phase_label != blank -%}
+                  <span class="sd-process-phase">{{ block.settings.phase_label | escape }}</span>
+                {%- endif -%}
+                <p>{{ block.settings.description | escape }}</p>
+                {%- if block.settings.deliverables != blank -%}
+                  {%- assign delivs = block.settings.deliverables | split: '|' -%}
+                  <div class="sd-process-deliverables">
+                    {%- for d in delivs -%}
+                      <span>{{ d | strip | escape }}</span>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- assign first_block = section.blocks.first -%}
+      {%- liquid
+        assign init_img = 'sd-cutout-student-desk.png' | asset_url
+        if first_block.settings.cutout_image != blank
+          assign init_img = first_block.settings.cutout_image | image_url: width: 800
+        elsif first_block.settings.fallback_asset != blank
+          assign init_img = first_block.settings.fallback_asset | asset_url
+        endif
+      -%}
+      <div class="sd-process-preview">
+        <div class="sd-process-card">
+          <p class="sd-script-lead" data-process-step-label>Step 01 Studio Match</p>
+          <div class="sd-process-card__stage">
+            <img
+              src="{{ init_img }}"
+              alt="{{ first_block.settings.preview_title | default: 'School Decor Furniture Unit' | escape }}"
+              class="sd-cutout-sticker"
+              data-process-preview-img
+            >
+          </div>
+          <h3 class="sd-process-card__title" data-process-preview-title>
+            {{ first_block.settings.preview_title | default: 'Ergonomic Birch & Steel Desk Set' | escape }}
+          </h3>
+          <p class="sd-process-card__specs" data-process-preview-specs>
+            {{ first_block.settings.preview_specs | default: '600 × 450 × 640–760 mm · 18mm Birch + Steel' | escape }}
+          </p>
+          <a href="{{ first_block.settings.preview_link | default: '/collections' }}" class="sd-btn sd-btn--dark sd-btn--sm" data-process-preview-link>
+            Inspect Specification
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Process Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "script_lead",
+      "label": "Handwritten Lead-in",
+      "default": "From floor plan to first bell"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How We Build Your Campus"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#F5F1E6"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 32,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 76
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Process Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title",
+          "default": "Campus Walkthrough & Space Mapping"
+        },
+        {
+          "type": "text",
+          "id": "phase_label",
+          "label": "Phase Tag",
+          "default": "Discovery & CAD Mapping"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Step Description",
+          "default": "We review your wing dimensions, student age groups, and classroom flow so every desk, shelf, and activity zone fits naturally."
+        },
+        {
+          "type": "text",
+          "id": "deliverables",
+          "label": "Deliverable Tags (Separate with |)",
+          "default": "2D Scaled Room Layouts | Age-Group Sizing Matrix | Circulation & Safety Zones"
+        },
+        {
+          "type": "image_picker",
+          "id": "cutout_image",
+          "label": "Step Cutout Preview PNG"
+        },
+        {
+          "type": "select",
+          "id": "fallback_asset",
+          "label": "Default Cutout PNG",
+          "options": [
+            { "value": "sd-cutout-student-desk.png", "label": "Ergonomic Student Desk" },
+            { "value": "sd-cutout-montessori-shelf.png", "label": "Curved Montessori Shelf" },
+            { "value": "sd-cutout-soft-play-climber.png", "label": "Soft-Play Foam Climber" },
+            { "value": "sd-cutout-science-lab-bench.png", "label": "STEM Island Workbench" }
+          ],
+          "default": "sd-cutout-student-desk.png"
+        },
+        {
+          "type": "text",
+          "id": "preview_title",
+          "label": "Matched Product Name",
+          "default": "Ergonomic Birch & Steel Desk Set"
+        },
+        {
+          "type": "text",
+          "id": "preview_specs",
+          "label": "Matched Spec Summary",
+          "default": "600 × 450 × 640–760 mm · 18mm Birch + Steel"
+        },
+        {
+          "type": "url",
+          "id": "preview_link",
+          "label": "Matched Product / Collection URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Process Accordion",
+      "blocks": [
+        { "type": "step" },
+        { "type": "step", "settings": { "title": "Custom Sizing, Colors & Finishes", "fallback_asset": "sd-cutout-montessori-shelf.png", "preview_title": "Curved Montessori Birch Activity Unit" } },
+        { "type": "step", "settings": { "title": "Institutional Manufacturing & QC", "fallback_asset": "sd-cutout-soft-play-climber.png", "preview_title": "Modular Soft-Play Foam Climber Set" } },
+        { "type": "step", "settings": { "title": "Coordinated Dispatch & Wing Setup", "fallback_asset": "sd-cutout-science-lab-bench.png", "preview_title": "Chemistry & STEM Island Workbench" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

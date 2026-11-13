@@ -1,0 +1,236 @@
+@import "tailwindcss";
+
+:root {
+  --sd-linen: #FAF7F0;
+  --sd-stone: #F4EFE2;
+  --sd-porcelain: #FFFFFF;
+  --sd-sage-mist: #EFF7F2;
+  --sd-rose-cream: #FDF2F7;
+  --sd-buttercream: #FFF9E3;
+  --sd-studio-mist: #EEF3F7;
+  --sd-ink: #161A17;
+  --sd-muted: #4D554E;
+  --sd-hairline: #E5DEC9;
+}
+
+@layer base {
+  html, body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--sd-ink);
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Outfit', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .font-script {
+    font-family: 'Caveat', cursive;
+  }
+
+  .font-mono-num {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes sdRibbonSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes sdMarqueeLeft {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes sdMarqueeRight {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes sdFloatGentle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes sdSheenSweep {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+.sd-ribbon-animate {
+  transform-origin: left center;
+  animation: sdRibbonSweep 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.sd-marquee-track-left {
+  display: flex;
+  width: max-content;
+  animation: sdMarqueeLeft 30s linear infinite;
+  will-change: transform;
+}
+
+.sd-marquee-track-right {
+  display: flex;
+  width: max-content;
+  animation: sdMarqueeRight 32s linear infinite;
+  will-change: transform;
+}
+
+.sd-marquee-group:hover .sd-marquee-track-left,
+.sd-marquee-group:hover .sd-marquee-track-right {
+  animation-play-state: paused;
+}
+
+.sd-float-gentle {
+  animation: sdFloatGentle 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.sd-float-gentle-delay {
+  animation: sdFloatGentle 4.6s ease-in-out 0.35s infinite;
+  will-change: transform;
+}
+
+/* Tactile button highlight sheen on hover */
+.sd-btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sd-btn-sheen::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 36%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: translateX(-140%) skewX(-18deg);
+  pointer-events: none;
+}
+.sd-btn-sheen:hover::after {
+  animation: sdSheenSweep 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Subtle 3D perspective stage wrapper for hero centerpiece */
+.sd-hero-perspective {
+  perspective: 1100px;
+}
+
+/* Clean dimensional studio shadow without heavy animated multi-blur repaints */
+.sd-cutout-sticker {
+  filter: drop-shadow(0 14px 16px rgba(22, 26, 23, 0.14));
+  transform: translateZ(0);
+}
+
+/* Skip layout/paint cost for below-the-fold sections until scrolled near viewport */
+.sd-lazy-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+.sd-light-grid-bg {
+  background-image:
+    radial-gradient(rgba(22, 26, 23, 0.075) 1px, transparent 1px),
+    linear-gradient(to right, rgba(22, 26, 23, 0.022) 1px, transparent 1px);
+  background-size: 26px 26px, 104px 104px;
+}
+
+/* Architectural Planner Grid Wallpaper */
+.sd-blueprint-paper {
+  background-color: #FAF7F0;
+  background-image:
+    linear-gradient(rgba(0, 123, 54, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 123, 54, 0.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@keyframes sdBlueprintSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sdHotspotPing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+.sd-blueprint-spin {
+  animation: sdBlueprintSpin 42s linear infinite;
+}
+
+.sd-hotspot-ring {
+  animation: sdHotspotPing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Clean custom architectural range slider */
+.sd-range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: #E2DAC8;
+  outline: none;
+}
+.sd-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #007B36;
+  border: 2.5px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(22, 26, 23, 0.22);
+  cursor: pointer;
+  transition: transform 150ms ease;
+}
+.sd-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-ribbon-animate,
+  .sd-marquee-track-left,
+  .sd-marquee-track-right,
+  .sd-float-gentle,
+  .sd-float-gentle-delay,
+  .sd-blueprint-spin,
+  .sd-hotspot-ring,
+  .sd-btn-sheen:hover::after {
+    animation: none;
+  }
+}

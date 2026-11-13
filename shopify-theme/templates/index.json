@@ -1,0 +1,610 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-slider",
+      "settings": {
+        "autoplay": false,
+        "autoplay_speed": 7,
+        "show_wave_divider": true,
+        "wave_color": "#F5F1E6"
+      },
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "short_label": "Desk & Chair",
+            "stage_tint": "#EAF6EF",
+            "split_left_fallback": "sd-cutout-hero-desk.png",
+            "split_right_fallback": "sd-cutout-hero-chair.png",
+            "cutout_fallback": "sd-cutout-student-desk.png",
+            "cutout_category": "School Furniture",
+            "cutout_title": "Ergonomic Birch & Steel Desk Set",
+            "cutout_price_label": "Available for Order",
+            "cutout_dimensions": "600 × 450 × 640–760 mm",
+            "cutout_age_group": "Grades 1–12",
+            "cutout_link": "/collections/senior",
+            "eyebrow": "School Furniture & Educational Infrastructure",
+            "heading": "Designing Better Spaces for",
+            "heading_script": "Brighter Futures",
+            "description": "Discover thoughtfully designed furniture, innovative learning environments and educational play solutions for schools, preschools and institutions.",
+            "primary_label": "Explore Our Collection",
+            "primary_link": "/collections",
+            "secondary_label": "Request a Quote",
+            "secondary_opens_quote": true,
+            "text_alignment": "center",
+            "overlay_opacity": 85
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "short_label": "Montessori Unit",
+            "stage_tint": "#FDF0F5",
+            "split_left_fallback": "none",
+            "split_right_fallback": "none",
+            "cutout_fallback": "sd-cutout-montessori-shelf.png",
+            "cutout_category": "Kindergarten & Early Years",
+            "cutout_title": "Curved Montessori Birch Activity Unit",
+            "cutout_price_label": "Available for Order",
+            "cutout_dimensions": "1400 × 380 × 780 mm",
+            "cutout_age_group": "Ages 2–6 Yrs",
+            "cutout_link": "/collections/kindergarten-furniture",
+            "eyebrow": "Early Years & Montessori Environments",
+            "heading": "Spaces That Inspire",
+            "heading_script": "Curious Young Minds",
+            "description": "Child-scaled birchwood classrooms, Montessori shelving, sensory corners and safe active play rooms crafted for joyful early learning.",
+            "primary_label": "Shop Kindergarten",
+            "primary_link": "/collections/kindergarten-furniture",
+            "secondary_label": "Request a Quote",
+            "secondary_opens_quote": true,
+            "text_alignment": "center",
+            "overlay_opacity": 85
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "short_label": "Soft-Play Climber",
+            "stage_tint": "#FFF7DC",
+            "split_left_fallback": "none",
+            "split_right_fallback": "none",
+            "cutout_fallback": "sd-cutout-soft-play-climber.png",
+            "cutout_category": "Active Play Equipment",
+            "cutout_title": "Modular Soft-Play Foam Climber Set",
+            "cutout_price_label": "Available for Order",
+            "cutout_dimensions": "2400 × 1800 × 620 mm",
+            "cutout_age_group": "Pre-K & Toddler",
+            "cutout_link": "/collections/soft-play-zones",
+            "eyebrow": "Indoor Active & Sensory Play",
+            "heading": "Movement & Discovery for",
+            "heading_script": "Active Early Years",
+            "description": "High-resilience HR foam climbers, arches and safe balance modules upholstered in antimicrobial wipe-clean finishes.",
+            "primary_label": "Explore Active Play",
+            "primary_link": "/collections/soft-play-zones",
+            "secondary_label": "Request a Quote",
+            "secondary_opens_quote": true,
+            "text_alignment": "center",
+            "overlay_opacity": 85
+          }
+        },
+        "slide-4": {
+          "type": "slide",
+          "settings": {
+            "short_label": "STEM Lab Island",
+            "stage_tint": "#EDF3F7",
+            "split_left_fallback": "none",
+            "split_right_fallback": "none",
+            "cutout_fallback": "sd-cutout-science-lab-bench.png",
+            "cutout_category": "Science & STEM Labs",
+            "cutout_title": "Chemistry & STEM Island Workbench",
+            "cutout_price_label": "Custom Institutional Quote",
+            "cutout_dimensions": "2400 × 1200 × 900 mm",
+            "cutout_age_group": "Grades 6–12 & Colleges",
+            "cutout_link": "/collections/science-lab",
+            "eyebrow": "Future-Ready School Laboratories",
+            "heading": "Built for Practical",
+            "heading_script": "STEM Innovation",
+            "description": "Acid-resistant phenolic resin worktops with dual brass lab fixtures and ventilated storage designed for senior wings.",
+            "primary_label": "Explore Laboratories",
+            "primary_link": "/collections/science-lab",
+            "secondary_label": "Request a Quote",
+            "secondary_opens_quote": true,
+            "text_alignment": "center",
+            "overlay_opacity": 85
+          }
+        }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"]
+    },
+    "trust": {
+      "type": "trust-highlights",
+      "settings": {
+        "bg_color": "#F5F1E6",
+        "padding_y": 36
+      },
+      "blocks": {
+        "t1": { "type": "highlight", "settings": { "icon": "layers", "title": "Complete School Solutions", "subtitle": "Classrooms, labs, active play, outdoor parks and flooring under one roof." } },
+        "t2": { "type": "highlight", "settings": { "icon": "shield", "title": "Quality-Focused Products", "subtitle": "Durable institutional materials engineered for everyday school routines." } },
+        "t3": { "type": "highlight", "settings": { "icon": "compass", "title": "Learning Through Play", "subtitle": "Thoughtful spaces supporting curiosity, sensory growth and movement." } },
+        "t4": { "type": "highlight", "settings": { "icon": "sliders", "title": "Customized Solutions", "subtitle": "Flexible sizing, finishes and project support tailored to your campus." } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"]
+    },
+    "kinetic_marquee": {
+      "type": "kinetic-marquee",
+      "settings": {
+        "row_1_words": "Ergonomic, Birchwood, Montessori, Active Play, STEM Labs, Sensory",
+        "row_2_words": "Kindergarten, Outdoor Parks, Safe Edges, Modular, Campus Ready, Flooring",
+        "bg_color": "#FFFFFF"
+      }
+    },
+    "cutout_showcase": {
+      "type": "cutout-showcase",
+      "settings": {
+        "enable_color_stage": true,
+        "eyebrow": "Studio Cutout Series",
+        "heading": "Signature Floating Collection",
+        "description": "Studio-isolated product highlights crafted from durable birch plywood, medical-grade soft foam, and laboratory phenolic surfaces.",
+        "button_label": "Shop All Products",
+        "button_link": "/collections",
+        "enable_scroll_parallax": true,
+        "bg_color": "#EAF6EF",
+        "padding_y": 72
+      },
+      "blocks": {
+        "cut1": {
+          "type": "cutout_card",
+          "settings": {
+            "fallback_asset": "sd-cutout-student-desk.png",
+            "custom_url": "/collections/senior",
+            "short_label": "Student Desk",
+            "script_tag": "posture-tuned",
+            "category": "School Furniture",
+            "title": "Ergonomic Birch & Steel Desk Set",
+            "price_label": "Available for Order",
+            "dimensions": "600 × 450 × 640–760 mm",
+            "age_group": "Grades 1–12",
+            "materials": "18mm Birch Plywood + 1.6mm Steel",
+            "spec_bullets": "Waterfall front comfort curve | Under-desk heavy steel book tray | Non-marking floor levelers",
+            "stage_bg": "#EAF6EF",
+            "tint_color": "#EAF6EF",
+            "bar_color": "#007B36"
+          }
+        },
+        "cut2": {
+          "type": "cutout_card",
+          "settings": {
+            "fallback_asset": "sd-cutout-montessori-shelf.png",
+            "custom_url": "/collections/kindergarten-furniture",
+            "short_label": "Montessori Unit",
+            "script_tag": "child-scaled",
+            "category": "Kindergarten & Early Years",
+            "title": "Curved Montessori Birch Activity Unit",
+            "price_label": "Available for Order",
+            "dimensions": "1400 × 380 × 780 mm",
+            "age_group": "Ages 2–6 Yrs",
+            "materials": "Zero-VOC European Birch",
+            "spec_bullets": "Full R20 safety-radius edges | Anti-tip wide base geometry | Eye-level Montessori bay heights",
+            "stage_bg": "#FDF0F5",
+            "tint_color": "#FDF0F5",
+            "bar_color": "#C22768"
+          }
+        },
+        "cut3": {
+          "type": "cutout_card",
+          "settings": {
+            "fallback_asset": "sd-cutout-soft-play-climber.png",
+            "custom_url": "/collections/soft-play-zones",
+            "short_label": "Soft-Play Climber",
+            "script_tag": "active play",
+            "category": "Active Play Equipment",
+            "title": "Modular Soft-Play Foam Climber Set",
+            "price_label": "Available for Order",
+            "dimensions": "2400 × 1800 × 620 mm",
+            "age_group": "Pre-K & Toddler",
+            "materials": "HR PU Foam + PVC-Free Vinyl",
+            "spec_bullets": "Antimicrobial wipe-clean skin | Hook-and-loop anchor strips | Concealed pinch-free zippers",
+            "stage_bg": "#FFF7DC",
+            "tint_color": "#FFF7DC",
+            "bar_color": "#D4A800"
+          }
+        },
+        "cut4": {
+          "type": "cutout_card",
+          "settings": {
+            "fallback_asset": "sd-cutout-science-lab-bench.png",
+            "custom_url": "/collections/science-lab",
+            "short_label": "STEM Island Lab",
+            "script_tag": "lab-engineered",
+            "category": "Science & STEM Labs",
+            "title": "Chemistry & STEM Island Workbench",
+            "price_label": "Custom Institutional Quote",
+            "dimensions": "2400 × 1200 × 900 mm",
+            "age_group": "Grades 6–12 & Colleges",
+            "materials": "19mm Phenolic Resin + Steel",
+            "spec_bullets": "Acid & heat proof worktop | Dual gooseneck lab fixtures | Concealed service utility chase",
+            "stage_bg": "#EDF3F7",
+            "tint_color": "#EDF3F7",
+            "bar_color": "#D91B22"
+          }
+        }
+      },
+      "block_order": ["cut1", "cut2", "cut3", "cut4"]
+    },
+    "collections": {
+      "type": "collections-showcase",
+      "settings": {
+        "eyebrow": "Product Universe",
+        "heading": "Explore Our Collections",
+        "description": "Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.",
+        "columns_desktop": "4",
+        "text_alignment": "left",
+        "bg_color": "#FFFFFF",
+        "padding_y": 72
+      },
+      "blocks": {
+        "c1": { "type": "collection_card", "settings": { "title": "School Furniture", "tag": "Classroom", "subtitle": "Grades 1–12 · Desks & Modular Seating", "custom_url": "/collections/senior" } },
+        "c2": { "type": "collection_card", "settings": { "title": "Kindergarten Furniture", "tag": "Early Years", "subtitle": "Ages 3–6 · Birch Chairs & Tables", "custom_url": "/collections/kindergarten-furniture" } },
+        "c3": { "type": "collection_card", "settings": { "title": "Preschool Furniture", "tag": "Preschool", "subtitle": "Nursery Wings · Daycare Storage & Cots", "custom_url": "/collections/day-care" } },
+        "c4": { "type": "collection_card", "settings": { "title": "Montessori Materials", "tag": "Montessori", "subtitle": "Self-Directed Trays & Open Shelving", "custom_url": "/collections/montessori-material" } },
+        "c5": { "type": "collection_card", "settings": { "title": "Active Play Equipment", "tag": "Indoor Play", "subtitle": "Soft Climbers, Bridges & Foam Sets", "custom_url": "/collections/soft-play-zones" } },
+        "c6": { "type": "collection_card", "settings": { "title": "Sensory Rooms", "tag": "Sensory", "subtitle": "Tactile Wall Panels & Calming Corners", "custom_url": "/collections/sensory-room" } },
+        "c7": { "type": "collection_card", "settings": { "title": "Science Laboratories", "tag": "Lab Series", "subtitle": "Phenolic Resin Benches & Utility Sinks", "custom_url": "/collections/science-lab" } },
+        "c8": { "type": "collection_card", "settings": { "title": "Computer Laboratories", "tag": "Digital Lab", "subtitle": "Cable-Managed Pods & Teacher Stations", "custom_url": "/collections/computer-lab" } },
+        "c9": { "type": "collection_card", "settings": { "title": "Art Laboratories", "tag": "Creative Studio", "subtitle": "Easel Stations, Drying Racks & Sinks", "custom_url": "/collections/art-lab" } },
+        "c10": { "type": "collection_card", "settings": { "title": "STEM Learning", "tag": "Innovation", "subtitle": "Robotics Islands & Tinkering Benches", "custom_url": "/collections/stem-lab" } },
+        "c11": { "type": "collection_card", "settings": { "title": "Outdoor Play Equipment", "tag": "Playground", "subtitle": "Multi-Play Towers, Swings & Parks", "custom_url": "/collections/outdoor-fun-equipment" } },
+        "c12": { "type": "collection_card", "settings": { "title": "School Flooring", "tag": "Surfacing", "subtitle": "EPDM Safety Mats & Sports Surfaces", "custom_url": "/products/squash-court" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12"]
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Curated Catalog",
+        "heading": "Featured Products",
+        "products_limit": 8,
+        "products_per_row": "4",
+        "bg_color": "#FAF7F0",
+        "padding_y": 72
+      },
+      "blocks": {
+        "tab-1": { "type": "collection_tab", "settings": { "tab_label": "Best Sellers" } },
+        "tab-2": { "type": "collection_tab", "settings": { "tab_label": "New Arrivals" } },
+        "tab-3": { "type": "collection_tab", "settings": { "tab_label": "Featured Products" } }
+      },
+      "block_order": ["tab-1", "tab-2", "tab-3"]
+    },
+    "smart_campus_planner": {
+      "type": "smart-campus-planner",
+      "settings": {
+        "eyebrow": "Smart Room & BOQ Architect",
+        "heading": "Plan Your Classroom in",
+        "heading_script": "Real Time",
+        "description": "Dial in room dimensions, batch strength, and finish swatches to inspect live circulation flow and an instant Bill of Quantities.",
+        "default_length": 28,
+        "default_width": 24,
+        "default_students": 28,
+        "bg_color": "#EFF7F2",
+        "padding_y": 76
+      }
+    },
+    "about_split": {
+      "type": "about-split",
+      "settings": {
+        "image_position": "left",
+        "eyebrow": "About School Decor",
+        "heading": "Creating Inspiring Learning Environments",
+        "body_text": "<p>School Decor equips schools, preschools and educational institutions with thoughtfully designed furniture, activity equipment, laboratories, outdoor play zones and complete campus infrastructure products.</p><p>Whether you are launching a new early-learning center or upgrading a multi-wing K-12 campus, our team helps you plan spaces that balance ergonomics, safety and daily longevity.</p>",
+        "button_label": "About Us",
+        "button_link": "/pages/about-us",
+        "bg_color": "#F5F1E6",
+        "padding_y": 80
+      }
+    },
+    "process_accordion": {
+      "type": "process-accordion",
+      "settings": {
+        "script_lead": "From floor plan to first bell",
+        "heading": "How We Build Your Campus",
+        "bg_color": "#F5F1E6",
+        "padding_y": 72
+      },
+      "blocks": {
+        "ps1": {
+          "type": "step",
+          "settings": {
+            "phase_label": "Discovery & CAD Mapping",
+            "title": "Campus Walkthrough & Space Mapping",
+            "description": "We review your wing dimensions, student age groups, and classroom flow so every desk, shelf, and activity zone fits naturally without crowding.",
+            "deliverables": "2D Scaled Room Layouts | Age-Group Sizing Matrix | Circulation & Safety Zones",
+            "fallback_asset": "sd-cutout-student-desk.png",
+            "preview_title": "Ergonomic Birch & Steel Desk Set",
+            "preview_specs": "600 × 450 × 640–760 mm · 18mm Birch Plywood + 1.6mm Steel",
+            "preview_link": "/collections/senior"
+          }
+        },
+        "ps2": {
+          "type": "step",
+          "settings": {
+            "phase_label": "Material & Finish Spec",
+            "title": "Custom Sizing, Colors & Finishes",
+            "description": "Select ergonomic seat heights, rounded birch laminates, powder-coat steel shades, and soft-play upholstery palettes aligned to your school identity.",
+            "deliverables": "Birch & Laminate Swatches | RAL Powder-Coat Matching | Ergonomic Height Schedule",
+            "fallback_asset": "sd-cutout-montessori-shelf.png",
+            "preview_title": "Curved Montessori Birch Activity Unit",
+            "preview_specs": "1400 × 380 × 780 mm H · Zero-VOC European Birch",
+            "preview_link": "/collections/kindergarten-furniture"
+          }
+        },
+        "ps3": {
+          "type": "step",
+          "settings": {
+            "phase_label": "Factory Production & QA",
+            "title": "Institutional Manufacturing & QC",
+            "description": "Every unit is built for multi-year daily campus use with child-safe edge radii, non-toxic finishes, and heavy-gauge hardware checks.",
+            "deliverables": "CNC Corner Chamfering | Weld & Load Stress Audits | Non-Toxic Sealant Verification",
+            "fallback_asset": "sd-cutout-soft-play-climber.png",
+            "preview_title": "Modular Soft-Play Foam Climber Set",
+            "preview_specs": "2400 × 1800 × 620 mm · HR PU Foam + PVC-Free Vinyl",
+            "preview_link": "/collections/soft-play-zones"
+          }
+        },
+        "ps4": {
+          "type": "step",
+          "settings": {
+            "phase_label": "Logistics & Installation",
+            "title": "Coordinated Dispatch & Wing Setup",
+            "description": "Room-by-room delivery scheduling and guided assembly ensure laboratories, classrooms, and play rooms open cleanly before term starts.",
+            "deliverables": "Wing-Labeled Flat Packing | On-Site Lab & Desk Anchoring | Final Principal Walkthrough",
+            "fallback_asset": "sd-cutout-science-lab-bench.png",
+            "preview_title": "Chemistry & STEM Island Workbench",
+            "preview_specs": "2400 × 1200 × 900 mm · 19mm Phenolic Resin + Steel",
+            "preview_link": "/collections/science-lab"
+          }
+        },
+        "ps5": {
+          "type": "step",
+          "settings": {
+            "phase_label": "Multi-Year Partnership",
+            "title": "Ongoing Campus Expansion Support",
+            "description": "When you add new sections, STEM labs, or outdoor play zones in future academic sessions, matching modules stay available seamlessly.",
+            "deliverables": "Saved Campus Finish Specs | Modular Spare Parts Access | Rapid Batch Re-Ordering",
+            "fallback_asset": "sd-cutout-student-desk.png",
+            "preview_title": "Ergonomic Birch & Steel Desk Set",
+            "preview_specs": "600 × 450 × 640–760 mm · 18mm Birch Plywood + 1.6mm Steel",
+            "preview_link": "/collections/senior"
+          }
+        }
+      },
+      "block_order": ["ps1", "ps2", "ps3", "ps4", "ps5"]
+    },
+    "cat_classrooms": {
+      "type": "category-editorial",
+      "settings": {
+        "fallback_asset": "sd-hero-classroom.jpg",
+        "image_position": "right",
+        "eyebrow": "Classroom Furniture",
+        "heading": "Furniture for Modern Classrooms",
+        "description": "Ergonomic student desks, collaborative tables, library seating and modular classroom storage built for focus, posture and everyday school use.",
+        "spec_points": "Age-calibrated height presets (Grades K–12) | 18mm Birch & steel construction with R16 safety curves | Modular storage & collaborative pods",
+        "button_label": "Explore Collection",
+        "button_link": "/collections/kindergarten-furniture",
+        "show_quote_button": true,
+        "bg_color": "#F7F7F5",
+        "padding_y": 64
+      }
+    },
+    "cat_active_play": {
+      "type": "category-editorial",
+      "settings": {
+        "fallback_asset": "sd-hero-preschool.jpg",
+        "image_position": "left",
+        "eyebrow": "Active Play & Sensory",
+        "heading": "Active Play and Sensory Equipment",
+        "description": "Safe soft play zones, jungle gyms, interactive wall panels and calming sensory rooms encouraging motor development and imaginative play.",
+        "spec_points": "28-density HR foam core with phthalate-free vinyl | Concealed child-safe zippers & double-stitched seams | Custom calming sensory corner layouts",
+        "button_label": "Explore Collection",
+        "button_link": "/collections/soft-play-zones",
+        "show_quote_button": true,
+        "bg_color": "#FFFFFF",
+        "padding_y": 64
+      }
+    },
+    "cat_laboratories": {
+      "type": "category-editorial",
+      "settings": {
+        "fallback_asset": "sd-science-lab.jpg",
+        "image_position": "right",
+        "eyebrow": "Academic & STEM Labs",
+        "heading": "Innovative School Laboratories",
+        "description": "Purpose-built science, computer, mathematics, art and STEM laboratory benches and storage designed for hands-on experimentation.",
+        "spec_points": "19mm acid, solvent & thermal-shock phenolic resin tops | Concealed plumbing, gas & IP44 electrical service chases | Dedicated robotics, physics & wet-art zones",
+        "button_label": "Explore Collection",
+        "button_link": "/collections/science-lab",
+        "show_quote_button": true,
+        "bg_color": "#F7F7F5",
+        "padding_y": 64
+      }
+    },
+    "cat_outdoor": {
+      "type": "category-editorial",
+      "settings": {
+        "fallback_asset": "sd-outdoor-play.jpg",
+        "image_position": "left",
+        "eyebrow": "Outdoor Campuses",
+        "heading": "Outdoor Learning and Playground Solutions",
+        "description": "Weather-ready multi-play climbers, sensory parks, open-air gyms, math and science park installations and campus benches.",
+        "spec_points": "UV-stabilized LLDPE slides & rust-shield galvanized steel | Shock-absorbing EPDM wet-pour safety flooring options | Open-air STEM & physics park exhibits",
+        "button_label": "Explore Collection",
+        "button_link": "/collections/outdoor-fun-equipment",
+        "show_quote_button": true,
+        "bg_color": "#FFFFFF",
+        "padding_y": 64
+      }
+    },
+    "cat_flooring": {
+      "type": "category-editorial",
+      "settings": {
+        "fallback_asset": "sd-school-library.jpg",
+        "image_position": "right",
+        "eyebrow": "Surfacing & Courts",
+        "heading": "Premium School Flooring",
+        "description": "Impact-absorbing preschool play mats, classroom surfacing, and specialized multi-sport and squash court flooring solutions.",
+        "spec_points": "Cushioned impact absorption for indoor toddler wings | Kiln-dried maple & seamless PU multi-sport systems | Dedicated turnkey squash & indoor court markings",
+        "button_label": "Explore Collection",
+        "button_link": "/products/squash-court",
+        "show_quote_button": true,
+        "bg_color": "#F7F7F5",
+        "padding_y": 64
+      }
+    },
+    "gallery": {
+      "type": "environment-gallery",
+      "settings": {
+        "eyebrow": "Spaces in Focus",
+        "heading": "School Environment Gallery",
+        "description": "A visual look across classrooms, preschool interiors, Montessori rooms, laboratories, activity spaces, sensory rooms and playgrounds.",
+        "bg_color": "#FFFFFF",
+        "padding_y": 80
+      },
+      "blocks": {
+        "g1": { "type": "gallery_item", "settings": { "caption": "Modern Classrooms", "link": "/collections/senior" } },
+        "g2": { "type": "gallery_item", "settings": { "caption": "Preschool Interiors", "link": "/collections/kindergarten-furniture" } },
+        "g3": { "type": "gallery_item", "settings": { "caption": "Montessori Rooms", "link": "/collections/montessori-material" } },
+        "g4": { "type": "gallery_item", "settings": { "caption": "Science Laboratories", "link": "/collections/science-lab" } },
+        "g5": { "type": "gallery_item", "settings": { "caption": "Computer Laboratories", "link": "/collections/computer-lab" } },
+        "g6": { "type": "gallery_item", "settings": { "caption": "Activity Rooms", "link": "/collections/soft-play-zones" } },
+        "g7": { "type": "gallery_item", "settings": { "caption": "Outdoor Playgrounds", "link": "/collections/outdoor-fun-equipment" } },
+        "g8": { "type": "gallery_item", "settings": { "caption": "Sensory Rooms", "link": "/collections/sensory-room" } }
+      },
+      "block_order": ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8"]
+    },
+    "why_choose_us": {
+      "type": "why-choose-us",
+      "settings": {
+        "eyebrow": "Our Approach",
+        "heading": "Why Choose School Decor",
+        "description": "Dedicated educational environment planning, practical designs and responsive support for schools across India.",
+        "bg_color": "#F7F7F5",
+        "padding_y": 80
+      },
+      "blocks": {
+        "w1": { "type": "pillar", "settings": { "icon": "layers", "title": "Educational Environment Solutions", "description": "Coordinated equipment for preschools, primary wings, senior classrooms, labs and campuses." } },
+        "w2": { "type": "pillar", "settings": { "icon": "compass", "title": "Wide Product Selection", "description": "Specialized ranges spanning Montessori materials, soft play, STEM labs and outdoor parks." } },
+        "w3": { "type": "pillar", "settings": { "icon": "shield", "title": "Functional and Practical Designs", "description": "Thoughtful ergonomics, rounded child-safe edges and materials built for daily school routines." } },
+        "w4": { "type": "pillar", "settings": { "icon": "sliders", "title": "Customized Project Support", "description": "Flexible sizing, finishes and quantity planning tailored to your institution's floor plan." } },
+        "w5": { "type": "pillar", "settings": { "icon": "headphones", "title": "Dedicated Customer Assistance", "description": "Direct consultation from product selection and quotation through delivery coordination." } }
+      },
+      "block_order": ["w1", "w2", "w3", "w4", "w5"]
+    },
+    "projects": {
+      "type": "featured-projects",
+      "settings": {
+        "eyebrow": "Campus Showcase",
+        "heading": "Featured School Projects",
+        "view_all_label": "View All Projects",
+        "view_all_link": "/pages/projects",
+        "bg_color": "#FFFFFF",
+        "padding_y": 80
+      },
+      "blocks": {
+        "p1": { "type": "project", "settings": { "institution_name": "Early Years Wing & Montessori Setup", "location": "Add City in Theme Editor", "category": "Preschool & Montessori", "description": "Editable project card: add your school photograph, institution name, location and link to its project detail page.", "project_link": "/pages/projects" } },
+        "p2": { "type": "project", "settings": { "institution_name": "K-12 Classroom & Library Modernization", "location": "Add City in Theme Editor", "category": "Classroom & Library", "description": "Editable project card: showcase ergonomic senior seating, modular book storage and reading corners.", "project_link": "/pages/projects" } },
+        "p3": { "type": "project", "settings": { "institution_name": "Composite STEM Lab & Outdoor Play Park", "location": "Add City in Theme Editor", "category": "Laboratories & Outdoor", "description": "Editable project card: highlight integrated laboratory furniture and outdoor playground setups.", "project_link": "/pages/projects" } }
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "testimonials": {
+      "type": "testimonials-slider",
+      "settings": {
+        "eyebrow": "Educator Feedback",
+        "heading": "Trusted by School Leaders & Architects",
+        "bg_color": "#F7F7F5",
+        "padding_y": 80
+      },
+      "blocks": {
+        "tm1": { "type": "testimonial", "settings": { "quote": "Editable placeholder: Add real feedback from a school principal or founder here through the Shopify Theme Editor.", "customer_name": "School Principal (Editable Placeholder)", "institution_name": "Institution Name (Edit in Theme Editor)" } },
+        "tm2": { "type": "testimonial", "settings": { "quote": "Editable placeholder: Share a real institutional story about classroom furniture, soft play or laboratory installation.", "customer_name": "Academic Director (Editable Placeholder)", "institution_name": "Preschool / K-12 Campus (Edit in Theme Editor)" } },
+        "tm3": { "type": "testimonial", "settings": { "quote": "Editable placeholder: Add a verified testimonial from an educational trust or architect partner.", "customer_name": "Campus Architect (Editable Placeholder)", "institution_name": "Educational Trust (Edit in Theme Editor)" } }
+      },
+      "block_order": ["tm1", "tm2", "tm3"]
+    },
+    "brands_showcase": {
+      "type": "brands-showcase",
+      "settings": {
+        "eyebrow": "Certified Material & Manufacturing Partners",
+        "heading": "Brands & Engineering Standards Behind",
+        "heading_script": "Every Classroom",
+        "button_label": "Browse Full Catalog",
+        "button_link": "/collections/all",
+        "bg_color": "#FAF7F0",
+        "padding_y": 72
+      },
+      "blocks": {
+        "b1": { "type": "brand", "settings": { "mark_code": "BC·18", "name": "BirchCraft Europe", "specialty": "FSC-Certified 18mm Beech & Birchwood", "standard": "EN-71 Child-Safe Finish", "accent_color": "#007B36", "collection_link": "/collections/kindergarten-furniture" } },
+        "b2": { "type": "brand", "settings": { "mark_code": "PM·K12", "name": "PostureMetric India", "specialty": "Height-Graded Classroom Ergonomics", "standard": "BIFMA & NCERT Ratios", "accent_color": "#C22768", "collection_link": "/collections/senior" } },
+        "b3": { "type": "brand", "settings": { "mark_code": "KS·28", "name": "KiddoSafe HR", "specialty": "28-Density Soft-Play & Sensory Cores", "standard": "Phthalate-Free Antimicrobial", "accent_color": "#B88900", "collection_link": "/collections/soft-play-zones" } },
+        "b4": { "type": "brand", "settings": { "mark_code": "LG·19", "name": "LabGuard Phenolic", "specialty": "19mm Acid & Thermal-Shock Worktops", "standard": "SEFA Chemical Grade", "accent_color": "#334B5C", "collection_link": "/collections/science-lab" } },
+        "b5": { "type": "brand", "settings": { "mark_code": "SS·UV8", "name": "SunShield LLDPE", "specialty": "Galvanized Steel & Outdoor Play Chutes", "standard": "UV-8 Weather Stabilized", "accent_color": "#D91B22", "collection_link": "/collections/outdoor-fun-equipment" } },
+        "b6": { "type": "brand", "settings": { "mark_code": "CG·PU", "name": "CourtGrip Pro", "specialty": "Shock-Attenuating EPDM & Court Floors", "standard": "EN-14904 Sports Bounce", "accent_color": "#007B36", "collection_link": "/collections/flooring" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6"]
+    },
+    "campus_map": {
+      "type": "campus-map",
+      "settings": {
+        "eyebrow": "Pan-India Studios & Logistics Network",
+        "heading": "Visit Our Regional",
+        "heading_script": "Experience Studios",
+        "bg_color": "#FFFFFF",
+        "padding_y": 72
+      },
+      "blocks": {
+        "h1": { "type": "hub", "settings": { "region": "North India HQ & Studio", "city": "New Delhi NCR", "title": "School Decor Experience Studio & NCR Dispatch", "address": "Okhla Industrial Estate Phase III, New Delhi 110020", "hours": "Mon–Sat · 9:30 AM – 6:30 PM", "lat": "28.5494", "lng": "77.2722" } },
+        "h2": { "type": "hub", "settings": { "region": "West Zone Showroom", "city": "Mumbai", "title": "West Zone Preschool & Active Play Studio", "address": "Andheri East Institutional Corridor, Mumbai 400093", "hours": "Mon–Sat · 10:00 AM – 6:30 PM", "lat": "19.1136", "lng": "72.8697" } },
+        "h3": { "type": "hub", "settings": { "region": "South Zone STEM Hub", "city": "Bengaluru", "title": "STEM, Robotics & Sports Court Center", "address": "Peenya & Hebbal Innovation Belt, Bengaluru 560058", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "13.0285", "lng": "77.5197" } },
+        "h4": { "type": "hub", "settings": { "region": "Deccan Regional Logistics", "city": "Hyderabad", "title": "Institutional Lab & K-12 Supply Hub", "address": "Balanagar Educational Warehousing Park, Hyderabad 500037", "hours": "Mon–Sat · 9:00 AM – 6:00 PM", "lat": "17.4694", "lng": "78.4488" } },
+        "h5": { "type": "hub", "settings": { "region": "Outdoor & Play Engineering", "city": "Jaipur", "title": "Outdoor Multi-Play & Park Assembly Wing", "address": "Sitapura Industrial Area Phase II, Jaipur 302022", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "26.7745", "lng": "75.8473" } }
+      },
+      "block_order": ["h1", "h2", "h3", "h4", "h5"]
+    },
+    "cta_banner": {
+      "type": "cta-banner",
+      "settings": {
+        "heading": "Let's Create Better Learning Spaces Together",
+        "description": "Planning a new school, upgrading your classroom or creating an inspiring play environment? Let's discuss your requirements.",
+        "primary_label": "Contact Our Team",
+        "primary_link": "/pages/contact",
+        "secondary_label": "WhatsApp Enquiry",
+        "text_alignment": "center",
+        "bg_color": "#FAF7F0",
+        "text_color": "#181A18",
+        "padding_y": 76
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "kinetic_marquee",
+    "cutout_showcase",
+    "collections",
+    "featured_products",
+    "smart_campus_planner",
+    "about_split",
+    "process_accordion",
+    "cat_classrooms",
+    "cat_active_play",
+    "cat_laboratories",
+    "cat_outdoor",
+    "cat_flooring",
+    "gallery",
+    "why_choose_us",
+    "projects",
+    "testimonials",
+    "brands_showcase",
+    "campus_map",
+    "cta_banner"
+  ]
+}

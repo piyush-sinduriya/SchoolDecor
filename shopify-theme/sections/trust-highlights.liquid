@@ -1,0 +1,90 @@
+<section
+  class="sd-trust sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#F7F7F5' }}; --sd-pad-y: {{ section.settings.padding_y | default: 36 }}px;"
+>
+  <div class="sd-container">
+    <div class="sd-trust__grid">
+      {%- for block in section.blocks -%}
+        <div class="sd-trust__item" data-sd-reveal style="--sd-stagger: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <div class="sd-trust__icon">
+            {% render 'icon', name: block.settings.icon %}
+          </div>
+          <div>
+            <h2 class="sd-trust__title">{{ block.settings.title | escape }}</h2>
+            {%- if block.settings.subtitle != blank -%}
+              <p class="sd-trust__desc">{{ block.settings.subtitle | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trust & Brand Highlights",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#F7F7F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "highlight",
+      "name": "Highlight Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "layers", "label": "Layers (Solutions)" },
+            { "value": "shield", "label": "Shield (Quality)" },
+            { "value": "compass", "label": "Compass (Learning & Play)" },
+            { "value": "sliders", "label": "Sliders (Customized)" },
+            { "value": "headphones", "label": "Support" }
+          ],
+          "default": "layers"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Complete School Solutions"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Short Description",
+          "default": "End-to-end furniture, labs, active play and flooring."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust & Brand Highlights",
+      "blocks": [
+        { "type": "highlight", "settings": { "icon": "layers", "title": "Complete School Solutions", "subtitle": "Classrooms, labs, play zones and flooring under one roof." } },
+        { "type": "highlight", "settings": { "icon": "shield", "title": "Quality-Focused Products", "subtitle": "Thoughtful materials engineered for daily school use." } },
+        { "type": "highlight", "settings": { "icon": "compass", "title": "Learning Through Play", "subtitle": "Child-friendly environments inspiring curiosity and movement." } },
+        { "type": "highlight", "settings": { "icon": "sliders", "title": "Customized Solutions", "subtitle": "Tailored layouts and specifications for every institution." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

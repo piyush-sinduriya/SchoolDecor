@@ -1,0 +1,65 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 56px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <div class="sd-section__header">
+      <p class="sd-eyebrow">Complete Directory</p>
+      <h1 class="sd-heading sd-heading--xl">{{ section.settings.title | default: 'All Collections' | escape }}</h1>
+      <p class="sd-subtext">Browse School Decor's complete educational furniture, active play, laboratory, outdoor and flooring catalog.</p>
+    </div>
+
+    {% paginate collections by 24 %}
+      <div class="sd-collections-grid sd-cols--{{ section.settings.columns_desktop | default: 4 }}">
+        {%- for col in collections -%}
+          <a href="{{ col.url }}" class="sd-collection-card">
+            <div class="sd-collection-card__media">
+              {%- if col.featured_image -%}
+                <img src="{{ col.featured_image | image_url: width: 720 }}" alt="{{ col.title | escape }}" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'sd-hero-classroom.jpg' | asset_url }}" alt="{{ col.title | escape }}" loading="lazy">
+              {%- endif -%}
+              <div class="sd-collection-card__scrim"></div>
+            </div>
+            <div class="sd-collection-card__content">
+              <h2 class="sd-collection-card__title">{{ col.title | escape }}</h2>
+              <span class="sd-collection-card__cta">
+                {{ col.all_products_count }} items {% render 'icon', name: 'arrow-right' %}
+              </span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="sd-pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Previous</a>{%- endif -%}
+          <span class="sd-pagination__info">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Next</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "All Collections List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Heading",
+      "default": "All Collections"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop Columns",
+      "options": [
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "4"
+    }
+  ]
+}
+{% endschema %}

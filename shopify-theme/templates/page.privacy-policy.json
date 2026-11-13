@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-policy",
+      "settings": {
+        "eyebrow": "Legal & Privacy",
+        "fallback_title": "Privacy Policy"
+      }
+    }
+  },
+  "order": ["main"]
+}

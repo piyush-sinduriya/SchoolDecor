@@ -1,0 +1,244 @@
+<section
+  id="section-{{ section.id }}"
+  class="sd-section sd-section-pad sd-smart-planner-sec"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#EFF7F2' }}; --sd-pad-y: {{ section.settings.padding_y | default: 76 }}px;"
+  data-smart-planner
+  data-whatsapp-number="{{ settings.whatsapp_number | default: '919312254660' | escape }}"
+  data-desk-price="{{ section.settings.desk_unit_price | default: 9450 }}"
+  data-shelf-price="{{ section.settings.shelf_unit_price | default: 16800 }}"
+  data-climber-price="{{ section.settings.climber_unit_price | default: 24500 }}"
+>
+  <div class="sd-container">
+    <div class="sd-section__header-row" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">
+          {{ section.settings.heading | escape }}
+          {%- if section.settings.heading_script != blank -%}
+            <span class="sd-hero__script sd-hero__script--dark">{{ section.settings.heading_script | escape }}</span>
+          {%- endif -%}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+      <button type="button" class="sd-btn sd-btn--outline sd-btn--sm" data-sp-reset>
+        Reset Wing Defaults
+      </button>
+    </div>
+
+    <div class="sd-sp-wings" role="tablist" aria-label="Select campus wing">
+      <button type="button" class="sd-sp-wing" data-sp-wing="preschool" data-len="24" data-wid="20" data-stu="18" data-ergo="Desk 460 mm · Seat 260 mm · R20 Radius" data-aisle="1100">
+        <span>1100 mm aisle</span>
+        <strong>Preschool</strong>
+      </button>
+      <button type="button" class="sd-sp-wing" data-sp-wing="montessori" data-len="28" data-wid="22" data-stu="22" data-ergo="Desk 520 mm · Seat 300 mm · R20 Radius" data-aisle="1200">
+        <span>1200 mm aisle</span>
+        <strong>Montessori</strong>
+      </button>
+      <button type="button" class="sd-sp-wing is-active" data-sp-wing="primary" data-len="28" data-wid="24" data-stu="28" data-ergo="Desk 580 mm · Seat 340 mm · R16 Chamfer" data-aisle="950">
+        <span>950 mm aisle</span>
+        <strong>Primary K–5</strong>
+      </button>
+      <button type="button" class="sd-sp-wing" data-sp-wing="senior" data-len="30" data-wid="24" data-stu="32" data-ergo="Desk 740 mm · Seat 440 mm · R12 Edge" data-aisle="900">
+        <span>900 mm aisle</span>
+        <strong>Senior 6–12</strong>
+      </button>
+      <button type="button" class="sd-sp-wing" data-sp-wing="stem-lab" data-len="36" data-wid="26" data-stu="24" data-ergo="Workbench 900 mm · Phenolic Top" data-aisle="1350">
+        <span>1350 mm aisle</span>
+        <strong>STEM Lab</strong>
+      </button>
+      <button type="button" class="sd-sp-wing" data-sp-wing="active-play" data-len="30" data-wid="22" data-stu="16" data-ergo="Impact Safe HR Foam · Clear Zones" data-aisle="1400">
+        <span>1400 mm aisle</span>
+        <strong>Active Play</strong>
+      </button>
+    </div>
+
+    <div class="sd-sp-grid">
+      <div class="sd-sp-card sd-sp-controls">
+        <div class="sd-sp-sliders">
+          <div class="sd-sp-field">
+            <div class="sd-sp-field__head">
+              <label for="sd-sp-len-{{ section.id }}">Room Length</label>
+              <strong data-sp-out-len>28 ft</strong>
+            </div>
+            <input id="sd-sp-len-{{ section.id }}" type="range" min="14" max="48" step="1" value="{{ section.settings.default_length | default: 28 }}" data-sp-in-len>
+          </div>
+          <div class="sd-sp-field">
+            <div class="sd-sp-field__head">
+              <label for="sd-sp-wid-{{ section.id }}">Room Width</label>
+              <strong data-sp-out-wid>24 ft</strong>
+            </div>
+            <input id="sd-sp-wid-{{ section.id }}" type="range" min="12" max="40" step="1" value="{{ section.settings.default_width | default: 24 }}" data-sp-in-wid>
+          </div>
+          <div class="sd-sp-field">
+            <div class="sd-sp-field__head">
+              <label for="sd-sp-stu-{{ section.id }}">Student Batch</label>
+              <strong data-sp-out-stu>28</strong>
+            </div>
+            <input id="sd-sp-stu-{{ section.id }}" type="range" min="8" max="45" step="1" value="{{ section.settings.default_students | default: 28 }}" data-sp-in-stu>
+          </div>
+        </div>
+
+        <div class="sd-sp-palettes">
+          <div>
+            <span class="sd-sp-label">Campus Finish Palette</span>
+            <strong class="sd-sp-pal-name" data-sp-out-finish>European Birch + Emerald</strong>
+          </div>
+          <div class="sd-sp-swatches">
+            <button type="button" class="sd-sp-swatch is-active" data-sp-finish="European Birch + Emerald" data-accent="#007B36" data-bg="#EFF7F2" style="--sw:#007B36;">Emerald</button>
+            <button type="button" class="sd-sp-swatch" data-sp-finish="Warm Maple + Rose Quartz" data-accent="#C22768" data-bg="#FDF2F7" style="--sw:#C22768;">Rose</button>
+            <button type="button" class="sd-sp-swatch" data-sp-finish="Sunlit Birch + Ochre Gold" data-accent="#9A7200" data-bg="#FFF9E3" style="--sw:#9A7200;">Gold</button>
+            <button type="button" class="sd-sp-swatch" data-sp-finish="Slate Ash + Studio Graphite" data-accent="#2C4251" data-bg="#EEF3F7" style="--sw:#2C4251;">Slate</button>
+          </div>
+        </div>
+
+        <div class="sd-sp-blueprint">
+          <div class="sd-sp-blueprint__head">
+            <span data-sp-out-area>28 ft × 24 ft · 672 sq.ft</span>
+            <span class="sd-sp-flow-pill" data-sp-out-flow>Spacious Flow</span>
+          </div>
+          <div class="sd-sp-room-box" data-sp-room-box>
+            <div class="sd-sp-room-box__top">
+              <span>Front Teaching Zone</span>
+              <span data-sp-out-density>24.0 sq.ft / student</span>
+            </div>
+            <div class="sd-sp-room-grid" data-sp-room-grid></div>
+            <div class="sd-sp-room-box__foot">
+              <span data-sp-out-ergo>Desk 580 mm · Seat 340 mm · R16 Chamfer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sd-sp-card sd-sp-boq">
+        <div class="sd-sp-boq__head">
+          <div>
+            <p class="sd-eyebrow" style="margin-bottom:2px;">Auto-Calculated Kit</p>
+            <h3 data-sp-out-wing-title>Primary Classroom (Grades 1–5)</h3>
+          </div>
+          <strong data-sp-out-units>30 Units</strong>
+        </div>
+
+        <ul class="sd-sp-boq__list" data-sp-boq-list></ul>
+
+        <div class="sd-sp-boq__footer">
+          <div class="sd-sp-total-row">
+            <span>Estimated Hardware Kit</span>
+            <strong data-sp-out-total>₹2,98,200</strong>
+          </div>
+          <div class="sd-sp-actions">
+            <button type="button" class="sd-btn sd-btn--primary" data-open-quote data-sp-quote-trigger data-product-title="Smart Room Kit Plan">
+              Request Quote With BOQ
+            </button>
+            <a href="#contact" class="sd-btn sd-btn--outline" target="_blank" rel="noopener noreferrer" data-sp-wa-link>
+              WhatsApp Brief
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Smart Campus Planner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small Lead-in Text",
+      "default": "Smart Room & BOQ Architect"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Plan Your Classroom in"
+    },
+    {
+      "type": "text",
+      "id": "heading_script",
+      "label": "Handwritten Accent Word",
+      "default": "Real Time"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Supporting Copy",
+      "default": "Dial in room dimensions, batch strength, and finish swatches to inspect live circulation flow and an instant Bill of Quantities."
+    },
+    {
+      "type": "range",
+      "id": "default_length",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "ft",
+      "label": "Initial Room Length",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "default_width",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "ft",
+      "label": "Initial Room Width",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "default_students",
+      "min": 8,
+      "max": 45,
+      "step": 1,
+      "label": "Initial Student Batch",
+      "default": 28
+    },
+    {
+      "type": "number",
+      "id": "desk_unit_price",
+      "label": "Desk Set Estimate (INR)",
+      "default": 9450
+    },
+    {
+      "type": "number",
+      "id": "shelf_unit_price",
+      "label": "Montessori Shelf Estimate (INR)",
+      "default": 16800
+    },
+    {
+      "type": "number",
+      "id": "climber_unit_price",
+      "label": "Soft-Play Set Estimate (INR)",
+      "default": 24500
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#EFF7F2"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 36,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 76
+    }
+  ],
+  "presets": [
+    {
+      "name": "Smart Campus Planner"
+    }
+  ]
+}
+{% endschema %}

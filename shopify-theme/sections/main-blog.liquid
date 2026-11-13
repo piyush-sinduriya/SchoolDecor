@@ -1,0 +1,50 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <div class="sd-section__header">
+      <p class="sd-eyebrow">School Planning & Insights</p>
+      <h1 class="sd-heading sd-heading--xl">{{ blog.title | escape }}</h1>
+    </div>
+
+    {% paginate blog.articles by 9 %}
+      <div class="sd-projects-grid">
+        {%- for article in blog.articles -%}
+          <article class="sd-project-card">
+            {%- if article.image -%}
+              <a href="{{ article.url }}" class="sd-project-card__media">
+                <img src="{{ article.image | image_url: width: 840 }}" alt="{{ article.title | escape }}" loading="lazy">
+              </a>
+            {%- endif -%}
+            <div class="sd-project-card__body">
+              <p class="sd-project-card__meta">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+                {%- if article.author != blank -%}
+                  <span aria-hidden="true">&middot;</span>
+                  <span>{{ article.author }}</span>
+                {%- endif -%}
+              </p>
+              <h2 class="sd-project-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+              <p class="sd-project-card__desc">{{ article.excerpt_or_content | strip_html | truncatewords: 26 }}</p>
+              <a href="{{ article.url }}" class="sd-text-link">Read Article {% render 'icon', name: 'chevron-right' %}</a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="sd-pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Previous</a>{%- endif -%}
+          <span class="sd-pagination__info">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Next</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Posts Grid",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,315 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "School Decor Architectural",
+    "theme_version": "2.0.0",
+    "theme_author": "School Decor",
+    "theme_documentation_url": "https://www.schooldecor.in/pages/contact",
+    "theme_support_url": "https://www.schooldecor.in/pages/contact"
+  },
+  {
+    "name": "Brand Identity & Logo",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Your original School Decor logo is built in by default. Upload a new file below only if you want to override it."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Custom Logo Override"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 90,
+        "max": 240,
+        "step": 5,
+        "unit": "px",
+        "label": "Desktop Logo Width",
+        "default": 145
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "min": 80,
+        "max": 180,
+        "step": 5,
+        "unit": "px",
+        "label": "Mobile Logo Width",
+        "default": 115
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon Image",
+        "info": "Recommended 32x32px PNG"
+      },
+      {
+        "type": "header",
+        "content": "Entry Logo Animation"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_entry_logo_animation",
+        "label": "Enable Entry Logo Animation on First Visit",
+        "info": "Plays a quick 1.2s animated School Decor logo curtain when a visitor enters the storefront. Automatically skipped inside Theme Editor.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "entry_logo_tagline",
+        "label": "Entry Animation Tagline",
+        "default": "Designing Better Spaces for Brighter Futures"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "School Decor Logo Palette"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Brand Green (Logo Emerald)",
+        "default": "#007B36"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_hover",
+        "label": "Primary Hover Green",
+        "default": "#005D28"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_light",
+        "label": "Subtle Mint Green Surface",
+        "default": "#EAF7EF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_border",
+        "label": "Subtle Mint Green Border",
+        "default": "#BCE3CB"
+      },
+      {
+        "type": "color",
+        "id": "color_rose",
+        "label": "Signature Wordmark Rose (Logo Pink)",
+        "default": "#C22768"
+      },
+      {
+        "type": "color",
+        "id": "color_rose_soft",
+        "label": "Subtle Blush Pink Surface",
+        "default": "#FDF1F6"
+      },
+      {
+        "type": "color",
+        "id": "color_rose_border",
+        "label": "Subtle Blush Pink Border",
+        "default": "#F5C7DA"
+      },
+      {
+        "type": "color",
+        "id": "color_gold",
+        "label": "Warm Marigold Accent (Logo Yellow)",
+        "default": "#F5C800"
+      },
+      {
+        "type": "header",
+        "content": "Backgrounds & Typography"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Page Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Secondary Surface",
+        "default": "#F7F7F5"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Primary Charcoal Text",
+        "default": "#181A18"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted Secondary Text",
+        "default": "#525852"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Hairline Border",
+        "default": "#E3E5E0"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale Label Color (Logo Red)",
+        "default": "#D91B22"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "plus_jakarta_sans_n6"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "dm_sans_n4"
+      },
+      {
+        "type": "range",
+        "id": "type_base_size",
+        "min": 14,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "label": "Base Body Size",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "WhatsApp & Quotation System",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_whatsapp_floating",
+        "label": "Show Floating WhatsApp Button",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp Number (Country Code + Digits)",
+        "default": "919312254660",
+        "info": "Example: 919312254660 (no + sign or spaces)"
+      },
+      {
+        "type": "textarea",
+        "id": "whatsapp_default_message",
+        "label": "Default WhatsApp Enquiry Greeting",
+        "default": "Hello School Decor team, I would like to enquire about school furniture and infrastructure solutions."
+      },
+      {
+        "type": "text",
+        "id": "quote_webhook_url",
+        "label": "Optional External Quote Form Endpoint URL",
+        "info": "Leave blank to submit quotes directly to your Shopify Store Contact Email via Shopify's secure Contact Form."
+      },
+      {
+        "type": "text",
+        "id": "quote_only_tag",
+        "label": "Product Tag for Quotation-Only Items",
+        "default": "quote-only",
+        "info": "Products with this tag (or metafield custom.enquiry_only = true, or ₹0 price) display Request a Quote & WhatsApp Enquiry instead of Add to Cart."
+      }
+    ]
+  },
+  {
+    "name": "Product Cards & Catalog",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "card_show_secondary_image",
+        "label": "Show Second Image on Hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_availability",
+        "label": "Show Availability Status",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_quick_view",
+        "label": "Enable Quick View Modal",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_quick_add",
+        "label": "Show Quick Add / Request Quote Button",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Product Image Aspect Ratio",
+        "options": [
+          { "value": "4/3", "label": "Landscape (4:3)" },
+          { "value": "1/1", "label": "Square (1:1)" }
+        ],
+        "default": "4/3"
+      }
+    ]
+  },
+  {
+    "name": "Cart & Search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_cart_drawer",
+        "label": "Use Slide-Over Cart Drawer",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cart_note",
+        "label": "Allow Order / Institutional Note in Cart",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_predictive_search",
+        "label": "Enable Live Predictive Search",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "social_linkedin",
+        "label": "LinkedIn URL"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube URL"
+      }
+    ]
+  }
+]

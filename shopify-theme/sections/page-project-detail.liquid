@@ -1,0 +1,55 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <div class="sd-split">
+      <div class="sd-split__media">
+        {%- if section.settings.hero_image != blank -%}
+          <img src="{{ section.settings.hero_image | image_url: width: 1200 }}" alt="{{ page.title | escape }}" loading="eager">
+        {%- else -%}
+          <img src="{{ 'sd-hero-preschool.jpg' | asset_url }}" alt="{{ page.title | escape }}" loading="eager">
+        {%- endif -%}
+      </div>
+      <div class="sd-split__content">
+        <p class="sd-eyebrow">{{ section.settings.category | default: 'School Case Study' | escape }}</p>
+        <h1 class="sd-heading sd-heading--xl">{{ page.title | escape }}</h1>
+        {%- if section.settings.location != blank -%}
+          <p class="sd-subtext">Location: {{ section.settings.location | escape }}</p>
+        {%- endif -%}
+        <div class="sd-prose">
+          {{ page.content }}
+        </div>
+        <div class="sd-split__actions">
+          <button type="button" class="sd-btn sd-btn--primary" data-open-quote data-product-title="Similar Setup: {{ page.title | escape }}">
+            Request Similar Setup Quote
+          </button>
+          <a href="/pages/projects" class="sd-btn sd-btn--outline">Back to Projects</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Project Detail",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Project Main Photo"
+    },
+    {
+      "type": "text",
+      "id": "category",
+      "label": "Project Category",
+      "default": "Complete Campus Infrastructure"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "School Location",
+      "default": "India"
+    }
+  ]
+}
+{% endschema %}

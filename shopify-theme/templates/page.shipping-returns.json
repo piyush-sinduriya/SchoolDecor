@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-policy",
+      "settings": {
+        "eyebrow": "Fulfillment Policy",
+        "fallback_title": "Shipping and Returns"
+      }
+    }
+  },
+  "order": ["main"]
+}

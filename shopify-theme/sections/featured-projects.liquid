@@ -1,0 +1,156 @@
+<section
+  class="sd-section sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#F7F7F5' }}; --sd-pad-y: {{ section.settings.padding_y | default: 80 }}px;"
+>
+  <div class="sd-container">
+    <div class="sd-section__header-row" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.view_all_label != blank -%}
+        <a href="{{ section.settings.view_all_link | default: '/pages/projects' }}" class="sd-btn sd-btn--outline">
+          {{ section.settings.view_all_label | escape }}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="sd-projects-grid">
+      {%- for block in section.blocks -%}
+        <article class="sd-project-card" data-sd-reveal style="--sd-stagger: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.project_link | default: '/pages/projects' }}" class="sd-project-card__media">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 840 }}"
+                alt="{{ block.settings.institution_name | escape }}"
+                loading="lazy"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+            {%- else -%}
+              <img src="{{ 'sd-hero-classroom.jpg' | asset_url }}" alt="{{ block.settings.institution_name | escape }}" loading="lazy">
+            {%- endif -%}
+          </a>
+          <div class="sd-project-card__body">
+            <p class="sd-project-card__meta">
+              <span>{{ block.settings.category | escape }}</span>
+              {%- if block.settings.location != blank -%}
+                <span aria-hidden="true">&middot;</span>
+                <span>{{ block.settings.location | escape }}</span>
+              {%- endif -%}
+            </p>
+            <h3 class="sd-project-card__title">
+              <a href="{{ block.settings.project_link | default: '/pages/projects' }}">{{ block.settings.institution_name | escape }}</a>
+            </h3>
+            <p class="sd-project-card__desc">{{ block.settings.description | escape }}</p>
+            <a href="{{ block.settings.project_link | default: '/pages/projects' }}" class="sd-text-link">
+              View Project Details {% render 'icon', name: 'chevron-right' %}
+            </a>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Projects",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Lead-in Text",
+      "default": "Campus Showcase"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured School Projects"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Button Label",
+      "default": "Explore All Projects"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "Projects Page Link"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#F7F7F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 32,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Project Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Project Photograph"
+        },
+        {
+          "type": "text",
+          "id": "institution_name",
+          "label": "School / Institution Name",
+          "default": "Sample Campus Project (Replace in Theme Editor)"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "City / Location",
+          "default": "New Delhi, India"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Project Category",
+          "default": "Preschool & Activity Zone"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short Description",
+          "default": "Replace this editable template entry with your real completed school installation and link it to a dedicated project detail page."
+        },
+        {
+          "type": "url",
+          "id": "project_link",
+          "label": "Project Detail Page Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Projects",
+      "blocks": [
+        { "type": "project", "settings": { "institution_name": "Early Years Wing & Montessori Setup", "location": "Add City in Theme Editor", "category": "Preschool & Montessori" } },
+        { "type": "project", "settings": { "institution_name": "K-12 Classroom & Library Modernization", "location": "Add City in Theme Editor", "category": "Senior Furniture & Library" } },
+        { "type": "project", "settings": { "institution_name": "Composite STEM Lab & Outdoor Play Park", "location": "Add City in Theme Editor", "category": "Laboratories & Outdoor" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

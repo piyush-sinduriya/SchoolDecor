@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_dynamic_checkout": true,
+        "show_related_products": true,
+        "show_recently_viewed": true
+      }
+    },
+    "cta": {
+      "type": "cta-banner",
+      "settings": {
+        "heading": "Need Bulk Pricing or Custom Dimensions?",
+        "description": "Share your classroom count or campus specifications and receive a tailored institutional quotation.",
+        "primary_label": "Request a Quote",
+        "primary_link": "/pages/request-quote",
+        "secondary_label": "WhatsApp Enquiry"
+      }
+    }
+  },
+  "order": ["main", "cta"]
+}

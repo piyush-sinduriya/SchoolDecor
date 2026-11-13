@@ -1,0 +1,32 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container">
+    <div class="sd-section__header-row">
+      <div>
+        <h1 class="sd-heading sd-heading--xl">Account</h1>
+        <p class="sd-subtext">Welcome, {{ customer.name | escape }}</p>
+      </div>
+      <a href="{{ routes.account_logout_url }}" class="sd-btn sd-btn--outline sd-btn--sm">Log Out</a>
+    </div>
+    <h2 class="sd-heading" style="margin-top: 24px;">Order History</h2>
+    {%- if customer.orders.size > 0 -%}
+      <table class="sd-orders-table">
+        <thead>
+          <tr><th>Order</th><th>Date</th><th>Payment</th><th>Fulfillment</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+              <td>{{ order.created_at | date: '%B %d, %Y' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    {%- else -%}
+      <p class="sd-subtext">You haven't placed any orders yet.</p>
+    {%- endif -%}
+  </div>
+</section>

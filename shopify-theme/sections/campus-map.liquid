@@ -1,0 +1,105 @@
+<section class="sd-section sd-section-pad sd-campus-map-sec" data-campus-map-section data-maps-key="{{ section.settings.google_maps_api_key | escape }}" style="--sd-section-bg: {{ section.settings.bg_color }}; --sd-pad-y: {{ section.settings.padding_y }}px;">
+  <div class="sd-container">
+    <div class="sd-section__header sd-section__header--split" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading sd-heading--lg">
+          {{ section.settings.heading | escape }}
+          {%- if section.settings.heading_script != blank -%}
+            <span class="sd-hero__script sd-hero__script--dark">{{ section.settings.heading_script | escape }}</span>
+          {%- endif -%}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+      <button type="button" class="sd-btn sd-btn--outline sd-btn--sm" data-open-quote data-product-title="Experience Studio Visit Request">
+        Book Studio Visit
+      </button>
+    </div>
+
+    <div class="sd-campus-map-grid" data-sd-reveal>
+      <div class="sd-hub-list" role="tablist" aria-label="Regional Experience Studios">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            class="sd-hub-card {% if forloop.first %}is-active{% endif %}"
+            data-hub-trigger
+            data-hub-city="{{ block.settings.city | escape }}"
+            data-hub-title="{{ block.settings.title | escape }}"
+            data-hub-address="{{ block.settings.address | escape }}"
+            data-hub-hours="{{ block.settings.hours | escape }}"
+            data-hub-lat="{{ block.settings.lat | escape }}"
+            data-hub-lng="{{ block.settings.lng | escape }}"
+            {{ block.shopify_attributes }}
+          >
+            <p class="sd-hub-card__region">{{ block.settings.region | escape }}</p>
+            <h3 class="sd-hub-card__city">{{ block.settings.city | escape }}</h3>
+            <p class="sd-hub-card__addr">{{ block.settings.address | escape }}</p>
+            <p class="sd-hub-card__hours">{{ block.settings.hours | escape }}</p>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="sd-map-frame">
+        <div class="sd-map-viewport" data-campus-map-canvas aria-label="School Decor Regional Hubs Map">
+          <div class="sd-map-placeholder" data-map-fallback>
+            <p class="sd-eyebrow">Live Google Maps Canvas</p>
+            <h3 data-map-active-title>{{ section.blocks.first.settings.title | default: 'School Decor Experience Studio & NCR Dispatch' | escape }}</h3>
+            <p data-map-active-addr>{{ section.blocks.first.settings.address | default: 'Okhla Industrial Estate Phase III, New Delhi 110020' | escape }}</p>
+            <p class="sd-hub-card__hours" data-map-active-hours>{{ section.blocks.first.settings.hours | default: 'Mon–Sat · 9:30 AM – 6:30 PM' | escape }}</p>
+            <p class="sd-subtext" style="font-size:0.78rem;margin-top:8px;">
+              Add your Google Maps JavaScript API key in Theme Editor to load live interactive map pins for all 5 hubs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Regional Studios Map",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Pan-India Studios & Logistics Network" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Visit Our Regional" },
+    { "type": "text", "id": "heading_script", "label": "Script Accent Word", "default": "Experience Studios" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Inspect live furniture mockups, test STEM phenolic worktops, and coordinate institutional dispatches from our regional hubs across India." },
+    { "type": "text", "id": "google_maps_api_key", "label": "Google Maps API Key (Optional)" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#FFFFFF" },
+    { "type": "range", "id": "padding_y", "min": 32, "max": 112, "step": 4, "unit": "px", "label": "Vertical Padding", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "hub",
+      "name": "Regional Hub",
+      "settings": [
+        { "type": "text", "id": "region", "label": "Zone Label", "default": "North India HQ & Studio" },
+        { "type": "text", "id": "city", "label": "City", "default": "New Delhi NCR" },
+        { "type": "text", "id": "title", "label": "Hub Title", "default": "School Decor Experience Studio & NCR Dispatch" },
+        { "type": "text", "id": "address", "label": "Address", "default": "Okhla Industrial Estate Phase III, New Delhi 110020" },
+        { "type": "text", "id": "hours", "label": "Hours", "default": "Mon–Sat · 9:30 AM – 6:30 PM" },
+        { "type": "text", "id": "lat", "label": "Latitude", "default": "28.5494" },
+        { "type": "text", "id": "lng", "label": "Longitude", "default": "77.2722" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Regional Studios Map",
+      "blocks": [
+        { "type": "hub", "settings": { "region": "North India HQ & Studio", "city": "New Delhi NCR", "title": "School Decor Experience Studio & NCR Dispatch", "address": "Okhla Industrial Estate Phase III, New Delhi 110020", "hours": "Mon–Sat · 9:30 AM – 6:30 PM", "lat": "28.5494", "lng": "77.2722" } },
+        { "type": "hub", "settings": { "region": "West Zone Showroom", "city": "Mumbai", "title": "West Zone Preschool & Active Play Studio", "address": "Andheri East Institutional Corridor, Mumbai 400093", "hours": "Mon–Sat · 10:00 AM – 6:30 PM", "lat": "19.1136", "lng": "72.8697" } },
+        { "type": "hub", "settings": { "region": "South Zone STEM Hub", "city": "Bengaluru", "title": "STEM, Robotics & Sports Court Center", "address": "Peenya & Hebbal Innovation Belt, Bengaluru 560058", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "13.0285", "lng": "77.5197" } },
+        { "type": "hub", "settings": { "region": "Deccan Regional Logistics", "city": "Hyderabad", "title": "Institutional Lab & K-12 Supply Hub", "address": "Balanagar Educational Warehousing Park, Hyderabad 500037", "hours": "Mon–Sat · 9:00 AM – 6:00 PM", "lat": "17.4694", "lng": "78.4488" } },
+        { "type": "hub", "settings": { "region": "Outdoor & Play Engineering", "city": "Jaipur", "title": "Outdoor Multi-Play & Park Assembly Wing", "address": "Sitapura Industrial Area Phase II, Jaipur 302022", "hours": "Mon–Sat · 9:30 AM – 6:00 PM", "lat": "26.7745", "lng": "75.8473" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

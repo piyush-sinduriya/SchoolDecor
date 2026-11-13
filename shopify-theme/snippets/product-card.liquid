@@ -1,0 +1,154 @@
+{%- liquid
+  assign quote_tag = settings.quote_only_tag | default: 'quote-only'
+  assign is_quote_only = false
+  if card_product.tags contains quote_tag or card_product.tags contains 'enquiry-only' or card_product.tags contains 'request-quote'
+    assign is_quote_only = true
+  endif
+  if card_product.metafields.custom.enquiry_only == true
+    assign is_quote_only = true
+  endif
+  if card_product.price == 0
+    assign is_quote_only = true
+  endif
+
+  assign on_sale = false
+  if card_product.compare_at_price > card_product.price and is_quote_only == false
+    assign on_sale = true
+  endif
+  assign ratio_class = 'sd-ratio-4-3'
+  if settings.card_image_ratio == '1/1'
+    assign ratio_class = 'sd-ratio-1-1'
+  endif
+  assign primary_is_cutout = false
+  if card_product.featured_media.src contains '.png'
+    assign primary_is_cutout = true
+  endif
+-%}
+
+<article class="sd-product-card" data-product-handle="{{ card_product.handle }}">
+  <div class="sd-product-card__media {{ ratio_class }}{% if primary_is_cutout %} sd-product-card__media--cutout{% endif %}">
+    <a href="{{ card_product.url | within: collection }}" class="sd-product-card__img-link" aria-label="{{ card_product.title | escape }}">
+      {%- if card_product.featured_media -%}
+        {%- if primary_is_cutout -%}
+          <div class="sd-product-card__cutout-shadow" aria-hidden="true"></div>
+        {%- endif -%}
+        <img
+          src="{{ card_product.featured_media | image_url: width: 800 }}"
+          srcset="{{ card_product.featured_media | image_url: width: 400 }} 400w, {{ card_product.featured_media | image_url: width: 650 }} 650w, {{ card_product.featured_media | image_url: width: 900 }} 900w"
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          alt="{{ card_product.featured_media.alt | default: card_product.title | escape }}"
+          loading="lazy"
+          width="{{ card_product.featured_media.width }}"
+          height="{{ card_product.featured_media.height }}"
+          class="sd-product-card__img sd-product-card__img--primary{% if primary_is_cutout %} sd-product-card__img--cutout{% endif %}"
+        >
+        {%- if settings.card_show_secondary_image and card_product.media[1] != null -%}
+          <img
+            src="{{ card_product.media[1] | image_url: width: 800 }}"
+            alt="{{ card_product.media[1].alt | default: card_product.title | escape }}"
+            loading="lazy"
+            width="{{ card_product.media[1].width }}"
+            height="{{ card_product.media[1].height }}"
+            class="sd-product-card__img sd-product-card__img--secondary"
+          >
+        {%- endif -%}
+      {%- else -%}
+        <div class="sd-image-placeholder">
+          <span>{{ card_product.title | truncate: 28 }}</span>
+        </div>
+      {%- endif -%}
+    </a>
+
+    {%- if on_sale -%}
+      <span class="sd-product-card__tag sd-product-card__tag--sale">{{ 'products.product.on_sale' | t }}</span>
+    {%- elsif is_quote_only -%}
+      <span class="sd-product-card__tag sd-product-card__tag--quote">{{ 'products.product.quote_only' | t }}</span>
+    {%- elsif card_product.available == false -%}
+      <span class="sd-product-card__tag sd-product-card__tag--soldout">{{ 'products.product.sold_out' | t }}</span>
+    {%- endif -%}
+
+    {%- if settings.card_show_quick_view -%}
+      <button
+        type="button"
+        class="sd-product-card__quick-view"
+        data-quick-view="{{ card_product.handle }}"
+        aria-label="{{ 'products.product.quick_view' | t }}: {{ card_product.title | escape }}"
+      >
+        {{ 'products.product.quick_view' | t }}
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="sd-product-card__info">
+    {%- if card_product.type != blank -%}
+      <p class="sd-product-card__meta">{{ card_product.type }}</p>
+    {%- endif -%}
+
+    <h3 class="sd-product-card__title">
+      <a href="{{ card_product.url | within: collection }}">{{ card_product.title }}</a>
+    </h3>
+
+    <div class="sd-product-card__pricing">
+      {%- if is_quote_only -%}
+        <span class="sd-price-quote">Custom Institutional Pricing</span>
+      {%- else -%}
+        <span class="sd-price">{{ card_product.price | money }}</span>
+        {%- if on_sale -%}
+          <s class="sd-price-compare">{{ card_product.compare_at_price | money }}</s>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if settings.card_show_availability -%}
+      <p class="sd-product-card__availability">
+        {%- if is_quote_only -%}
+          Made to Order &middot; Custom Specification
+        {%- elsif card_product.available -%}
+          {{ 'products.product.in_stock' | t }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if settings.card_show_quick_add -%}
+      <div class="sd-product-card__actions">
+        {%- if is_quote_only -%}
+          <button
+            type="button"
+            class="sd-btn sd-btn--outline sd-btn--sm sd-btn--full"
+            data-open-quote
+            data-product-title="{{ card_product.title | escape }}"
+            data-product-url="{{ request.origin }}{{ card_product.url }}"
+          >
+            {{ 'products.product.request_quote' | t }}
+          </button>
+        {%- elsif card_product.available -%}
+          {%- if card_product.has_only_default_variant -%}
+            <button
+              type="button"
+              class="sd-btn sd-btn--primary sd-btn--sm sd-btn--full"
+              data-quick-add="{{ card_product.selected_or_first_available_variant.id }}"
+            >
+              {{ 'products.product.add_to_cart' | t }}
+            </button>
+          {%- else -%}
+            <a href="{{ card_product.url | within: collection }}" class="sd-btn sd-btn--outline sd-btn--sm sd-btn--full">
+              Select Options
+            </a>
+          {%- endif -%}
+        {%- else -%}
+          <button
+            type="button"
+            class="sd-btn sd-btn--outline sd-btn--sm sd-btn--full"
+            data-open-quote
+            data-product-title="{{ card_product.title | escape }}"
+            data-product-url="{{ request.origin }}{{ card_product.url }}"
+          >
+            Enquire Availability
+          </button>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

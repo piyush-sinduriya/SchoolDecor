@@ -1,0 +1,88 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "menu": "Menu",
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "search": {
+      "placeholder": "Search classroom desks, labs, play equipment...",
+      "submit": "Search",
+      "no_results": "No matching products or pages found for \"{{ terms }}\".",
+      "results_count": "{{ count }} results for \"{{ terms }}\""
+    },
+    "breadcrumbs": {
+      "home": "Home"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Currently Unavailable",
+      "unavailable": "Unavailable",
+      "on_sale": "Sale",
+      "in_stock": "Available for Order",
+      "quote_only": "Quotation Based",
+      "request_quote": "Request a Quote",
+      "whatsapp_enquiry": "WhatsApp Enquiry",
+      "quick_view": "Quick View",
+      "quantity": "Quantity",
+      "description": "Description",
+      "specifications": "Specifications",
+      "features": "Product Features",
+      "dimensions": "Dimensions",
+      "materials": "Materials",
+      "additional_info": "Additional Information",
+      "related_products": "Related Products",
+      "recently_viewed": "Recently Viewed Products"
+    }
+  },
+  "collections": {
+    "general": {
+      "all_collections": "All Collections",
+      "product_count": "{{ count }} products",
+      "filter_and_sort": "Filter & Sort",
+      "clear_all": "Clear All",
+      "apply": "Apply Filters",
+      "sort_by": "Sort by",
+      "empty": "No products match your current filters.",
+      "load_more": "Load More"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "empty": "Your cart is currently empty.",
+      "continue_shopping": "Continue Shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Proceed to Checkout",
+      "note": "Institution / Order Notes",
+      "remove": "Remove",
+      "taxes_shipping_note": "Taxes and shipping calculated at checkout."
+    }
+  },
+  "quote": {
+    "form": {
+      "title": "Request a Custom Quote",
+      "subtitle": "Share your institution details and project requirements. Our specialists will prepare a tailored quotation.",
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "institution": "School / Institution Name",
+      "product_name": "Product / Category of Interest",
+      "quantity": "Estimated Quantity",
+      "location": "City & State",
+      "requirements": "Project Requirements & Notes",
+      "submit": "Submit Quote Request",
+      "success": "Thank you! Your quotation request has been received. Our team will respond shortly.",
+      "error": "We could not submit your request right now. Please verify all required fields or contact us via WhatsApp."
+    }
+  },
+  "newsletter": {
+    "email_placeholder": "Enter your institutional email",
+    "submit": "Subscribe",
+    "success": "Thank you for subscribing to School Decor updates."
+  }
+}

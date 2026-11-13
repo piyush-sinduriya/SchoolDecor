@@ -1,0 +1,88 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <div class="sd-section__header" data-sd-reveal>
+      <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h1 class="sd-heading sd-heading--xl">{{ section.settings.heading | escape }}</h1>
+      <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+    </div>
+
+    <div class="sd-projects-grid">
+      {%- for block in section.blocks -%}
+        <article class="sd-project-card" data-sd-reveal {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.project_link | default: '/pages/contact' }}" class="sd-project-card__media">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 840 }}" alt="{{ block.settings.institution_name | escape }}" loading="lazy">
+            {%- else -%}
+              <img src="{{ 'sd-hero-classroom.jpg' | asset_url }}" alt="{{ block.settings.institution_name | escape }}" loading="lazy">
+            {%- endif -%}
+          </a>
+          <div class="sd-project-card__body">
+            <p class="sd-project-card__meta">
+              <span>{{ block.settings.category | escape }}</span>
+              <span aria-hidden="true">&middot;</span>
+              <span>{{ block.settings.location | escape }}</span>
+            </p>
+            <h2 class="sd-project-card__title">
+              <a href="{{ block.settings.project_link | default: '/pages/contact' }}">{{ block.settings.institution_name | escape }}</a>
+            </h2>
+            <p class="sd-project-card__desc">{{ block.settings.description | escape }}</p>
+            <a href="{{ block.settings.project_link | default: '/pages/contact' }}" class="sd-text-link">
+              View Project {% render 'icon', name: 'chevron-right' %}
+            </a>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Projects Directory",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Lead-in Text",
+      "default": "Installations & Case Studies"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "School & Institutional Projects"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Add and manage completed school furniture, laboratory and playground projects directly from the Theme Editor."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Project Entry",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Project Photo" },
+        { "type": "text", "id": "institution_name", "label": "Institution Name", "default": "School Project Entry" },
+        { "type": "text", "id": "location", "label": "Location", "default": "India" },
+        { "type": "text", "id": "category", "label": "Category", "default": "Classroom & Play Setup" },
+        { "type": "textarea", "id": "description", "label": "Summary", "default": "Full project scope and environment details." },
+        { "type": "url", "id": "project_link", "label": "Detail Page Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Projects Directory",
+      "blocks": [
+        { "type": "project" },
+        { "type": "project" },
+        { "type": "project" }
+      ]
+    }
+  ]
+}
+{% endschema %}

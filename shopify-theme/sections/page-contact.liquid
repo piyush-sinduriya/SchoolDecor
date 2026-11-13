@@ -1,0 +1,121 @@
+{%- liquid
+  assign wa_num = settings.whatsapp_number | default: '919312254660' | remove: '+' | remove: ' ' | remove: '-'
+  assign wa_msg = 'Hello School Decor team, I would like to discuss our school requirements.'
+-%}
+
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <div class="sd-contact-grid">
+      <div class="sd-contact-info" data-sd-reveal>
+        <p class="sd-eyebrow">Get In Touch</p>
+        <h1 class="sd-heading sd-heading--xl">{{ section.settings.heading | escape }}</h1>
+        <p class="sd-subtext">{{ section.settings.subtext | escape }}</p>
+
+        <div class="sd-contact-cards">
+          <div class="sd-contact-card">
+            <h3>Email Us</h3>
+            <p><a href="mailto:{{ section.settings.email | escape }}">{{ section.settings.email | escape }}</a></p>
+          </div>
+          {%- if section.settings.phone != blank -%}
+            <div class="sd-contact-card">
+              <h3>Call Us · Manish Gupta</h3>
+              <p><a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone | escape }}</a></p>
+            </div>
+          {%- endif -%}
+          <div class="sd-contact-card">
+            <h3>WhatsApp Direct</h3>
+            <p>Instant product & institutional project support.</p>
+            <a href="https://wa.me/{{ wa_num }}?text={{ wa_msg | url_encode }}" target="_blank" rel="noopener noreferrer" class="sd-btn sd-btn--sage sd-btn--sm">
+              {% render 'icon', name: 'whatsapp' %}
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
+          <div class="sd-contact-card">
+            <h3>Hours & Coverage</h3>
+            <p>{{ section.settings.hours | escape }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sd-contact-form-wrap" data-sd-reveal>
+        <h2>Send an Enquiry</h2>
+        {% form 'contact', id: 'sd-contact-page-form', class: 'sd-quote-form' %}
+          {%- if form.posted_successfully? -%}
+            <div class="sd-alert sd-alert--success" role="status">
+              Thank you for contacting School Decor. Our team will respond shortly.
+            </div>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="sd-alert sd-alert--error" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="sd-form-grid">
+            <div class="sd-field">
+              <label for="sd-c-name">Full Name *</label>
+              <input type="text" id="sd-c-name" name="contact[name]" required autocomplete="name">
+            </div>
+            <div class="sd-field">
+              <label for="sd-c-phone">Phone Number *</label>
+              <input type="tel" id="sd-c-phone" name="contact[phone]" required autocomplete="tel">
+            </div>
+            <div class="sd-field">
+              <label for="sd-c-email">Email Address *</label>
+              <input type="email" id="sd-c-email" name="contact[email]" required autocomplete="email">
+            </div>
+            <div class="sd-field">
+              <label for="sd-c-school">School / Institution</label>
+              <input type="text" id="sd-c-school" name="contact[institution]">
+            </div>
+            <div class="sd-field sd-field--full">
+              <label for="sd-c-message">Message / Requirements *</label>
+              <textarea id="sd-c-message" name="contact[body]" rows="5" required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="sd-btn sd-btn--primary sd-btn--lg sd-btn--full">Send Message</button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact Us Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact School Decor"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Intro Text",
+      "default": "Planning a new campus, upgrading classrooms or requesting institutional specifications? Reach our team directly."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "default": "schooldecor1@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number (Optional)",
+      "default": "+91 93122 54660"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Support Hours",
+      "default": "Monday – Saturday, 9:30 AM – 6:30 PM IST"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,2200 @@
+import { useRef, useState, type MouseEvent } from 'react';
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'motion/react';
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+  ShieldCheck,
+  Compass,
+  SlidersHorizontal,
+  Headphones,
+  MessageCircle,
+  Eye,
+  Plus,
+  Minus,
+  CheckCircle2,
+  Ruler,
+  Sparkles,
+  ShoppingBag,
+  FileText,
+} from 'lucide-react';
+import {
+  COLLECTIONS_SHOWCASE,
+  CUTOUT_SHOWCASE_ITEMS,
+  MARQUEE_WORDS_ROW_1,
+  MARQUEE_WORDS_ROW_2,
+  PREVIEW_PRODUCTS,
+  PROCESS_STEPS,
+  THEME_IMAGES,
+} from '../data/previewCatalog';
+import {
+  computeHeroScrollState,
+  getHeroScrollRatioForSet,
+} from '../utils/heroScrollChoreography';
+import {
+  ERGO_GRADE_PRESETS,
+  FINISH_PALETTES,
+  getFinishPalette,
+  type FinishPaletteId,
+} from '../utils/smartPlanner';
+import { buildWhatsAppUrl, type StoreProduct } from '../utils/storefrontHelpers';
+import { ProductCard } from './ProductCard';
+import { SmartCampusPlanner } from './SmartCampusPlanner';
+import { BrandsShowcase } from './BrandsShowcase';
+import { SchoolCampusMap } from './SchoolCampusMap';
+import type { PreviewRoute } from './HeaderNav';
+
+interface HomeViewProps {
+  onNavigate: (r: PreviewRoute) => void;
+  onQuickView: (product: StoreProduct) => void;
+  onAddToCart: (product: StoreProduct) => void;
+  onOpenQuote: (title?: string) => void;
+  onOpenQuoteWithBrief: (title: string, requirements: string, quantity?: string) => void;
+  onAddKitToCart: (items: { productHandle: string; qty: number; variantOverride?: string }[]) => void;
+  compareIds: string[];
+  onToggleCompare: (product: StoreProduct) => void;
+}
+
+const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+const HERO_SLIDES = [
+  {
+    eyebrow: 'School Furniture & Educational Infrastructure',
+    titleLead: 'Designing Better Spaces for',
+    titleScript: 'Brighter Futures',
+    title: 'Designing Better Spaces for Brighter Futures',
+    desc: 'Discover thoughtfully designed furniture, innovative learning environments and educational play solutions for schools, preschools and institutions.',
+    image: THEME_IMAGES.heroClassroom,
+    ctaLabel: 'Explore Our Collection',
+    ctaTarget: { page: 'collection', handle: 'all' } as PreviewRoute,
+  },
+  {
+    eyebrow: 'Early Years & Montessori Environments',
+    titleLead: 'Crafted Classrooms That Spark',
+    titleScript: 'Curious Minds',
+    title: 'Crafted Classrooms That Spark Curious Minds',
+    desc: 'Child-scaled birchwood classrooms, Montessori shelving, sensory corners and safe active play rooms crafted for joyful early learning.',
+    image: THEME_IMAGES.heroPreschool,
+    ctaLabel: 'Shop Kindergarten',
+    ctaTarget: { page: 'collection', handle: 'kindergarten-furniture' } as PreviewRoute,
+  },
+];
+
+const LOGO_BAR_COLORS = [
+  'bg-[#F088B0]',
+  'bg-[#00A048]',
+  'bg-[#F8D000]',
+  'bg-[#F01818]',
+];
+
+const EDITORIAL_SHOWCASES = [
+  {
+    eyebrow: 'Classroom Furniture',
+    title: 'Furniture for Modern Classrooms',
+    desc: 'Ergonomic student desks, collaborative tables, library seating and modular classroom storage built for focus, posture and everyday school use.',
+    specs: [
+      'Grades 1–12 ergonomic seat height grading',
+      'Scratch-resistant PU birch tops & steel trays',
+      'Anti-skid non-marking institutional gliders',
+    ],
+    handle: 'kindergarten-furniture',
+    image: THEME_IMAGES.heroClassroom,
+    cutout: THEME_IMAGES.cutoutStudentDesk,
+    cutoutLabel: 'Ergonomic Birch Desk',
+    reverse: true,
+    bg: 'bg-[#F7F7F5]',
+    accentBar: 'bg-[#F088B0]',
+  },
+  {
+    eyebrow: 'Active Play & Sensory',
+    title: 'Active Play and Sensory Equipment',
+    desc: 'Safe soft play zones, jungle gyms, interactive wall panels and calming sensory rooms encouraging motor development and imaginative play.',
+    specs: [
+      '28-density HR core foam with antimicrobial skin',
+      'Concealed child-safe zipper closures',
+      'Modular hook-and-loop floor anchoring',
+    ],
+    handle: 'soft-play-zones',
+    image: THEME_IMAGES.heroPreschool,
+    cutout: THEME_IMAGES.cutoutSoftPlayClimber,
+    cutoutLabel: 'Modular Soft-Play Climber',
+    reverse: false,
+    bg: 'bg-white',
+    accentBar: 'bg-[#00A048]',
+  },
+  {
+    eyebrow: 'Academic & STEM Labs',
+    title: 'Innovative School Laboratories',
+    desc: 'Purpose-built science, computer, mathematics, art and STEM laboratory benches and storage designed for hands-on experimentation.',
+    specs: [
+      '19mm acid & heat proof phenolic resin tops',
+      'Integrated dual lab sinks & brass service turrets',
+      'Lockable ventilated chemical & glass bays',
+    ],
+    handle: 'science-lab',
+    image: THEME_IMAGES.scienceLab,
+    cutout: THEME_IMAGES.cutoutScienceLabBench,
+    cutoutLabel: 'STEM Island Workbench',
+    reverse: true,
+    bg: 'bg-[#F7F7F5]',
+    accentBar: 'bg-[#F8D000]',
+  },
+  {
+    eyebrow: 'Outdoor Campuses',
+    title: 'Outdoor Learning and Playground Solutions',
+    desc: 'Weather-ready multi-play climbers, sensory parks, open-air gyms, math and science park installations and campus benches.',
+    specs: [
+      'Hot-dip galvanized powder-coated frames',
+      'UV-stabilized virgin LLDPE chutes & roofs',
+      'Tamper-proof stainless steel hardware',
+    ],
+    handle: 'outdoor-fun-equipment',
+    image: THEME_IMAGES.outdoorPlay,
+    reverse: false,
+    bg: 'bg-white',
+    accentBar: 'bg-[#F01818]',
+  },
+  {
+    eyebrow: 'Surfacing & Courts',
+    title: 'Premium School Flooring',
+    desc: 'Impact-absorbing preschool play mats, classroom surfacing, and specialized multi-sport and squash court flooring solutions.',
+    specs: [
+      'Shock-attenuating EPDM & PU court layers',
+      'Seamless anti-slip indoor & outdoor finish',
+      'Precision game-line court marking included',
+    ],
+    handle: 'flooring',
+    image: THEME_IMAGES.schoolLibrary,
+    reverse: true,
+    bg: 'bg-[#F7F7F5]',
+    accentBar: 'bg-[#007B36]',
+  },
+];
+
+const ENVIRONMENT_GALLERY = [
+  { caption: 'Modern Classrooms', handle: 'senior', image: THEME_IMAGES.heroClassroom, wide: true },
+  { caption: 'Preschool Interiors', handle: 'kindergarten-furniture', image: THEME_IMAGES.heroPreschool, wide: false },
+  { caption: 'Montessori Rooms', handle: 'montessori-material', image: THEME_IMAGES.ergonomicDesk, wide: false },
+  { caption: 'Science Laboratories', handle: 'science-lab', image: THEME_IMAGES.scienceLab, wide: false },
+  { caption: 'Computer Laboratories', handle: 'computer-lab', image: THEME_IMAGES.schoolLibrary, wide: false },
+  { caption: 'Activity Rooms', handle: 'soft-play-zones', image: THEME_IMAGES.heroPreschool, wide: true },
+  { caption: 'Outdoor Playgrounds', handle: 'outdoor-fun-equipment', image: THEME_IMAGES.outdoorPlay, wide: false },
+  { caption: 'Sensory Rooms', handle: 'sensory-room', image: THEME_IMAGES.ergonomicDesk, wide: false },
+];
+
+export function HomeView({
+  onNavigate,
+  onQuickView,
+  onAddToCart,
+  onOpenQuote,
+  onOpenQuoteWithBrief,
+  onAddKitToCart,
+  compareIds,
+  onToggleCompare,
+}: HomeViewProps) {
+  const [slideIdx, setSlideIdx] = useState(0);
+  const [heroCutoutIdx, setHeroCutoutIdx] = useState(0);
+  const [heroHotspotIdx, setHeroHotspotIdx] = useState(0);
+  const [stageIdx, setStageIdx] = useState(0);
+  const [stagePaletteId, setStagePaletteId] = useState<FinishPaletteId>('birch-emerald');
+  const [ergoPresetId, setErgoPresetId] = useState<string>('primary');
+  const [activeHotspotIdx, setActiveHotspotIdx] = useState(0);
+  const [openStepIdx, setOpenStepIdx] = useState(0);
+  const [activeTab, setActiveTab] = useState<'best-sellers' | 'new-arrivals' | 'featured'>('best-sellers');
+  const [testimonialIdx, setTestimonialIdx] = useState(0);
+
+  // Sticky centered scroll-scrubbed Hero track (split Desk left / Chair right -> Set 2 -> Set 3 -> Set 4)
+  const heroTrackRef = useRef<HTMLElement>(null);
+  const pointerRafRef = useRef<number | null>(null);
+  const { scrollYProgress: rawHeroScroll } = useScroll({
+    target: heroTrackRef,
+    offset: ['start start', 'end end'],
+  });
+  const smoothHeroScroll = useSpring(rawHeroScroll, {
+    stiffness: 180,
+    damping: 26,
+    mass: 0.45,
+  });
+
+  useMotionValueEvent(rawHeroScroll, 'change', (latest) => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
+    const next = computeHeroScrollState(latest, CUTOUT_SHOWCASE_ITEMS.length);
+    setHeroCutoutIdx((prev) => {
+      if (prev !== next.activeIndex) setHeroHotspotIdx(0);
+      return prev === next.activeIndex ? prev : next.activeIndex;
+    });
+  });
+
+  // Smooth GPU cursor parallax + subtle 3D stage tilt for Hero Collage (rAF throttled)
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const springX = useSpring(pointerX, { stiffness: 130, damping: 20, mass: 0.55 });
+  const springY = useSpring(pointerY, { stiffness: 130, damping: 20, mass: 0.55 });
+  const stageRotateY = useTransform(springX, [-12, 12], [-2.5, 2.5]);
+  const stageRotateX = useTransform(springY, [-10, 10], [2.2, -2.2]);
+
+  // Scroll-scrubbed Desk (left wing -> center) & Chair (right wing -> center) + settling tilt
+  const deskScrollX = useTransform(smoothHeroScroll, [0, 0.14, 0.25], [-64, -4, 0]);
+  const chairScrollX = useTransform(smoothHeroScroll, [0, 0.14, 0.25], [64, 4, 0]);
+  const deskRotateDeg = useTransform(smoothHeroScroll, [0, 0.14], [-2.5, 0]);
+  const chairRotateDeg = useTransform(smoothHeroScroll, [0, 0.14], [2.5, 0]);
+  const heroTrackProgress = useTransform(smoothHeroScroll, [0, 1], [0.12, 1]);
+
+  const handleHeroPointerMove = (e: MouseEvent<HTMLElement>) => {
+    const target = e.currentTarget;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (pointerRafRef.current !== null) return;
+    pointerRafRef.current = window.requestAnimationFrame(() => {
+      pointerRafRef.current = null;
+      const rect = target.getBoundingClientRect();
+      const nx = (clientX - rect.left) / Math.max(1, rect.width) - 0.5;
+      const ny = (clientY - rect.top) / Math.max(1, rect.height) - 0.5;
+      pointerX.set(nx * 20);
+      pointerY.set(ny * 14);
+    });
+  };
+
+  const handleHeroPointerLeave = () => {
+    if (pointerRafRef.current !== null) {
+      window.cancelAnimationFrame(pointerRafRef.current);
+      pointerRafRef.current = null;
+    }
+    pointerX.set(0);
+    pointerY.set(0);
+  };
+
+  const scrollToHeroSet = (idx: number) => {
+    setHeroCutoutIdx(idx);
+    setHeroHotspotIdx(0);
+    const el = heroTrackRef.current;
+    if (!el || typeof window === 'undefined') return;
+    if (window.innerWidth >= 1024) {
+      const rect = el.getBoundingClientRect();
+      const trackTop = window.scrollY + rect.top;
+      const scrollable = Math.max(0, el.offsetHeight - window.innerHeight);
+      if (scrollable > 40) {
+        const ratio = getHeroScrollRatioForSet(idx, CUTOUT_SHOWCASE_ITEMS.length);
+        window.scrollTo({ top: trackTop + scrollable * ratio, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const cutoutBandRef = useRef<HTMLElement>(null);
+  const { scrollYProgress: cutoutScroll } = useScroll({
+    target: cutoutBandRef,
+    offset: ['start end', 'end start'],
+  });
+  const parallaxUp = useTransform(cutoutScroll, [0, 1], [-14, 14]);
+  const parallaxDown = useTransform(cutoutScroll, [0, 1], [14, -14]);
+
+  const slide = HERO_SLIDES[slideIdx];
+  const activeHeroCutout = CUTOUT_SHOWCASE_ITEMS[heroCutoutIdx] || CUTOUT_SHOWCASE_ITEMS[0];
+  const activeHeroProduct = PREVIEW_PRODUCTS.find((p) => p.handle === activeHeroCutout.productHandle);
+  const activeHeroHotspot =
+    activeHeroCutout.hotspots[heroHotspotIdx] || activeHeroCutout.hotspots[0];
+  const activeHeroFinish = getFinishPalette(stagePaletteId);
+  const activeStageItem = CUTOUT_SHOWCASE_ITEMS[stageIdx] || CUTOUT_SHOWCASE_ITEMS[0];
+  const activeHotspot =
+    activeStageItem.hotspots[activeHotspotIdx] || activeStageItem.hotspots[0];
+  const tabProducts = PREVIEW_PRODUCTS.filter((p) => p.tabs.includes(activeTab));
+
+  const openCutoutQuickView = (productHandle: string, fallbackCollection: string) => {
+    const matched = PREVIEW_PRODUCTS.find((p) => p.handle === productHandle);
+    if (matched) {
+      onQuickView(matched);
+    } else {
+      onNavigate({ page: 'collection', handle: fallbackCollection });
+    }
+  };
+
+  const handleSlideChange = (nextIdx: number) => {
+    const wrapped = (nextIdx + HERO_SLIDES.length) % HERO_SLIDES.length;
+    setSlideIdx(wrapped);
+    scrollToHeroSet(wrapped === 0 ? 0 : 1);
+  };
+
+  const testimonials = [
+    {
+      quote:
+        'Editable placeholder: Add real feedback from a school principal or founder here through the Shopify Theme Editor.',
+      name: 'School Principal (Editable Placeholder)',
+      org: 'Institution Name (Edit in Theme Editor)',
+    },
+    {
+      quote:
+        'Editable placeholder: Share a real institutional story about classroom furniture, soft play or laboratory installation.',
+      name: 'Academic Director (Editable Placeholder)',
+      org: 'Preschool / K-12 Campus (Edit in Theme Editor)',
+    },
+    {
+      quote:
+        'Editable placeholder: Add a verified testimonial from an educational trust or campus architect partner.',
+      name: 'Campus Architect (Editable Placeholder)',
+      org: 'Educational Trust (Edit in Theme Editor)',
+    },
+  ];
+
+  return (
+    <div className="overflow-x-clip">
+      {/* SECTION A: LIGHT SUNLIT ARCHITECTURAL CENTERED HERO + SCROLL-SCRUBBED SPLIT FURNITURE CHOREOGRAPHY */}
+      <section
+        ref={heroTrackRef}
+        data-testid="hero-scroll-track"
+        onMouseMove={handleHeroPointerMove}
+        onMouseLeave={handleHeroPointerLeave}
+        className="relative bg-gradient-to-b from-[#FAF7F0] via-[#FFFFFF] to-[#F5F1E6] lg:min-h-[250vh]"
+      >
+        <div className="relative lg:sticky lg:top-[74px] lg:min-h-[calc(100vh-74px)] flex flex-col justify-between overflow-hidden pb-12 sm:pb-6 lg:pb-3">
+          {/* Soft Sunlit Classroom Watermark & Fine Architectural Grid (zero heavy dark wash) */}
+          <div aria-hidden="true" className="absolute inset-0 sd-light-grid-bg opacity-55 pointer-events-none" />
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={`hero-img-${slideIdx}`}
+              src={slide.image}
+              alt=""
+              initial={{ opacity: 0.04, scale: 1.04 }}
+              animate={{ opacity: 0.08, scale: 1 }}
+              exit={{ opacity: 0.03 }}
+              transition={{ duration: 0.9, ease: EASE_OUT_EXPO }}
+              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+            />
+          </AnimatePresence>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none transition-colors duration-500"
+            style={{
+              background: `radial-gradient(ellipse 72% 56% at 50% 54%, ${activeHeroFinish.stageGlow} 0%, ${activeHeroCutout.tintBg}D8 34%, rgba(250,247,240,0.92) 68%, rgba(255,255,255,0.97) 100%)`,
+            }}
+          />
+
+          <div className="relative z-10 max-w-[1320px] w-full mx-auto px-4 md:px-6 pt-2 sm:pt-3 pb-2 flex flex-col items-center">
+            {/* TOP CENTERED EDITORIAL HEADER & ACTION BUTTONS */}
+            <div className="text-center max-w-3xl mx-auto">
+              <AnimatePresence mode="wait">
+                <motion.div key={`hero-copy-${slideIdx}`}>
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.42, ease: EASE_OUT_EXPO }}
+                    className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1"
+                  >
+                    {slide.eyebrow}
+                  </motion.p>
+
+                  <motion.h1
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: 0.06, ease: EASE_OUT_EXPO }}
+                    className="text-2xl sm:text-4xl lg:text-[2.7rem] font-extrabold leading-[1.05] tracking-tight text-[#161A17] text-balance"
+                  >
+                    {slide.titleLead}{' '}
+                    <span
+                      className="font-script text-[1.22em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-3 underline-offset-4 transition-colors duration-300"
+                      style={{ color: activeHeroFinish.accentHex }}
+                    >
+                      {slide.titleScript}
+                    </span>
+                  </motion.h1>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.55, delay: 0.12, ease: EASE_OUT_EXPO }}
+                    className="mt-1.5 text-xs sm:text-[14.5px] text-[#4D554E] max-w-[58ch] mx-auto leading-snug"
+                  >
+                    {slide.desc}
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.18, ease: EASE_OUT_EXPO }}
+                    className="mt-2.5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(slide.ctaTarget)}
+                      className="sd-btn-sheen group inline-flex items-center gap-2 px-5 sm:px-6 py-2 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
+                    >
+                      <span>{slide.ctaLabel}</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onOpenQuote()}
+                      className="px-5 sm:px-6 py-2 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#E5DEC9] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
+                    >
+                      Request a Quote
+                    </button>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* CENTERED ARCHITECTURAL FURNITURE STAGE */}
+            <div className="relative w-full max-w-[1040px] mt-2 sm:mt-2.5 flex flex-col items-center sd-hero-perspective">
+              {/* Outer Rotating Blueprint Compass Ring + Sculpted Studio Halo */}
+              <div
+                aria-hidden="true"
+                className="hidden sm:block absolute left-1/2 -translate-x-1/2 top-1 w-[250px] lg:w-[295px] h-[250px] lg:h-[295px] rounded-full border-2 border-dashed sd-blueprint-spin pointer-events-none transition-colors duration-500"
+                style={{ borderColor: `${activeHeroFinish.accentHex}38` }}
+              />
+              <div
+                aria-hidden="true"
+                className="hidden sm:block absolute left-1/2 -translate-x-1/2 top-6 w-[205px] lg:w-[235px] h-[205px] lg:h-[235px] rounded-full border pointer-events-none transition-colors duration-500"
+                style={{
+                  borderColor: activeHeroFinish.borderTint,
+                  backgroundColor: activeHeroFinish.surfaceTint,
+                  opacity: 0.55,
+                }}
+              />
+
+              {/* Left Architectural Spec & Finish Swatches (Desktop lg+) */}
+              <div className="hidden lg:flex flex-col items-start gap-2.5 absolute left-0 top-[130px] -translate-y-1/2 z-20 max-w-[185px]">
+                <div className="border-t border-[#E5DEC9] pt-2 w-full">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E]">
+                    Dimensions
+                  </p>
+                  <p className="text-xs font-mono-num font-bold text-[#161A17] mt-0.5">
+                    {activeHeroCutout.dimensions}
+                  </p>
+                </div>
+                <div className="border-t border-[#E5DEC9] pt-2 w-full">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E] mb-1.5">
+                    Studio Finish
+                  </p>
+                  <div className="flex items-center gap-1.5" role="group" aria-label="Preview studio finish">
+                    {FINISH_PALETTES.map((pal) => {
+                      const activePal = pal.id === stagePaletteId;
+                      return (
+                        <button
+                          key={pal.id}
+                          type="button"
+                          data-testid={`hero-finish-${pal.id}`}
+                          aria-label={`Preview ${pal.name}`}
+                          aria-pressed={activePal}
+                          title={pal.name}
+                          onClick={() => setStagePaletteId(pal.id)}
+                          className={`w-6 h-6 rounded-full flex items-center justify-center border transition-transform cursor-pointer ${
+                            activePal
+                              ? 'border-[#161A17] scale-115 shadow-xs'
+                              : 'border-[#E5DEC9] hover:scale-105'
+                          }`}
+                        >
+                          <span
+                            className="w-4 h-4 rounded-full"
+                            style={{ backgroundColor: pal.accentHex }}
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p
+                    data-testid="hero-active-finish-name"
+                    className="text-[11px] font-semibold mt-1 truncate"
+                    style={{ color: activeHeroFinish.accentHex }}
+                  >
+                    {activeHeroFinish.name}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Core Material & Quick Hotspot Switcher (Desktop lg+) */}
+              <div className="hidden lg:flex flex-col items-end text-right gap-2.5 absolute right-0 top-[130px] -translate-y-1/2 z-20 max-w-[195px]">
+                <div className="border-t border-[#E5DEC9] pt-2 w-full">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E]">
+                    Core Specification
+                  </p>
+                  <p className="text-xs font-semibold text-[#161A17] mt-0.5 leading-snug">
+                    {activeHeroCutout.materials}
+                  </p>
+                </div>
+                <div className="border-t border-[#E5DEC9] pt-2 w-full">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E] mb-1.5">
+                    Detail Callouts
+                  </p>
+                  <div className="flex items-center justify-end gap-1.5">
+                    {activeHeroCutout.hotspots.map((spot, hIdx) => {
+                      const activeSpot = heroHotspotIdx === hIdx;
+                      return (
+                        <button
+                          key={spot.id}
+                          type="button"
+                          onClick={() => setHeroHotspotIdx(hIdx)}
+                          aria-pressed={activeSpot}
+                          className={`px-2 py-1 rounded-md text-[11px] font-mono-num font-bold border transition-colors cursor-pointer ${
+                            activeSpot
+                              ? 'bg-[#161A17] text-white border-[#161A17]'
+                              : 'bg-white/90 text-[#4D554E] border-[#E5DEC9] hover:border-[#161A17]'
+                          }`}
+                        >
+                          0{hIdx + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Center Stage Canvas: GPU 3D tilt + Interactive Hotspot Pins + Split Left Desk / Right Chair */}
+              <motion.div
+                style={{ x: springX, y: springY, rotateX: stageRotateX, rotateY: stageRotateY }}
+                className="relative w-full max-w-[660px] h-[220px] sm:h-[255px] lg:h-[268px] flex items-center justify-center px-2 sm:px-8 will-change-transform"
+              >
+                {/* Grounded Studio Floor Shadow Ellipse */}
+                <div
+                  aria-hidden="true"
+                  className="absolute bottom-1 left-1/2 -translate-x-1/2 w-[84%] max-w-[520px] h-7 rounded-[50%] pointer-events-none transition-colors duration-500 blur-[2px]"
+                  style={{
+                    background: `radial-gradient(ellipse at center, ${activeHeroFinish.borderTint}88 0%, ${activeHeroFinish.surfaceTint}70 55%, transparent 100%)`,
+                  }}
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute bottom-2.5 left-1/2 -translate-x-1/2 w-60 sm:w-84 h-3 rounded-full bg-[#181A18]/20 blur-md pointer-events-none"
+                />
+
+                {heroCutoutIdx === 0 &&
+                activeHeroCutout.splitLeftImage &&
+                activeHeroCutout.splitRightImage ? (
+                  <motion.div
+                    key="hero-split-desk-chair"
+                    initial={{ opacity: 0.9, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.24, ease: EASE_OUT_EXPO }}
+                    onClick={() =>
+                      openCutoutQuickView(
+                        activeHeroCutout.productHandle,
+                        activeHeroCutout.collectionHandle
+                      )
+                    }
+                    className="relative w-full max-w-[640px] h-full flex items-center justify-center gap-2 sm:gap-5 cursor-pointer z-10"
+                  >
+                    {/* LEFT WING: ISOLATED DESK SLIDING IN FROM LEFT */}
+                    <motion.div
+                      style={{ x: deskScrollX, rotate: deskRotateDeg }}
+                      className="w-[52%] sm:w-[50%] h-full flex items-center justify-end"
+                    >
+                      <img
+                        src={activeHeroCutout.splitLeftImage}
+                        alt="Ergonomic Birch Student Desk"
+                        loading="eager"
+                        decoding="async"
+                        fetchPriority="high"
+                        className="max-h-[92%] max-w-full object-contain sd-cutout-sticker sd-float-gentle transition-transform duration-300 hover:scale-[1.04]"
+                      />
+                    </motion.div>
+
+                    {/* RIGHT WING: ISOLATED CHAIR SLIDING IN FROM RIGHT */}
+                    <motion.div
+                      style={{ x: chairScrollX, rotate: chairRotateDeg }}
+                      className="w-[42%] sm:w-[40%] h-[92%] flex items-center justify-start"
+                    >
+                      <img
+                        src={activeHeroCutout.splitRightImage}
+                        alt="Contoured Birch Student Chair"
+                        loading="eager"
+                        decoding="async"
+                        fetchPriority="high"
+                        className="max-h-[92%] max-w-full object-contain sd-cutout-sticker sd-float-gentle-delay transition-transform duration-300 hover:scale-[1.04]"
+                      />
+                    </motion.div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={activeHeroCutout.id}
+                    initial={{ opacity: 0.85, y: 10, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.24, ease: EASE_OUT_EXPO }}
+                    onClick={() =>
+                      openCutoutQuickView(
+                        activeHeroCutout.productHandle,
+                        activeHeroCutout.collectionHandle
+                      )
+                    }
+                    className="relative w-full max-w-[580px] h-full flex items-center justify-center cursor-pointer z-10"
+                  >
+                    <img
+                      src={activeHeroCutout.image}
+                      alt={activeHeroCutout.title}
+                      loading="eager"
+                      decoding="async"
+                      className="max-h-[90%] max-w-full object-contain sd-cutout-sticker sd-float-gentle transition-transform duration-300 hover:scale-[1.04]"
+                    />
+                  </motion.div>
+                )}
+
+                {/* Interactive Engineering Pins Directly on Hero Furniture */}
+                {activeHeroCutout.hotspots.map((spot, hIdx) => {
+                  const isPinActive = heroHotspotIdx === hIdx;
+                  return (
+                    <button
+                      key={`hero-pin-${spot.id}`}
+                      type="button"
+                      data-testid={`hero-pin-${hIdx + 1}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHeroHotspotIdx(hIdx);
+                      }}
+                      onMouseEnter={() => setHeroHotspotIdx(hIdx)}
+                      aria-label={`Inspect hero detail: ${spot.label}`}
+                      aria-pressed={isPinActive}
+                      style={{
+                        top: spot.top,
+                        left: spot.left,
+                        backgroundColor: isPinActive ? activeHeroFinish.accentHex : '#161A17',
+                      }}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-mono-num font-bold text-white shadow-md transition-transform hover:scale-110 ring-2 ring-white cursor-pointer"
+                    >
+                      {isPinActive && (
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-0 rounded-full sd-hotspot-ring pointer-events-none"
+                          style={{ backgroundColor: `${activeHeroFinish.accentHex}55` }}
+                        />
+                      )}
+                      <span className="relative z-10">{hIdx + 1}</span>
+                    </button>
+                  );
+                })}
+              </motion.div>
+
+              {/* CENTERED STUDIO SPEC & INTERACTIVE DOCK */}
+              <div className="w-full max-w-[960px] mt-1 rounded-2xl bg-white/95 backdrop-blur-md border border-[#E5DEC9] shadow-lg p-2.5 sm:px-4 sm:py-3 relative z-20 overflow-hidden">
+                {/* GPU Scroll Progress Rail across top edge of dock */}
+                <motion.div
+                  aria-hidden="true"
+                  style={{ scaleX: heroTrackProgress, transformOrigin: '0% 50%' }}
+                  className="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-[#007B36] via-[#F8D000] to-[#C22768]"
+                />
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                  {/* Live Detail Summary */}
+                  <div className="flex items-start sm:items-center gap-3 min-w-0 text-left">
+                    <span
+                      className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-xl font-mono-num text-xs font-extrabold border shrink-0 transition-colors"
+                      style={{
+                        backgroundColor: activeHeroFinish.surfaceTint,
+                        borderColor: activeHeroFinish.borderTint,
+                        color: activeHeroFinish.accentHex,
+                      }}
+                    >
+                      0{heroCutoutIdx + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#C22768] flex flex-wrap items-center gap-1.5">
+                        <span>{activeHeroCutout.category}</span>
+                        <span className="text-[#D4D7D0]">·</span>
+                        <span
+                          className="font-script text-sm lowercase"
+                          style={{ color: activeHeroFinish.accentHex }}
+                        >
+                          {activeHeroCutout.scriptTag}
+                        </span>
+                      </p>
+                      <h2 className="text-sm sm:text-base font-extrabold text-[#161A17] truncate">
+                        {activeHeroCutout.title}
+                      </h2>
+                      <p className="text-[11px] font-mono-num text-[#4D554E] leading-snug sm:truncate">
+                        {activeHeroCutout.dimensions} · {activeHeroCutout.ageGroup} ·{' '}
+                        <strong className="text-[#161A17] whitespace-nowrap">{activeHeroCutout.priceLabel}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Direct Dock Actions: Quick Add / Quote + Inspect Unit */}
+                  <div className="flex flex-wrap items-center justify-between md:justify-end gap-2 shrink-0">
+                    {activeHeroProduct && !activeHeroProduct.quoteOnly ? (
+                      <button
+                        type="button"
+                        data-testid="hero-dock-add-cart"
+                        onClick={() => onAddToCart(activeHeroProduct)}
+                        className="sd-btn-sheen inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Add to Cart</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        data-testid="hero-dock-quote"
+                        onClick={() => onOpenQuote(activeHeroCutout.title)}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#FDF2F7] border border-[#F4C5D8] hover:border-[#C22768] text-[#C22768] text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
+                      >
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>Request Quote</span>
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openCutoutQuickView(
+                          activeHeroCutout.productHandle,
+                          activeHeroCutout.collectionHandle
+                        )
+                      }
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#161A17] hover:bg-[#323834] text-white text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>Inspect Unit</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Live Active Hotspot Detail Note (Clean Hairline Bar) */}
+                {activeHeroHotspot && (
+                  <div
+                    data-testid="hero-hotspot-readout"
+                    className="mt-2 pt-1.5 border-t border-[#EFEAD9] flex flex-wrap items-baseline justify-between gap-2 text-left text-xs"
+                  >
+                    <p className="text-[#4D554E] leading-snug">
+                      <span
+                        className="font-mono-num font-bold mr-1.5"
+                        style={{ color: activeHeroFinish.accentHex }}
+                      >
+                        Detail 0{heroHotspotIdx + 1} · {activeHeroHotspot.label}:
+                      </span>
+                      <span>{activeHeroHotspot.detail}</span>
+                    </p>
+                  </div>
+                )}
+
+                {/* 4-Set Interactive Selector Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mt-2 pt-2 border-t border-[#EFEAD9]">
+                  {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
+                    const active = heroCutoutIdx === idx;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        data-testid={`hero-set-${idx}`}
+                        onClick={() => scrollToHeroSet(idx)}
+                        aria-pressed={active}
+                        className={`flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+                          active
+                            ? 'bg-[#EFF7F2] text-[#161A17] border-[#007B36] shadow-xs'
+                            : 'bg-white hover:bg-[#FAF7F0] text-[#4D554E] border-[#E5DEC9]'
+                        }`}
+                      >
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white flex items-center justify-center p-1 shrink-0 border border-[#E5DEC9]">
+                          <img src={item.image} alt="" className="max-w-full max-h-full object-contain" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[9px] font-mono-num font-bold text-[#007B36]">
+                            0{idx + 1}
+                          </span>
+                          <span className="block text-[11px] font-bold text-[#161A17] truncate">
+                            {item.shortLabel}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide Theme Navigation Controls */}
+          <div className="hidden lg:flex items-center justify-center gap-3 mt-1 relative z-20">
+            <button
+              type="button"
+              onClick={() => handleSlideChange(slideIdx - 1)}
+              aria-label="Previous hero theme"
+              className="w-7 h-7 rounded-full bg-white hover:bg-[#FAF7F0] border border-[#DDD5C3] text-[#181A18] inline-flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            <div className="flex gap-1.5">
+              {HERO_SLIDES.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleSlideChange(idx)}
+                  aria-label={`Slide ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    slideIdx === idx ? 'w-6 bg-[#007B36]' : 'w-2 bg-[#D4D7D0] hover:bg-[#525852]'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => handleSlideChange(slideIdx + 1)}
+              aria-label="Next hero theme"
+              className="w-7 h-7 rounded-full bg-white hover:bg-[#FAF7F0] border border-[#DDD5C3] text-[#181A18] inline-flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+            <span className="ml-2 font-script text-lg text-[#525852] select-none">
+              scroll to converge &amp; explore sets ↓
+            </span>
+          </div>
+
+          {/* Organic Sweeping Wave Divider into Light Paper Section B */}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 1440 72"
+            preserveAspectRatio="none"
+            className="absolute bottom-0 inset-x-0 w-full h-6 sm:h-10 pointer-events-none z-10"
+          >
+            <path
+              d="M0,44 C260,76 520,8 860,34 C1120,54 1300,18 1440,36 L1440,72 L0,72 Z"
+              fill="#F5F1E6"
+            />
+          </svg>
+        </div>
+      </section>
+
+      {/* SECTION B: TRUST HIGHLIGHTS + EXPRESSIVE TILTED STORYTELLING (MYFRIDA + KERNJOSH) */}
+      <section className="bg-[#F5F1E6] pt-6 pb-12 border-b border-[#E6DFCE]">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pb-10 border-b border-[#E2DAC8]">
+            {[
+              {
+                icon: Layers,
+                title: 'Complete School Solutions',
+                desc: 'Classrooms, labs, active play, outdoor parks and flooring under one roof.',
+                badge: 'bg-[#FDF1F6] text-[#C22768] border border-[#F5C7DA]',
+              },
+              {
+                icon: ShieldCheck,
+                title: 'Quality-Focused Products',
+                desc: 'Durable institutional materials engineered for everyday school routines.',
+                badge: 'bg-[#EAF7EF] text-[#007B36] border border-[#BCE3CB]',
+              },
+              {
+                icon: Compass,
+                title: 'Learning Through Play',
+                desc: 'Thoughtful spaces supporting curiosity, sensory growth and movement.',
+                badge: 'bg-[#FFFBE6] text-[#8A6D00] border border-[#F2DF7E]',
+              },
+              {
+                icon: SlidersHorizontal,
+                title: 'Customized Solutions',
+                desc: 'Flexible sizing, finishes and project support tailored to your campus.',
+                badge: 'bg-[#FDECEC] text-[#D91B22] border border-[#F8C4C6]',
+              },
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.55, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
+                  className="group flex items-start gap-3.5 p-3 -m-2 rounded-xl transition-colors hover:bg-white/75"
+                >
+                  <div className={`w-10 h-10 rounded-lg ${item.badge} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-[#181A18]">{item.title}</h2>
+                    <p className="text-xs text-[#525852] mt-1 leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Frida-Style Tactile Typography + Tilted Interactive Wing Stickers */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
+            className="pt-10 md:pt-12 text-center max-w-3xl mx-auto"
+          >
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4">
+              {[
+                { label: 'Preschool Wings', handle: 'kindergarten-furniture', bg: 'bg-[#F01818] text-white', rot: '-rotate-3' },
+                { label: 'Montessori Rooms', handle: 'montessori-material', bg: 'bg-[#007B36] text-white', rot: 'rotate-2' },
+                { label: 'Active Play', handle: 'soft-play-zones', bg: 'bg-[#F8D000] text-[#181A18]', rot: '-rotate-2' },
+                { label: 'STEM Labs', handle: 'science-lab', bg: 'bg-[#F088B0] text-[#181A18]', rot: 'rotate-3' },
+              ].map((tag) => (
+                <button
+                  key={tag.label}
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: tag.handle })}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider shadow-sm cursor-pointer transition-transform duration-200 hover:scale-105 hover:rotate-0 ${tag.bg} ${tag.rot}`}
+                >
+                  {tag.label}
+                </button>
+              ))}
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#181A18] leading-[1.08] text-balance">
+              Whatever wing you&rsquo;re planning,
+            </h2>
+            <p className="font-script text-3xl sm:text-4xl font-bold text-[#007B36] mt-2 leading-tight">
+              School Decor makes every classroom come alive.
+            </p>
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => onNavigate({ page: 'about' })}
+                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#C22768] hover:bg-[#9e1d53] text-white font-bold text-sm shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+              >
+                <span>Meet School Decor</span>
+                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION B1: LIGHT ARCHITECTURAL DUAL-TRACK KINETIC MARQUEE */}
+      <section
+        aria-label="School Decor product highlights marquee"
+        className="bg-white py-6 md:py-8 overflow-hidden sd-marquee-group border-y border-[#E6DFCE]"
+      >
+        <div className="sd-marquee-track-left">
+          {[0, 1].map((dup) => (
+            <div key={`m1-${dup}`} className="flex items-center gap-8 sm:gap-12 pr-8 sm:pr-12">
+              {MARQUEE_WORDS_ROW_1.map((item) => (
+                <span
+                  key={`${dup}-${item.word}`}
+                  style={{ color: item.color }}
+                  className="text-2xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight whitespace-nowrap select-none"
+                >
+                  {item.word}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="sd-marquee-track-right mt-2 sm:mt-2.5">
+          {[0, 1].map((dup) => (
+            <div key={`m2-${dup}`} className="flex items-center gap-8 sm:gap-12 pr-8 sm:pr-12">
+              {MARQUEE_WORDS_ROW_2.map((item) => (
+                <span
+                  key={`${dup}-${item.word}`}
+                  style={{ color: item.color }}
+                  className="text-2xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight whitespace-nowrap select-none opacity-90"
+                >
+                  {item.word}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SECTION B2: LUMINOUS PASTEL-TINTED INTERACTIVE CUTOUT PLAYGROUND + FINISH & ERGONOMIC ADVISOR */}
+      {(() => {
+        const activeFinish = getFinishPalette(stagePaletteId);
+        const activeErgo =
+          ERGO_GRADE_PRESETS.find((e) => e.id === ergoPresetId) || ERGO_GRADE_PRESETS[2];
+        return (
+          <section
+            ref={cutoutBandRef}
+            data-testid="cutout-stage-section"
+            style={{ backgroundColor: activeStageItem.stageBg }}
+            className="text-[#161A17] py-14 md:py-20 transition-colors duration-500 overflow-x-clip relative border-b border-[#E5DEC9]"
+          >
+            <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+              {/* Interactive Category Switcher & Finish Palette Toolbar */}
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-8 md:mb-10">
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+                  {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
+                    const isSelected = stageIdx === idx;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                          setStageIdx(idx);
+                          setActiveHotspotIdx(0);
+                        }}
+                        aria-pressed={isSelected}
+                        className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border ${
+                          isSelected
+                            ? 'bg-[#161A17] text-white border-[#161A17] shadow-md -translate-y-0.5'
+                            : 'bg-white/95 hover:bg-white text-[#161A17] border-[#D9D2C0] shadow-2xs'
+                        }`}
+                      >
+                        {item.shortLabel}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Live Studio Material Finish Swatch Switcher */}
+                <div className="flex flex-wrap items-center justify-center gap-2 bg-white/90 border border-[#E5DEC9] rounded-full px-3 py-1.5 shadow-2xs">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E] px-1">
+                    Finish:
+                  </span>
+                  {FINISH_PALETTES.map((pal) => {
+                    const isPal = pal.id === stagePaletteId;
+                    return (
+                      <button
+                        key={pal.id}
+                        type="button"
+                        data-testid={`stage-finish-${pal.id}`}
+                        aria-pressed={isPal}
+                        onClick={() => setStagePaletteId(pal.id)}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                          isPal
+                            ? 'bg-[#161A17] text-white'
+                            : 'text-[#4D554E] hover:text-[#161A17] hover:bg-[#FAF7F0]'
+                        }`}
+                      >
+                        <span
+                          className="w-2.5 h-2.5 rounded-full border border-white/70"
+                          style={{ backgroundColor: pal.accentHex }}
+                        />
+                        <span>{pal.name.split('+')[1]?.trim()}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Centered Featured Cutout Interactive Stage with Hotspot Engineering Callouts */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pb-12 md:pb-16 border-b border-[#161A17]/10">
+                <div className="lg:col-span-5 text-center lg:text-left">
+                  <p
+                    style={{ color: activeFinish.accentHex }}
+                    className="font-script text-2xl sm:text-3xl font-bold leading-none mb-2"
+                  >
+                    {activeStageItem.scriptTag}
+                  </p>
+                  <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight leading-[1.06] text-[#161A17] text-balance">
+                    {activeStageItem.title}
+                  </h2>
+                  <p className="mt-3 text-sm sm:text-base text-[#4D554E] max-w-[46ch] mx-auto lg:mx-0 leading-relaxed">
+                    {activeStageItem.tagline}
+                  </p>
+
+                  {/* Clean Unboxed Technical Spec Readout with Architectural Divider */}
+                  <div className="mt-4 pt-3.5 border-t border-[#161A17]/12 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                        Dimensions
+                      </p>
+                      <p className="text-xs font-mono-num font-bold text-[#161A17] mt-0.5 leading-snug">
+                        {activeStageItem.dimensions}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                        Age Wing
+                      </p>
+                      <p className="text-xs font-bold text-[#161A17] mt-0.5 leading-snug">
+                        {activeStageItem.ageGroup}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                        Selected Finish
+                      </p>
+                      <p
+                        className="text-xs font-bold mt-0.5 leading-snug"
+                        style={{ color: activeFinish.accentHex }}
+                      >
+                        {activeFinish.name}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Interactive Ergonomic Grade Quick-Matcher */}
+                  <div className="mt-4 rounded-xl bg-white/95 border border-[#E5DEC9] p-3.5 text-left shadow-2xs">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
+                        Ergonomic Grade Advisor
+                      </span>
+                      <span className="text-[11px] font-mono-num font-semibold text-[#007B36]">
+                        {activeErgo.ageRange}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {ERGO_GRADE_PRESETS.map((preset) => {
+                        const selected = preset.id === ergoPresetId;
+                        return (
+                          <button
+                            key={preset.id}
+                            type="button"
+                            onClick={() => setErgoPresetId(preset.id)}
+                            className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                              selected
+                                ? 'bg-[#007B36] text-white'
+                                : 'bg-[#FAF7F0] text-[#4D554E] hover:text-[#161A17]'
+                            }`}
+                          >
+                            {preset.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p
+                      data-testid="ergo-advisor-spec"
+                      className="mt-2 pt-2 border-t border-[#EFEAD9] text-[11px] font-mono-num text-[#161A17]"
+                    >
+                      Desk <strong>{activeErgo.deskHeightMm} mm</strong> · Seat{' '}
+                      <strong>{activeErgo.seatHeightMm} mm</strong> · {activeErgo.cornerRadius}
+                    </p>
+                  </div>
+
+                  {/* Active Engineering Hotspot Callout Card */}
+                  {activeHotspot && (
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeHotspot.id}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.25 }}
+                        className="mt-3 rounded-xl bg-white border border-[#E5DEC9] shadow-sm p-3.5 text-left"
+                      >
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-[#C22768] flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-[#007B36]" />
+                          <span>
+                            Detail Pin 0{activeHotspotIdx + 1}: {activeHotspot.label}
+                          </span>
+                        </p>
+                        <p className="text-xs text-[#4D554E] mt-1 leading-relaxed">
+                          {activeHotspot.detail}
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
+                  )}
+
+                  <p className="mt-4 text-sm font-mono-num font-bold text-[#161A17]">
+                    {activeStageItem.priceLabel}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openCutoutQuickView(
+                          activeStageItem.productHandle,
+                          activeStageItem.collectionHandle
+                        )
+                      }
+                      className="sd-btn-sheen inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                    >
+                      <Eye className="w-4 h-4" />
+                      <span>Inspect Product</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onNavigate({ page: 'collection', handle: activeStageItem.collectionHandle })
+                      }
+                      className="inline-flex items-center gap-1.5 px-5 py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-sm font-semibold transition-all duration-200 cursor-pointer"
+                    >
+                      <span>Explore Range</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-7 flex items-center justify-center gap-3 sm:gap-5 relative">
+                  <button
+                    type="button"
+                    aria-label="Previous featured cutout"
+                    onClick={() => {
+                      setStageIdx(
+                        (stageIdx - 1 + CUTOUT_SHOWCASE_ITEMS.length) % CUTOUT_SHOWCASE_ITEMS.length
+                      );
+                      setActiveHotspotIdx(0);
+                    }}
+                    className="w-10 h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <div className="relative w-full max-w-[480px] h-[270px] sm:h-[350px] flex items-center justify-center">
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-6 rounded-full blur-3xl pointer-events-none transition-colors duration-500"
+                      style={{ backgroundColor: activeFinish.stageGlow }}
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="hidden sm:block absolute inset-4 rounded-full border-2 border-dashed sd-blueprint-spin pointer-events-none transition-colors duration-500"
+                      style={{ borderColor: `${activeFinish.accentHex}55` }}
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="hidden sm:block absolute inset-10 rounded-full border pointer-events-none transition-colors duration-500"
+                      style={{
+                        borderColor: activeFinish.borderTint,
+                        backgroundColor: activeFinish.surfaceTint,
+                        opacity: 0.42,
+                      }}
+                    />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeStageItem.id}
+                        initial={{ opacity: 0, scale: 0.88, y: 18 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.92, y: -14 }}
+                        transition={{ duration: 0.45, ease: EASE_OUT_EXPO }}
+                        className="relative w-full h-full flex items-center justify-center"
+                      >
+                        <img
+                          src={activeStageItem.image}
+                          alt={activeStageItem.title}
+                          loading="lazy"
+                          decoding="async"
+                          onClick={() =>
+                            openCutoutQuickView(
+                              activeStageItem.productHandle,
+                              activeStageItem.collectionHandle
+                            )
+                          }
+                          className="max-h-full max-w-full object-contain cursor-pointer sd-cutout-sticker sd-float-gentle"
+                        />
+
+                        {/* Interactive Pulsing Detail Pins Around Cutout */}
+                        {activeStageItem.hotspots.map((spot, sIdx) => {
+                          const isHot = activeHotspotIdx === sIdx;
+                          return (
+                            <button
+                              key={spot.id}
+                              type="button"
+                              onClick={() => setActiveHotspotIdx(sIdx)}
+                              onMouseEnter={() => setActiveHotspotIdx(sIdx)}
+                              aria-label={`Inspect detail: ${spot.label}`}
+                              aria-pressed={isHot}
+                              style={{
+                                top: spot.top,
+                                left: spot.left,
+                                backgroundColor: isHot ? activeFinish.accentHex : '#161A17',
+                              }}
+                              className="absolute -translate-x-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-mono-num font-bold text-white shadow-md transition-transform hover:scale-110 ring-2 ring-white cursor-pointer"
+                            >
+                              <span
+                                aria-hidden="true"
+                                className="absolute inset-0 rounded-full bg-[#C22768]/35 sd-hotspot-ring pointer-events-none"
+                              />
+                              <span className="relative z-10">{sIdx + 1}</span>
+                            </button>
+                          );
+                        })}
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+
+                  <button
+                    type="button"
+                    aria-label="Next featured cutout"
+                    onClick={() => {
+                      setStageIdx((stageIdx + 1) % CUTOUT_SHOWCASE_ITEMS.length);
+                      setActiveHotspotIdx(0);
+                    }}
+                    className="w-10 h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Scroll-Linked Parallax Grid of All 4 Cutouts */}
+              <div className="pt-10 md:pt-12">
+                <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
+                      Studio Cutout Series
+                    </p>
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#161A17] tracking-tight">
+                      Signature Floating Collection
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate({ page: 'collection', handle: 'all' })}
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#161A17] hover:bg-[#007B36] text-white text-xs sm:text-sm font-bold transition-all cursor-pointer"
+                  >
+                    <span>Shop All Products</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+                  {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
+                    const parallaxY = idx % 2 === 0 ? parallaxUp : parallaxDown;
+                    return (
+                      <motion.div
+                        key={item.id}
+                        style={{ y: parallaxY }}
+                        initial={{ opacity: 0, y: 28 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.14 }}
+                        transition={{ duration: 0.58, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
+                        className="will-change-transform"
+                      >
+                        <div
+                          onClick={() => openCutoutQuickView(item.productHandle, item.collectionHandle)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              openCutoutQuickView(item.productHandle, item.collectionHandle);
+                            }
+                          }}
+                          className="group relative flex flex-col rounded-2xl border border-[#E5DEC9] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer h-full"
+                        >
+                          <div
+                            className="relative h-56 sm:h-60 flex items-center justify-center p-5 pb-7 overflow-hidden"
+                            style={{ backgroundColor: item.tintBg }}
+                          >
+                            <div
+                              aria-hidden="true"
+                              className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/5 h-3.5 rounded-full bg-[#161A17]/18 blur-md transition-all duration-500 group-hover:scale-x-115 group-hover:opacity-65"
+                            />
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              loading="lazy"
+                              className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_14px_18px_rgba(22,26,23,0.14)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-3 group-hover:scale-105"
+                            />
+                          </div>
+
+                          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3 bg-white border-t border-[#EFEAD9]">
+                            <div>
+                              <p className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E]">
+                                {item.category} · <span className="text-[#007B36]">{item.ageGroup}</span>
+                              </p>
+                              <h4 className="text-sm sm:text-base font-bold text-[#161A17] mt-1 leading-snug group-hover:text-[#007B36] transition-colors">
+                                {item.title}
+                              </h4>
+                              <ul className="mt-2.5 space-y-1">
+                                {item.specHighlights.slice(0, 2).map((spec) => (
+                                  <li
+                                    key={spec}
+                                    className="flex items-center gap-1.5 text-[11px] text-[#4D554E]"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3 text-[#007B36] shrink-0" />
+                                    <span className="truncate">{spec}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-[#F1EDE0]">
+                              <span className="text-xs font-semibold font-mono-num text-[#161A17]">
+                                {item.priceLabel}
+                              </span>
+                              <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C22768] transition-transform duration-200 group-hover:translate-x-1">
+                                <span>Inspect</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </span>
+                            </div>
+                          </div>
+
+                          <span
+                            aria-hidden="true"
+                            style={{ backgroundColor: item.barColor }}
+                            className="absolute inset-x-0 bottom-0 h-[3px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"
+                          />
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* SECTION C: EXPLORE OUR COLLECTIONS */}
+      <section className="bg-white py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="mb-9"
+          >
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+              Product Universe
+            </p>
+            <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+              Explore Our Collections
+            </h2>
+            <p className="text-[#525852] text-sm md:text-base mt-2 max-w-[62ch]">
+              Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 md:gap-5">
+            {COLLECTIONS_SHOWCASE.map((col, idx) => (
+              <motion.button
+                key={col.title}
+                type="button"
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.55, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
+                onClick={() => onNavigate({ page: 'collection', handle: col.handle })}
+                className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-[#E3E5E0] text-left bg-[#F7F7F5] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer p-0"
+              >
+                <img
+                  src={col.image}
+                  alt={col.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(180deg, rgba(15,29,21,0.12) 25%, rgba(11,21,16,0.88) 100%)',
+                  }}
+                />
+                <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-white/90 text-[10px] font-bold uppercase tracking-wider text-[#181A18]">
+                  {col.tag}
+                </span>
+                <div className="absolute inset-x-0 bottom-0 p-4 text-white z-10">
+                  <h3 className="text-sm md:text-base font-bold leading-snug">{col.title}</h3>
+                  <p className="text-[11px] text-white/80 mt-0.5 line-clamp-1">{col.subtitle}</p>
+                  <span className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold text-[#F9B8D2] transition-transform duration-200 group-hover:translate-x-1">
+                    <span>Explore Range</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-0 bottom-0 h-[3px] ${LOGO_BAR_COLORS[idx % 4]} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-20`}
+                />
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION D: FEATURED PRODUCTS */}
+      <section className="bg-[#FAF7F0] py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="flex flex-wrap items-end justify-between gap-4 mb-9"
+          >
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+                Curated Catalog
+              </p>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#161A17] tracking-tight">
+                Featured Products
+              </h2>
+            </div>
+
+            <div className="inline-flex p-1 bg-white border border-[#E5DEC9] rounded-xl shadow-2xs" role="tablist" aria-label="Featured product tabs">
+              {[
+                { key: 'best-sellers', label: 'Best Sellers' },
+                { key: 'new-arrivals', label: 'New Arrivals' },
+                { key: 'featured', label: 'Featured Products' },
+              ].map((t) => (
+                <button
+                  key={t.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeTab === t.key}
+                  onClick={() => setActiveTab(t.key as typeof activeTab)}
+                  className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                    activeTab === t.key
+                      ? 'bg-[#007B36] text-white shadow-xs'
+                      : 'text-[#4D554E] hover:text-[#161A17]'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.32, ease: EASE_OUT_EXPO }}
+              className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 md:gap-6"
+            >
+              {tabProducts.map((product, idx) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.48, delay: idx * 0.06, ease: EASE_OUT_EXPO }}
+                  className="flex"
+                >
+                  <div className="w-full flex [&>article]:w-full">
+                    <ProductCard
+                      product={product}
+                      onOpenProduct={(handle) => onNavigate({ page: 'product', handle })}
+                      onQuickView={onQuickView}
+                      onAddToCart={onAddToCart}
+                      onOpenQuote={onOpenQuote}
+                      isCompared={compareIds.includes(product.id)}
+                      onToggleCompare={onToggleCompare}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="mt-9 text-center">
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'collection', handle: 'all' })}
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#D9D2C0] bg-white hover:border-[#C22768] hover:text-[#C22768] text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+            >
+              <span>Browse Full Catalog</span>
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION D2: SMART CAMPUS ROOM & BOQ ARCHITECT */}
+      <SmartCampusPlanner
+        onAddKitToCart={onAddKitToCart}
+        onOpenQuoteWithBrief={onOpenQuoteWithBrief}
+      />
+
+      {/* SECTION E: ABOUT SCHOOL DECOR + KERNJOSH TACTILE PROCESS ACCORDION */}
+      <section className="bg-[#F5F1E6] py-16 md:py-20 border-y border-[#E6DFCE] sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6 space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
+              className="lg:col-span-6 aspect-[4/3] rounded-2xl overflow-hidden border border-[#DDD5C3] bg-white shadow-sm"
+            >
+              <img
+                src={THEME_IMAGES.schoolLibrary}
+                alt="Modern school library and learning interior"
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.65, delay: 0.09, ease: EASE_OUT_EXPO }}
+              className="lg:col-span-6"
+            >
+              <div className="flex items-center gap-2.5 mb-2">
+                <span className="inline-block w-6 h-[3px] rounded-full bg-[#F088B0]" aria-hidden="true" />
+                <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                  About School Decor
+                </p>
+              </div>
+              <h2 className="text-2xl md:text-4xl font-extrabold text-[#181A18] tracking-tight text-balance">
+                Creating Inspiring{' '}
+                <span className="font-script text-[1.2em] text-[#007B36]">Learning Environments</span>
+              </h2>
+              <p className="mt-4 text-[#525852] leading-relaxed">
+                School Decor equips schools, preschools and educational institutions with thoughtfully designed furniture, activity equipment, laboratories, outdoor play zones and complete campus infrastructure products.
+              </p>
+              <p className="mt-3 text-[#525852] leading-relaxed">
+                Whether you are launching a new early-learning center or upgrading a multi-wing K-12 campus, our team helps you plan spaces that balance ergonomics, safety and daily longevity.
+              </p>
+              <div className="mt-6">
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'about' })}
+                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-bold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                >
+                  <span>About Us</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Interactive Numbered Process Accordion + Live Sticker Cutout Preview (webdesign.kernjosh.com signature) */}
+          <div className="pt-12 border-t border-[#E2DAC8] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-7">
+              <p className="font-script text-2xl font-bold text-[#C22768] mb-1">
+                From floor plan to first bell
+              </p>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-[#181A18] tracking-tight mb-6">
+                How We Build Your Campus
+              </h3>
+
+              <div className="space-y-3">
+                {PROCESS_STEPS.map((proc, idx) => {
+                  const isOpen = openStepIdx === idx;
+                  return (
+                    <div
+                      key={proc.step}
+                      className={`rounded-2xl border transition-colors duration-200 ${
+                        isOpen
+                          ? 'bg-white border-[#181A18] shadow-md'
+                          : 'bg-white/65 border-[#DDD5C3] hover:bg-white'
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        aria-expanded={isOpen}
+                        onClick={() => setOpenStepIdx(idx)}
+                        className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left cursor-pointer"
+                      >
+                        <div className="flex items-center gap-4 min-w-0">
+                          <span
+                            className={`w-8 h-8 rounded-full font-mono-num text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
+                              isOpen
+                                ? 'bg-[#007B36] text-white'
+                                : 'bg-[#F5F1E6] text-[#181A18] border border-[#DDD5C3]'
+                            }`}
+                          >
+                            {proc.step}
+                          </span>
+                          <span className="text-sm sm:text-base font-bold text-[#181A18]">
+                            {proc.title}
+                          </span>
+                        </div>
+                        <span className="w-7 h-7 rounded-full border border-[#E3E5E0] flex items-center justify-center text-[#525852] shrink-0">
+                          {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                        </span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
+                            className="overflow-hidden"
+                          >
+                            <div className="px-5 pb-5 pl-17 space-y-3">
+                              <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#EAF7EF] text-[#007B36] text-[10px] font-bold uppercase tracking-wider">
+                                {proc.phaseLabel}
+                              </span>
+                              <p className="text-sm text-[#525852] leading-relaxed">
+                                {proc.desc}
+                              </p>
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                {proc.deliverables.map((del) => (
+                                  <span
+                                    key={del}
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F5F1E6] border border-[#E2DAC8] text-[11px] font-semibold text-[#181A18]"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3 text-[#007B36] shrink-0" />
+                                    <span>{del}</span>
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 lg:sticky lg:top-24">
+              {(() => {
+                const activeStep = PROCESS_STEPS[openStepIdx] || PROCESS_STEPS[0];
+                const cutout = CUTOUT_SHOWCASE_ITEMS[activeStep.cutoutIdx] || CUTOUT_SHOWCASE_ITEMS[0];
+                return (
+                  <div className="rounded-3xl bg-white border border-[#DDD5C3] p-6 sm:p-8 shadow-sm text-center">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-script text-xl font-bold text-[#007B36]">
+                        Step 0{activeStep.step} Studio Match
+                      </p>
+                      <span className="text-[11px] font-mono-num font-semibold text-[#525852] bg-[#F5F1E6] px-2.5 py-0.5 rounded-full">
+                        {cutout.ageGroup}
+                      </span>
+                    </div>
+                    <div
+                      className="mt-3 h-56 sm:h-64 rounded-2xl flex items-center justify-center p-6 relative overflow-hidden"
+                      style={{ backgroundColor: cutout.tintBg }}
+                    >
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-6 rounded-full border border-dashed border-black/10 sd-blueprint-spin pointer-events-none"
+                      />
+                      <AnimatePresence mode="popLayout" initial={false}>
+                        <motion.img
+                          key={`proc-cut-${cutout.id}`}
+                          src={cutout.image}
+                          alt={cutout.title}
+                          initial={{ opacity: 0, scale: 0.9, y: 8 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.92, y: -8 }}
+                          transition={{ duration: 0.22, ease: EASE_OUT_EXPO }}
+                          className="relative z-10 max-h-full max-w-full object-contain sd-cutout-sticker"
+                        />
+                      </AnimatePresence>
+                    </div>
+                    <h4 className="mt-4 text-base font-bold text-[#181A18]">{cutout.title}</h4>
+                    <p className="mt-1 text-xs text-[#525852]">{cutout.tagline}</p>
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono-num text-[#007B36] bg-[#EAF7EF] px-3 py-1 rounded-full">
+                      <Ruler className="w-3.5 h-3.5" />
+                      <span>{cutout.dimensions} · {cutout.materials}</span>
+                    </p>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => openCutoutQuickView(cutout.productHandle, cutout.collectionHandle)}
+                        className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#181A18] hover:bg-[#007B36] text-white text-xs font-bold transition-colors cursor-pointer"
+                      >
+                        <span>Inspect Specification</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION F: PRODUCT CATEGORY SHOWCASE (5 ALTERNATING EDITORIAL SECTIONS WITH MULTI-PLANE DEPTH) */}
+      {EDITORIAL_SHOWCASES.map((item) => (
+        <section key={item.title} className={`${item.bg} py-14 md:py-16 sd-lazy-section`}>
+          <div className="max-w-[1320px] mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.14 }}
+              transition={{ duration: 0.36, ease: EASE_OUT_EXPO }}
+              className={`lg:col-span-6 relative ${
+                item.reverse ? 'lg:order-2' : ''
+              }`}
+            >
+              <div className="aspect-[4/3] rounded-xl overflow-hidden border border-[#E3E5E0] shadow-sm bg-[#F7F7F5]">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+                />
+              </div>
+              {item.cutout && (
+                <div
+                  className={`hidden sm:flex items-center gap-3 absolute -bottom-5 ${
+                    item.reverse ? '-left-4' : '-right-4'
+                  } px-3.5 py-2.5 rounded-xl bg-white border border-[#E3E5E0] shadow-lg sd-float-gentle`}
+                >
+                  <img
+                    src={item.cutout}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="w-16 h-14 object-contain"
+                  />
+                  <div className="pr-1">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
+                      Featured Unit
+                    </p>
+                    <p className="text-xs font-bold text-[#181A18] whitespace-nowrap">
+                      {item.cutoutLabel}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.65, delay: 0.09, ease: EASE_OUT_EXPO }}
+              className={`lg:col-span-6 ${item.reverse ? 'lg:order-1' : ''}`}
+            >
+              <div className="flex items-center gap-2.5 mb-2">
+                <span className={`inline-block w-6 h-[3px] rounded-full ${item.accentBar}`} aria-hidden="true" />
+                <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                  {item.eyebrow}
+                </p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#181A18] tracking-tight text-balance">
+                {item.title}
+              </h2>
+              <p className="mt-3 text-[#525852] leading-relaxed max-w-[52ch]">{item.desc}</p>
+              <ul className="mt-4 space-y-2">
+                {item.specs.map((spec) => (
+                  <li key={spec} className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#181A18]">
+                    <CheckCircle2 className="w-4 h-4 text-[#007B36] shrink-0" />
+                    <span>{spec}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: item.handle })}
+                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                >
+                  <span>Explore Collection</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onOpenQuote(item.title)}
+                  className="px-5 py-2.5 rounded-md border border-[#F5C7DA] bg-[#FDF1F6] hover:bg-[#fadce9] text-sm font-semibold text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                >
+                  Request a Quote
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      ))}
+
+      {/* SECTION G: SCHOOL ENVIRONMENT GALLERY */}
+      <section className="bg-white py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="mb-9"
+          >
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+              Spaces in Focus
+            </p>
+            <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+              School Environment Gallery
+            </h2>
+            <p className="text-[#525852] mt-2 max-w-[60ch]">
+              A visual look across classrooms, preschool interiors, Montessori rooms, laboratories, activity spaces, sensory rooms and playgrounds.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {ENVIRONMENT_GALLERY.map((tile, idx) => (
+              <motion.button
+                key={tile.caption}
+                type="button"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.52, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
+                onClick={() => onNavigate({ page: 'collection', handle: tile.handle })}
+                className={`group relative rounded-xl overflow-hidden border border-[#E3E5E0] text-left cursor-pointer p-0 transition-shadow duration-300 hover:shadow-lg ${
+                  tile.wide ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
+                }`}
+              >
+                <img
+                  src={tile.image}
+                  alt={tile.caption}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+                <div
+                  className="absolute inset-x-0 bottom-0 p-4 text-white font-semibold text-sm transition-transform duration-200 group-hover:-translate-y-0.5"
+                  style={{
+                    background: 'linear-gradient(180deg, transparent, rgba(14,28,20,0.84))',
+                  }}
+                >
+                  {tile.caption}
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION H: WHY CHOOSE SCHOOL DECOR */}
+      <section className="bg-[#F7F7F5] py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="mb-9"
+          >
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+              Our Approach
+            </p>
+            <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+              Why Choose School Decor
+            </h2>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {[
+              {
+                icon: Layers,
+                title: 'Educational Environment Solutions',
+                desc: 'Coordinated equipment for preschools, primary wings, senior classrooms, labs and campuses.',
+                badge: 'bg-[#FDF1F6] text-[#C22768] border border-[#F5C7DA]',
+              },
+              {
+                icon: Compass,
+                title: 'Wide Product Selection',
+                desc: 'Specialized ranges spanning Montessori materials, soft play, STEM labs and outdoor parks.',
+                badge: 'bg-[#EAF7EF] text-[#007B36] border border-[#BCE3CB]',
+              },
+              {
+                icon: ShieldCheck,
+                title: 'Functional and Practical Designs',
+                desc: 'Thoughtful ergonomics, rounded child-safe edges and materials built for daily school routines.',
+                badge: 'bg-[#FFFBE6] text-[#8A6D00] border border-[#F2DF7E]',
+              },
+              {
+                icon: SlidersHorizontal,
+                title: 'Customized Project Support',
+                desc: 'Flexible sizing, finishes and quantity planning tailored to your institution floor plan.',
+                badge: 'bg-[#FDECEC] text-[#D91B22] border border-[#F8C4C6]',
+              },
+              {
+                icon: Headphones,
+                title: 'Dedicated Customer Assistance',
+                desc: 'Direct consultation from product selection and quotation through delivery coordination.',
+                badge: 'bg-[#EAF7EF] text-[#007B36] border border-[#BCE3CB]',
+              },
+            ].map((pillar, idx) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={pillar.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.12 }}
+                  transition={{ duration: 0.5, delay: idx * 0.06, ease: EASE_OUT_EXPO }}
+                  className="group p-6 bg-white border border-[#E3E5E0] rounded-xl transition-all duration-250 hover:-translate-y-1 hover:shadow-md hover:border-[#F5C7DA]"
+                >
+                  <div className={`w-10 h-10 rounded-lg ${pillar.badge} flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-sm font-bold text-[#181A18] mb-2">{pillar.title}</h3>
+                  <p className="text-xs text-[#525852] leading-relaxed">{pillar.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION I: FEATURED PROJECTS */}
+      <section className="bg-white py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="flex flex-wrap items-end justify-between gap-4 mb-9"
+          >
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+                Campus Showcase
+              </p>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+                Featured School Projects
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'projects' })}
+              className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-[#D4D7D0] text-sm font-semibold hover:border-[#C22768] hover:text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+            >
+              <span>View All Projects</span>
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: 'Early Years Wing & Montessori Setup',
+                location: 'Editable Location in Theme Editor',
+                category: 'Preschool & Montessori',
+                desc: 'Editable project card: upload your real school photograph, institution name, city and link to a dedicated project detail page.',
+                img: THEME_IMAGES.heroPreschool,
+              },
+              {
+                title: 'K-12 Classroom & Library Modernization',
+                location: 'Editable Location in Theme Editor',
+                category: 'Classroom & Library',
+                desc: 'Editable project card: showcase ergonomic senior seating, modular book storage and collaborative reading zones.',
+                img: THEME_IMAGES.schoolLibrary,
+              },
+              {
+                title: 'Composite STEM Lab & Outdoor Play Park',
+                location: 'Editable Location in Theme Editor',
+                category: 'Laboratories & Outdoor',
+                desc: 'Editable project card: highlight integrated laboratory workstations and outdoor playground setups.',
+                img: THEME_IMAGES.scienceLab,
+              },
+            ].map((proj, idx) => (
+              <motion.article
+                key={proj.title}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.14 }}
+                transition={{ duration: 0.55, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
+                className="group border border-[#E3E5E0] rounded-xl overflow-hidden bg-white flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[#BCE3CB]"
+              >
+                <div className="aspect-[4/3] bg-[#F7F7F5] overflow-hidden">
+                  <img
+                    src={proj.img}
+                    alt={proj.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5 flex-1 flex flex-col">
+                  <p className="text-xs text-[#525852]">
+                    {proj.category} · {proj.location}
+                  </p>
+                  <h3 className="text-lg font-bold text-[#181A18] mt-1.5">{proj.title}</h3>
+                  <p className="text-sm text-[#525852] mt-2 flex-1">{proj.desc}</p>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate({ page: 'projects' })}
+                    className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[#C22768] hover:underline bg-transparent border-0 p-0 cursor-pointer"
+                  >
+                    <span>View Project Details</span>
+                    <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </button>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION J: TESTIMONIALS */}
+      <section className="bg-[#F7F7F5] py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+            className="flex items-end justify-between gap-4 mb-9"
+          >
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+                Educator Feedback
+              </p>
+              <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+                What Educators &amp; School Leaders Say
+              </h2>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setTestimonialIdx((i) => (i - 1 + testimonials.length) % testimonials.length)}
+                aria-label="Previous testimonial"
+                className="w-10 h-10 rounded-md border border-[#E3E5E0] bg-white hover:border-[#C22768] hover:text-[#C22768] transition-colors inline-flex items-center justify-center cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setTestimonialIdx((i) => (i + 1) % testimonials.length)}
+                aria-label="Next testimonial"
+                className="w-10 h-10 rounded-md border border-[#E3E5E0] bg-white hover:border-[#C22768] hover:text-[#C22768] transition-colors inline-flex items-center justify-center cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((t, idx) => (
+              <motion.blockquote
+                key={t.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.14 }}
+                transition={{ duration: 0.55, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
+                className={`p-7 bg-white border rounded-xl flex flex-col justify-between gap-5 transition-all duration-250 ${
+                  idx === testimonialIdx
+                    ? 'border-[#C22768] shadow-md -translate-y-0.5'
+                    : 'border-[#E3E5E0] hover:border-[#F5C7DA]'
+                }`}
+              >
+                <p className="text-sm md:text-base text-[#181A18] leading-relaxed">“{t.quote}”</p>
+                <footer>
+                  <cite className="not-italic font-bold text-sm text-[#181A18] block">
+                    {t.name}
+                  </cite>
+                  <span className="text-xs text-[#525852]">{t.org}</span>
+                </footer>
+              </motion.blockquote>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION J2: PARTNER MATERIAL BRANDS & GOOGLE MAPS CAMPUS STUDIO LOCATOR */}
+      <BrandsShowcase onNavigate={onNavigate} />
+      <SchoolCampusMap onOpenQuote={onOpenQuote} />
+
+      {/* SECTION K: LIGHT ARCHITECTURAL CTA BANNER WITH 4-COLOR LOGO RIBBON */}
+      <div className="grid grid-cols-4 h-[3px] w-full sd-ribbon-animate" aria-hidden="true">
+        <span className="bg-[#F088B0]" />
+        <span className="bg-[#F01818]" />
+        <span className="bg-[#F8D000]" />
+        <span className="bg-[#00A048]" />
+      </div>
+      <section className="bg-gradient-to-br from-[#EAF6EF] via-[#FAF7F0] to-[#FDF0F5] text-[#181A18] py-16 md:py-20 border-b border-[#E6DFCE]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+          className="max-w-3xl mx-auto px-4 md:px-6 text-center"
+        >
+          <p className="font-script text-2xl sm:text-3xl font-bold text-[#C22768] mb-1">
+            Ready to design your campus?
+          </p>
+          <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-[#181A18] text-balance">
+            Let&rsquo;s Create Better Learning Spaces Together
+          </h2>
+          <p className="mt-4 text-[#525852] text-base md:text-lg max-w-[54ch] mx-auto">
+            Planning a new school, upgrading your classroom or creating an inspiring play environment? Let&rsquo;s discuss your requirements.
+          </p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'contact' })}
+              className="px-6 py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-sm shadow-md transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+            >
+              Contact Our Team
+            </button>
+            <a
+              href={buildWhatsAppUrl(
+                '919312254660',
+                'School Decor Campus Planning & Furniture Solutions'
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FDF0F5] border border-[#D4D7D0] hover:border-[#C22768] text-[#181A18] font-bold text-sm shadow-xs transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985]"
+            >
+              <MessageCircle className="w-4 h-4 text-[#007B36]" />
+              <span>WhatsApp Enquiry</span>
+            </a>
+          </div>
+        </motion.div>
+      </section>
+    </div>
+  );
+}

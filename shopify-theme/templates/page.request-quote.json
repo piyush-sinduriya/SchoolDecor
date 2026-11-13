@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "main": { "type": "request-quote-section", "settings": {} }
+  },
+  "order": ["main"]
+}

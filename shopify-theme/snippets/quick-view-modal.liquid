@@ -1,0 +1,11 @@
+<div id="sd-quick-view-modal" class="sd-modal" role="dialog" aria-modal="true" aria-labelledby="sd-qv-title" hidden>
+  <div class="sd-modal__backdrop" data-close-modal></div>
+  <div class="sd-modal__dialog sd-modal__dialog--lg">
+    <button type="button" class="sd-icon-btn sd-modal__close" data-close-modal aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+    <div id="sd-quick-view-content" class="sd-qv-grid">
+      <div class="sd-qv-loading">Loading product details...</div>
+    </div>
+  </div>
+</div>

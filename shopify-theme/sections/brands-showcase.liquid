@@ -1,0 +1,84 @@
+<section class="sd-section sd-section-pad sd-brands-sec" style="--sd-section-bg: {{ section.settings.bg_color }}; --sd-pad-y: {{ section.settings.padding_y }}px;">
+  <div class="sd-container">
+    <div class="sd-section__header sd-section__header--split" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading sd-heading--lg">
+          {{ section.settings.heading | escape }}
+          {%- if section.settings.heading_script != blank -%}
+            <span class="sd-hero__script sd-hero__script--dark">{{ section.settings.heading_script | escape }}</span>
+          {%- endif -%}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="sd-btn sd-btn--outline">
+          {{ section.settings.button_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="sd-brands-grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.collection_link | default: '/collections/all' }}" class="sd-brand-card" data-sd-reveal style="--sd-brand-accent: {{ block.settings.accent_color | default: '#007B36' }};" {{ block.shopify_attributes }}>
+          <div class="sd-brand-card__head">
+            <span class="sd-brand-card__code">{{ block.settings.mark_code | escape }}</span>
+            <span class="sd-brand-card__badge">{{ block.settings.standard | escape }}</span>
+          </div>
+          <h3 class="sd-brand-card__title">{{ block.settings.name | escape }}</h3>
+          <p class="sd-brand-card__desc">{{ block.settings.specialty | escape }}</p>
+          <span class="sd-brand-card__cta">
+            View Collection {% render 'icon', name: 'chevron-right' %}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Partner Material Brands",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Certified Material & Manufacturing Partners" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Brands & Engineering Standards Behind" },
+    { "type": "text", "id": "heading_script", "label": "Script Accent Word", "default": "Every Classroom" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "From FSC European birchwood and BIFMA ergonomic frames to chemical-grade phenolic lab surfaces, inspect the partner divisions behind School Decor." },
+    { "type": "text", "id": "button_label", "label": "Button Label", "default": "Browse Full Catalog" },
+    { "type": "url", "id": "button_link", "label": "Button Link" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#FAF7F0" },
+    { "type": "range", "id": "padding_y", "min": 32, "max": 112, "step": 4, "unit": "px", "label": "Vertical Padding", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Partner Brand",
+      "settings": [
+        { "type": "text", "id": "mark_code", "label": "Mark Code", "default": "BC·18" },
+        { "type": "text", "id": "name", "label": "Brand Name", "default": "BirchCraft Europe" },
+        { "type": "text", "id": "specialty", "label": "Specialty", "default": "FSC-Certified 18mm Beech & Birchwood" },
+        { "type": "text", "id": "standard", "label": "Certification Standard", "default": "EN-71 Child-Safe Finish" },
+        { "type": "color", "id": "accent_color", "label": "Accent Color", "default": "#007B36" },
+        { "type": "url", "id": "collection_link", "label": "Collection Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partner Material Brands",
+      "blocks": [
+        { "type": "brand", "settings": { "mark_code": "BC·18", "name": "BirchCraft Europe", "specialty": "FSC-Certified 18mm Beech & Birchwood", "standard": "EN-71 Child-Safe Finish", "accent_color": "#007B36", "collection_link": "/collections/kindergarten-furniture" } },
+        { "type": "brand", "settings": { "mark_code": "PM·K12", "name": "PostureMetric India", "specialty": "Height-Graded Classroom Ergonomics", "standard": "BIFMA & NCERT Ratios", "accent_color": "#C22768", "collection_link": "/collections/senior" } },
+        { "type": "brand", "settings": { "mark_code": "KS·28", "name": "KiddoSafe HR", "specialty": "28-Density Soft-Play & Sensory Cores", "standard": "Phthalate-Free Antimicrobial", "accent_color": "#B88900", "collection_link": "/collections/soft-play-zones" } },
+        { "type": "brand", "settings": { "mark_code": "LG·19", "name": "LabGuard Phenolic", "specialty": "19mm Acid & Thermal-Shock Worktops", "standard": "SEFA Chemical Grade", "accent_color": "#334B5C", "collection_link": "/collections/science-lab" } },
+        { "type": "brand", "settings": { "mark_code": "SS·UV8", "name": "SunShield LLDPE", "specialty": "Galvanized Steel & Outdoor Play Chutes", "standard": "UV-8 Weather Stabilized", "accent_color": "#D91B22", "collection_link": "/collections/outdoor-fun-equipment" } },
+        { "type": "brand", "settings": { "mark_code": "CG·PU", "name": "CourtGrip Pro", "specialty": "Shock-Attenuating EPDM & Court Floors", "standard": "EN-14904 Sports Bounce", "accent_color": "#007B36", "collection_link": "/collections/flooring" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

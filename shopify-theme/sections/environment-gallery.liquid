@@ -1,0 +1,136 @@
+<section
+  class="sd-section sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#F7F7F5' }}; --sd-pad-y: {{ section.settings.padding_y | default: 80 }}px;"
+>
+  <div class="sd-container">
+    <div class="sd-section__header sd-align--{{ section.settings.text_alignment | default: 'left' }}" data-sd-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="sd-heading">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.description != blank -%}
+        <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="sd-gallery-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tile_class = 'sd-gallery-tile'
+          if forloop.index == 1 or forloop.index == 6
+            assign tile_class = 'sd-gallery-tile sd-gallery-tile--wide'
+          endif
+          assign fallback_pool = 'sd-hero-classroom.jpg,sd-hero-preschool.jpg,sd-science-lab.jpg,sd-outdoor-play.jpg,sd-school-library.jpg,sd-ergonomic-desk.jpg' | split: ','
+          assign fallback_idx = forloop.index0 | modulo: 6
+        -%}
+        <a href="{{ block.settings.link | default: '/collections' }}" class="{{ tile_class }}" data-sd-reveal style="--sd-stagger: {{ forloop.index0 | modulo: 4 }};" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 960 }}"
+              alt="{{ block.settings.caption | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+            >
+          {%- else -%}
+            <img src="{{ fallback_pool[fallback_idx] | asset_url }}" alt="{{ block.settings.caption | escape }}" loading="lazy">
+          {%- endif -%}
+          <div class="sd-gallery-tile__caption">
+            <span>{{ block.settings.caption | escape }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "School Environment Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Lead-in Text",
+      "default": "Spaces in Focus"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "School Environment Gallery"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Explore how School Decor solutions come together across early-years interiors, STEM labs, sensory spaces and outdoor campuses."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#F7F7F5"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 32,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_item",
+      "name": "Environment Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Environment Photograph"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Environment Title",
+          "default": "Modern Classrooms"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Collection Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "School Environment Gallery",
+      "blocks": [
+        { "type": "gallery_item", "settings": { "caption": "Modern Classrooms", "link": "/collections/senior" } },
+        { "type": "gallery_item", "settings": { "caption": "Preschool Interiors", "link": "/collections/kindergarten-furniture" } },
+        { "type": "gallery_item", "settings": { "caption": "Montessori Rooms", "link": "/collections/montessori-material" } },
+        { "type": "gallery_item", "settings": { "caption": "Science Laboratories", "link": "/collections/science-lab" } },
+        { "type": "gallery_item", "settings": { "caption": "Computer Laboratories", "link": "/collections/computer-lab" } },
+        { "type": "gallery_item", "settings": { "caption": "Activity Rooms", "link": "/collections/soft-play-zones" } },
+        { "type": "gallery_item", "settings": { "caption": "Outdoor Playgrounds", "link": "/collections/outdoor-fun-equipment" } },
+        { "type": "gallery_item", "settings": { "caption": "Sensory Rooms", "link": "/collections/sensory-room" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

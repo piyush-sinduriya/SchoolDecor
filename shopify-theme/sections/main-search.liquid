@@ -1,0 +1,54 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 56px;">
+  <div class="sd-container">
+    {% render 'breadcrumbs' %}
+    <h1 class="sd-heading sd-heading--xl">Search Catalog</h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="sd-search-page-form">
+      <label for="sd-search-page-input" class="sd-visually-hidden">Search</label>
+      <input id="sd-search-page-input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+      <button type="submit" class="sd-btn sd-btn--primary">{{ 'general.search.submit' | t }}</button>
+    </form>
+
+    {%- if search.performed -%}
+      {% paginate search.results by 16 %}
+        <p class="sd-search-count">
+          {%- if search.results_count == 0 -%}
+            {{ 'general.search.no_results' | t: terms: search.terms }}
+          {%- else -%}
+            {{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}
+          {%- endif -%}
+        </p>
+
+        {%- if search.results_count > 0 -%}
+          <div class="sd-product-grid sd-cols--4">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', card_product: item %}
+              {%- else -%}
+                <article class="sd-search-other-card">
+                  <p class="sd-eyebrow">{{ item.object_type | capitalize }}</p>
+                  <h3><a href="{{ item.url }}">{{ item.title | escape }}</a></h3>
+                  <p>{{ item.content | strip_html | truncatewords: 22 }}</p>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="sd-pagination" aria-label="Pagination">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Previous</a>{%- endif -%}
+              <span class="sd-pagination__info">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="sd-btn sd-btn--outline sd-btn--sm">Next</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endif -%}
+      {% endpaginate %}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,31 @@
+<article class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    {% render 'breadcrumbs' %}
+    <p class="sd-eyebrow">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %d, %Y' }}</time>
+      {%- if article.author != blank %} &middot; {{ article.author }}{%- endif -%}
+    </p>
+    <h1 class="sd-heading sd-heading--xl">{{ article.title | escape }}</h1>
+
+    {%- if article.image -%}
+      <div class="sd-article-hero">
+        <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.title | escape }}" loading="eager">
+      </div>
+    {%- endif -%}
+
+    <div class="sd-prose sd-article-body">
+      {{ article.content }}
+    </div>
+
+    <div class="sd-article-footer">
+      <a href="{{ blog.url }}" class="sd-btn sd-btn--outline">Back to {{ blog.title }}</a>
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Blog Article",
+  "settings": []
+}
+{% endschema %}

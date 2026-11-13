@@ -1,0 +1,16 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 56px;">
+  <div class="sd-container sd-container--narrow">
+    {% render 'breadcrumbs' %}
+    <h1 class="sd-heading sd-heading--xl">{{ page.title | escape }}</h1>
+    <div class="sd-prose sd-page-content">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "settings": []
+}
+{% endschema %}

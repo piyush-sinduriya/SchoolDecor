@@ -1,0 +1,148 @@
+{
+  "current": {
+    "logo_width": 145,
+    "logo_width_mobile": 115,
+    "enable_entry_logo_animation": true,
+    "entry_logo_tagline": "Designing Better Spaces for Brighter Futures",
+    "color_primary": "#007B36",
+    "color_primary_hover": "#005D28",
+    "color_accent_light": "#EAF7EF",
+    "color_accent_border": "#BCE3CB",
+    "color_rose": "#C22768",
+    "color_rose_soft": "#FDF1F6",
+    "color_rose_border": "#F5C7DA",
+    "color_gold": "#F5C800",
+    "color_background": "#FFFFFF",
+    "color_surface": "#F7F7F5",
+    "color_text": "#181A18",
+    "color_text_muted": "#525852",
+    "color_border": "#E3E5E0",
+    "color_sale": "#D91B22",
+    "font_heading": "plus_jakarta_sans_n6",
+    "font_body": "dm_sans_n4",
+    "type_base_size": 16,
+    "enable_whatsapp_floating": true,
+    "whatsapp_number": "919312254660",
+    "whatsapp_default_message": "Hello School Decor team, I would like to enquire about school furniture and infrastructure solutions.",
+    "quote_only_tag": "quote-only",
+    "card_show_secondary_image": true,
+    "card_show_availability": true,
+    "card_show_quick_view": true,
+    "card_show_quick_add": true,
+    "card_image_ratio": "4/3",
+    "enable_cart_drawer": true,
+    "enable_cart_note": true,
+    "enable_predictive_search": true,
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement": true,
+          "announcement_text": "Complete School Furniture, Play Zones, Laboratories & Campus Flooring Across India",
+          "contact_email": "schooldecor1@gmail.com",
+          "contact_phone": "+91 93122 54660",
+          "show_whatsapp_link": true
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "sticky_header": true,
+          "menu": "main-menu",
+          "show_search": true,
+          "show_account": true,
+          "show_cart": true
+        },
+        "blocks": {
+          "mega-furniture": {
+            "type": "mega_menu",
+            "settings": {
+              "trigger_title": "Furniture",
+              "featured_heading": "Ergonomic Learning Furniture",
+              "featured_subtext": "Kindergarten, primary, senior classroom, library and storage systems.",
+              "featured_link": "/collections/kindergarten-furniture",
+              "col_1_heading": "Classroom & Early Years",
+              "col_1_links": "Kindergarten Furniture|/collections/kindergarten-furniture\nSenior School Furniture|/collections/senior\nDay Care Furniture|/collections/day-care\nMontessori Materials|/collections/montessori-material\nRole Play Corners|/collections/role-play",
+              "col_2_heading": "Spaces & Organization",
+              "col_2_links": "Library Furniture|/collections/library\nStorage Solutions|/collections/storage\nSensory Rooms|/collections/sensory-room\nKids Sofa & Seating|/collections/kids-sofa\nMotor Skill Toys|/collections/motor-skill-toys"
+            }
+          },
+          "mega-active-play": {
+            "type": "mega_menu",
+            "settings": {
+              "trigger_title": "Active Play",
+              "featured_heading": "Indoor Active & Sensory Play",
+              "featured_subtext": "Safe soft play zones, climbing gyms and interactive wall panels.",
+              "featured_link": "/collections/soft-play-zones",
+              "col_1_heading": "Play Zones & Gyms",
+              "col_1_links": "Soft Play Zones|/collections/soft-play-zones\nJungle Play Zone|/collections/jungle-play-zone\nToddlers & Kids Gym|/collections/toddlers-kids-gym\nRide-Ons & Slides|/collections/ride-ons-slides",
+              "col_2_heading": "Sensory & Motor Play",
+              "col_2_links": "Interactive Wall Panels|/collections/interactive-wall-panels\nSensory Bouncy Play|/collections/sensory-bouncy-play\nSensory Rooms|/collections/sensory-room\nMotor Skill Toys|/collections/motor-skill-toys"
+            }
+          },
+          "mega-laboratory": {
+            "type": "mega_menu",
+            "settings": {
+              "trigger_title": "Laboratory",
+              "featured_heading": "Future-Ready School Laboratories",
+              "featured_subtext": "Science, STEM, computer, mathematics and creative art laboratories.",
+              "featured_link": "/collections/science-lab",
+              "col_1_heading": "STEM & Sciences",
+              "col_1_links": "Science Lab|/collections/science-lab\nSTEM Lab|/collections/stem-lab\nMath Lab|/collections/math-lab",
+              "col_2_heading": "Creative & Digital",
+              "col_2_links": "Computer Lab|/collections/computer-lab\nArt Lab|/collections/art-lab\nWorld Explorer Lab|/collections/world-explorer-lab"
+            }
+          },
+          "mega-outdoor": {
+            "type": "mega_menu",
+            "settings": {
+              "trigger_title": "Outdoor",
+              "featured_heading": "Outdoor Play & Campus Parks",
+              "featured_subtext": "Climbers, sensory parks, science park equipment and campus seating.",
+              "featured_link": "/collections/outdoor-fun-equipment",
+              "col_1_heading": "Play Structures",
+              "col_1_links": "Outdoor Fun Equipment|/collections/outdoor-fun-equipment\nClimbers|/collections/climbers\nOutdoor Toy Train Ride|/collections/outdoor-toy-train-ride\nAnimal Statues|/collections/animal-statues",
+              "col_2_heading": "Activity & Campus Parks",
+              "col_2_links": "Sensory Park|/collections/sensory-park\nMath & Science Park|/collections/math-science-park-equipment\nOpen Air Gym|/collections/open-air-gym\nPark Benches|/collections/park-bench"
+            }
+          },
+          "mega-flooring": {
+            "type": "mega_menu",
+            "settings": {
+              "trigger_title": "Flooring",
+              "featured_heading": "Specialized School Flooring",
+              "featured_subtext": "Impact-safe play surfacing, classroom vinyl and sports court flooring.",
+              "featured_link": "/products/squash-court",
+              "col_1_heading": "Surfacing & Courts",
+              "col_1_links": "Squash & Sports Courts|/products/squash-court\nAll Collections|/collections",
+              "col_2_heading": "Request Custom Specification",
+              "col_2_links": "Request a Quote|/pages/request-quote\nContact Our Team|/pages/contact"
+            }
+          }
+        },
+        "block_order": [
+          "mega-furniture",
+          "mega-active-play",
+          "mega-laboratory",
+          "mega-outdoor",
+          "mega-flooring"
+        ]
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_description": "School Decor designs and supplies functional furniture, active play zones, laboratories, outdoor playground equipment and school flooring tailored for modern educational institutions.",
+          "col_1_heading": "Quick Links",
+          "col_2_heading": "Product Categories",
+          "contact_heading": "Get in Touch — Manish Gupta",
+          "contact_email": "schooldecor1@gmail.com",
+          "contact_phone": "+91 93122 54660",
+          "contact_address": "India — Serving Schools, Preschools & Institutions Nationwide",
+          "newsletter_heading": "Institutional Updates & Catalogues",
+          "newsletter_subtext": "Receive seasonal product launches and school planning guides.",
+          "copyright_text": "School Decor. All rights reserved."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    {% render 'breadcrumbs' %}
+    <div class="sd-section__header">
+      <p class="sd-eyebrow">Institutional Procurement</p>
+      <h1 class="sd-heading sd-heading--xl">{{ section.settings.heading | escape }}</h1>
+      <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+    </div>
+
+    <div class="sd-contact-form-wrap">
+      {% form 'contact', id: 'sd-quote-page-form', class: 'sd-quote-form' %}
+        {%- if form.posted_successfully? -%}
+          <div class="sd-alert sd-alert--success" role="status">{{ 'quote.form.success' | t }}</div>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="sd-alert sd-alert--error" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <div class="sd-quote-alert" data-quote-status hidden role="status"></div>
+        <input type="hidden" name="contact[subject]" value="School Decor Quotation Page Request">
+
+        <div class="sd-form-grid">
+          <div class="sd-field">
+            <label for="sd-qp-name">{{ 'quote.form.name' | t }} *</label>
+            <input type="text" id="sd-qp-name" name="contact[name]" required autocomplete="name">
+          </div>
+          <div class="sd-field">
+            <label for="sd-qp-phone">{{ 'quote.form.phone' | t }} *</label>
+            <input type="tel" id="sd-qp-phone" name="contact[phone]" required autocomplete="tel">
+          </div>
+          <div class="sd-field">
+            <label for="sd-qp-email">{{ 'quote.form.email' | t }} *</label>
+            <input type="email" id="sd-qp-email" name="contact[email]" required autocomplete="email">
+          </div>
+          <div class="sd-field">
+            <label for="sd-qp-institution">{{ 'quote.form.institution' | t }} *</label>
+            <input type="text" id="sd-qp-institution" name="contact[institution]" required>
+          </div>
+          <div class="sd-field">
+            <label for="sd-qp-product">{{ 'quote.form.product_name' | t }}</label>
+            <input type="text" id="sd-qp-product" name="contact[product_name]" placeholder="Furniture, Play Zone, Lab, Outdoor or Flooring">
+          </div>
+          <div class="sd-field">
+            <label for="sd-qp-qty">{{ 'quote.form.quantity' | t }}</label>
+            <input type="text" id="sd-qp-qty" name="contact[quantity]" placeholder="e.g. 120 units / 4 rooms">
+          </div>
+          <div class="sd-field sd-field--full">
+            <label for="sd-qp-location">{{ 'quote.form.location' | t }} *</label>
+            <input type="text" id="sd-qp-location" name="contact[location]" required>
+          </div>
+          <div class="sd-field sd-field--full">
+            <label for="sd-qp-req">{{ 'quote.form.requirements' | t }} *</label>
+            <textarea id="sd-qp-req" name="contact[body]" rows="5" required></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="sd-btn sd-btn--primary sd-btn--lg sd-btn--full">{{ 'quote.form.submit' | t }}</button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Request a Quote Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Request an Institutional Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Complete the project form below with your institution name, city and requirements. Our team prepares itemized quotations for schools, preschools and campuses."
+    }
+  ]
+}
+{% endschema %}

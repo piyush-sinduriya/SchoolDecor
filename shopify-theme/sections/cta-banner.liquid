@@ -1,0 +1,110 @@
+{%- liquid
+  assign wa_num = settings.whatsapp_number | default: '919312254660' | remove: '+' | remove: ' ' | remove: '-'
+  assign wa_msg = section.settings.whatsapp_message | default: 'Hello School Decor team, we are planning a school infrastructure project and would like to connect.'
+-%}
+
+<div class="sd-logo-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+<section
+  class="sd-cta-banner sd-cta-banner--light sd-section-pad"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#FAF7F0' }}; --sd-cta-fg: {{ section.settings.text_color | default: '#181A18' }}; --sd-pad-y: {{ section.settings.padding_y | default: 76 }}px;"
+>
+  <div class="sd-container sd-cta-banner__inner sd-align--{{ section.settings.text_alignment | default: 'center' }}" data-sd-reveal>
+    <p class="sd-script-lead" style="margin-bottom: 6px;">Ready to design your campus?</p>
+    <h2 class="sd-cta-banner__title">{{ section.settings.heading | escape }}</h2>
+    <p class="sd-cta-banner__desc">{{ section.settings.description | escape }}</p>
+    <div class="sd-cta-banner__actions">
+      <a href="{{ section.settings.primary_link | default: '/pages/contact' }}" class="sd-btn sd-btn--primary sd-btn--lg">
+        {{ section.settings.primary_label | default: 'Contact Our Team' | escape }}
+      </a>
+      <a
+        href="https://wa.me/{{ wa_num }}?text={{ wa_msg | url_encode }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sd-btn sd-btn--outline sd-btn--lg"
+      >
+        {% render 'icon', name: 'whatsapp' %}
+        <span>{{ section.settings.secondary_label | default: 'WhatsApp Enquiry' | escape }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTA Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Headline",
+      "default": "Let's Create Better Learning Spaces Together"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Planning a new school, upgrading your classroom or creating an inspiring play environment? Let's discuss your requirements."
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary Button Label",
+      "default": "Contact Our Team"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "WhatsApp Button Label",
+      "default": "WhatsApp Enquiry"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_message",
+      "label": "Pre-filled WhatsApp Message",
+      "default": "Hello School Decor team, we are planning a new school / classroom upgrade and would like to discuss our requirements."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Banner Background",
+      "default": "#FAF7F0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#181A18"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 40,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 76
+    }
+  ],
+  "presets": [
+    {
+      "name": "CTA Banner"
+    }
+  ]
+}
+{% endschema %}

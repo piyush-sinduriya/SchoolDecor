@@ -1,0 +1,420 @@
+<section
+  id="section-{{ section.id }}"
+  class="sd-hero sd-hero--sunlit"
+  data-hero-slider
+  data-hero-scroll-track
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-interval="{{ section.settings.autoplay_speed | times: 1000 }}"
+>
+  <div class="sd-hero__sticky">
+    <div class="sd-hero__grid-bg" aria-hidden="true"></div>
+    <div class="sd-hero__slides">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign cutout_src = ''
+          if block.settings.cutout_image != blank
+            assign cutout_src = block.settings.cutout_image | image_url: width: 1000
+          elsif block.settings.cutout_fallback != blank and block.settings.cutout_fallback != 'none'
+            assign cutout_src = block.settings.cutout_fallback | asset_url
+          endif
+
+          assign split_left_src = ''
+          assign split_right_src = ''
+          if block.settings.split_left_fallback != blank and block.settings.split_left_fallback != 'none'
+            assign split_left_src = block.settings.split_left_fallback | asset_url
+          endif
+          if block.settings.split_right_fallback != blank and block.settings.split_right_fallback != 'none'
+            assign split_right_src = block.settings.split_right_fallback | asset_url
+          endif
+        -%}
+        <div
+          class="sd-hero__slide{% if forloop.first %} is-active{% endif %}"
+          data-hero-slide="{{ forloop.index0 }}"
+          data-stage-tint="{{ block.settings.stage_tint | default: '#EAF6EF' }}"
+          {{ block.shopify_attributes }}
+        >
+          <picture class="sd-hero__media sd-hero__media--subtle">
+            {%- if block.settings.image_mobile != blank -%}
+              <source media="(max-width: 767px)" srcset="{{ block.settings.image_mobile | image_url: width: 960 }}">
+            {%- endif -%}
+            {%- if block.settings.image_desktop != blank -%}
+              <img
+                src="{{ block.settings.image_desktop | image_url: width: 1920 }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                {% if forloop.first %}fetchpriority="high"{% endif %}
+              >
+            {%- else -%}
+              {%- assign fallback_img = 'sd-hero-classroom.jpg' -%}
+              {%- if forloop.index == 2 -%}{%- assign fallback_img = 'sd-hero-preschool.jpg' -%}{%- endif -%}
+              <img
+                src="{{ fallback_img | asset_url }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            {%- endif -%}
+          </picture>
+
+          <div
+            class="sd-hero__scrim sd-hero__scrim--light"
+            style="--sd-stage-tint: {{ block.settings.stage_tint | default: '#EAF6EF' }}; --sd-overlay: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+          ></div>
+
+          <div class="sd-container sd-hero__content-wrap sd-hero__content-wrap--centered sd-align--center">
+            <div class="sd-hero__content sd-hero__content--centered">
+              {%- if block.settings.eyebrow != blank -%}
+                <p class="sd-hero__eyebrow sd-hero__eyebrow--dark">{{ block.settings.eyebrow | escape }}</p>
+              {%- endif -%}
+              {%- if forloop.first -%}
+                <h1 class="sd-hero__title sd-hero__title--dark">
+                  {{ block.settings.heading | escape }}
+                  {%- if block.settings.heading_script != blank -%}
+                    <span class="sd-hero__script sd-hero__script--dark">{{ block.settings.heading_script | escape }}</span>
+                  {%- endif -%}
+                </h1>
+              {%- else -%}
+                <h2 class="sd-hero__title sd-hero__title--dark">
+                  {{ block.settings.heading | escape }}
+                  {%- if block.settings.heading_script != blank -%}
+                    <span class="sd-hero__script sd-hero__script--dark">{{ block.settings.heading_script | escape }}</span>
+                  {%- endif -%}
+                </h2>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <p class="sd-hero__desc sd-hero__desc--dark">{{ block.settings.description | escape }}</p>
+              {%- endif -%}
+              <div class="sd-hero__actions sd-hero__actions--centered">
+                {%- if block.settings.primary_label != blank -%}
+                  <a href="{{ block.settings.primary_link | default: '/collections' }}" class="sd-btn sd-btn--primary sd-btn--lg">
+                    {{ block.settings.primary_label | escape }}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.secondary_label != blank -%}
+                  {%- if block.settings.secondary_opens_quote -%}
+                    <button type="button" class="sd-btn sd-btn--outline sd-btn--lg" data-open-quote>
+                      {{ block.settings.secondary_label | escape }}
+                    </button>
+                  {%- else -%}
+                    <a href="{{ block.settings.secondary_link | default: '/pages/request-quote' }}" class="sd-btn sd-btn--outline sd-btn--lg">
+                      {{ block.settings.secondary_label | escape }}
+                    </a>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+            </div>
+
+            <div class="sd-hero__center-stage" data-hero-parallax>
+              <div class="sd-hero__cutout-orbit sd-hero__cutout-orbit--light" aria-hidden="true"></div>
+              <div class="sd-hero__cutout-orbit sd-hero__cutout-orbit--outer" aria-hidden="true"></div>
+              <div class="sd-hero__plinth" aria-hidden="true"></div>
+              {%- if split_left_src != blank and split_right_src != blank -%}
+                <div class="sd-hero__split-pair" data-hero-split-pair>
+                  <div class="sd-hero__split-wing sd-hero__split-wing--left" data-hero-split-left>
+                    <img
+                      src="{{ split_left_src }}"
+                      alt="{{ block.settings.cutout_title | default: 'Ergonomic Student Desk' | escape }}"
+                      class="sd-hero__cutout-img sd-cutout-sticker"
+                      loading="eager"
+                    >
+                  </div>
+                  <div class="sd-hero__split-wing sd-hero__split-wing--right" data-hero-split-right>
+                    <img
+                      src="{{ split_right_src }}"
+                      alt="{{ block.settings.cutout_title | default: 'Contoured Student Chair' | escape }}"
+                      class="sd-hero__cutout-img sd-cutout-sticker"
+                      loading="eager"
+                    >
+                  </div>
+                </div>
+              {%- elsif cutout_src != blank -%}
+                <div class="sd-hero__cutout-float">
+                  <img
+                    src="{{ cutout_src }}"
+                    alt="{{ block.settings.cutout_title | default: block.settings.heading | escape }}"
+                    class="sd-hero__cutout-img sd-cutout-sticker"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                </div>
+              {%- endif -%}
+              <div class="sd-hero__cutout-shadow sd-hero__cutout-shadow--light" aria-hidden="true"></div>
+
+              {%- if block.settings.cutout_title != blank -%}
+                <div class="sd-hero__cutout-caption sd-hero__cutout-caption--dock">
+                  <div class="sd-hero__dock-progress" aria-hidden="true">
+                    <span class="sd-hero__dock-progress-bar" data-hero-progress></span>
+                  </div>
+                  <div class="sd-hero__dock-main">
+                    <div>
+                      {%- if block.settings.cutout_category != blank -%}
+                        <span class="sd-hero__cutout-cat">{{ block.settings.cutout_category | escape }}</span>
+                      {%- endif -%}
+                      <strong class="sd-hero__cutout-title">{{ block.settings.cutout_title | escape }}</strong>
+                      {%- if block.settings.cutout_dimensions != blank or block.settings.cutout_age_group != blank -%}
+                        <span class="sd-hero__cutout-specs sd-hero__cutout-specs--dark">
+                          {{ block.settings.cutout_dimensions | escape }}{% if block.settings.cutout_dimensions != blank and block.settings.cutout_age_group != blank %} · {% endif %}{{ block.settings.cutout_age_group | escape }}
+                        </span>
+                      {%- endif -%}
+                    </div>
+                    <div class="sd-hero__dock-actions">
+                      <a href="{{ block.settings.cutout_link | default: '/collections' }}" class="sd-btn sd-btn--dark sd-btn--sm">Inspect Unit</a>
+                      <button type="button" class="sd-btn sd-btn--outline sd-btn--sm" data-open-quote>Quote</button>
+                    </div>
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="sd-hero__controls sd-hero__controls--light">
+        <button type="button" class="sd-hero__arrow sd-hero__arrow--light" data-hero-prev aria-label="Previous slide">
+          {% render 'icon', name: 'chevron-left' %}
+        </button>
+        <div class="sd-hero__dots sd-hero__dots--studio">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="sd-hero__set-btn{% if forloop.first %} is-active{% endif %}"
+              data-hero-dot="{{ forloop.index0 }}"
+              aria-label="Go to {{ block.settings.cutout_title | default: block.settings.heading | escape }}"
+            >
+              <span class="sd-hero__set-num">0{{ forloop.index }}</span>
+              <span class="sd-hero__set-label">{{ block.settings.short_label | default: forloop.index | escape }}</span>
+            </button>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="sd-hero__arrow sd-hero__arrow--light" data-hero-next aria-label="Next slide">
+          {% render 'icon', name: 'chevron-right' %}
+        </button>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_wave_divider -%}
+      <svg class="sd-hero__wave" aria-hidden="true" viewBox="0 0 1440 72" preserveAspectRatio="none">
+        <path d="M0,44 C260,76 520,8 860,34 C1120,54 1300,18 1440,36 L1440,72 L0,72 Z" fill="{{ section.settings.wave_color | default: '#F5F1E6' }}" />
+      </svg>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Scroll Showcase",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-Rotate Slides When Idle",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "Slide Duration",
+      "default": 7
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wave_divider",
+      "label": "Show Organic Bottom Wave Divider",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "wave_color",
+      "label": "Bottom Wave Fill Color (Match Next Section)",
+      "default": "#F5F1E6"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Hero Furniture Set",
+      "settings": [
+        {
+          "type": "text",
+          "id": "short_label",
+          "label": "Selector Label",
+          "default": "Student Desk & Chair"
+        },
+        {
+          "type": "color",
+          "id": "stage_tint",
+          "label": "Sunlit Stage Ambient Tint",
+          "default": "#EAF6EF"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Subtle Watermark Background Photo"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Background Image (Optional)"
+        },
+        {
+          "type": "select",
+          "id": "split_left_fallback",
+          "label": "Split Entry Left Wing PNG (Desk)",
+          "options": [
+            { "value": "none", "label": "None (Use Single Centered Cutout)" },
+            { "value": "sd-cutout-hero-desk.png", "label": "Ergonomic Birch Desk (Left Wing)" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "select",
+          "id": "split_right_fallback",
+          "label": "Split Entry Right Wing PNG (Chair)",
+          "options": [
+            { "value": "none", "label": "None (Use Single Centered Cutout)" },
+            { "value": "sd-cutout-hero-chair.png", "label": "Contoured Birch Chair (Right Wing)" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "cutout_image",
+          "label": "Centered Floating Product Cutout PNG"
+        },
+        {
+          "type": "select",
+          "id": "cutout_fallback",
+          "label": "Default Centered Cutout PNG",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "sd-cutout-student-desk.png", "label": "Ergonomic Student Desk & Chair Set" },
+            { "value": "sd-cutout-montessori-shelf.png", "label": "Curved Montessori Birch Activity Unit" },
+            { "value": "sd-cutout-soft-play-climber.png", "label": "Modular Soft-Play Foam Climber" },
+            { "value": "sd-cutout-science-lab-bench.png", "label": "Chemistry & STEM Island Workbench" }
+          ],
+          "default": "sd-cutout-student-desk.png"
+        },
+        {
+          "type": "text",
+          "id": "cutout_category",
+          "label": "Floating Card Category",
+          "default": "School Furniture"
+        },
+        {
+          "type": "text",
+          "id": "cutout_title",
+          "label": "Floating Card Product Name",
+          "default": "Ergonomic Birch & Steel Desk Set"
+        },
+        {
+          "type": "text",
+          "id": "cutout_price_label",
+          "label": "Floating Card Subtitle / Price Note",
+          "default": "Available for Order"
+        },
+        {
+          "type": "text",
+          "id": "cutout_dimensions",
+          "label": "Dimensions Spec Note",
+          "default": "600 × 450 × 640–760 mm"
+        },
+        {
+          "type": "text",
+          "id": "cutout_age_group",
+          "label": "Age / Wing Grade Note",
+          "default": "Grades 1–12"
+        },
+        {
+          "type": "url",
+          "id": "cutout_link",
+          "label": "Floating Card Link"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small Lead-in Text",
+          "default": "School Furniture & Educational Infrastructure"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Headline Lead",
+          "default": "Designing Better Spaces for"
+        },
+        {
+          "type": "text",
+          "id": "heading_script",
+          "label": "Handwritten Accent Word (Optional)",
+          "default": "Brighter Futures"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Supporting Text",
+          "default": "Discover thoughtfully designed furniture, innovative learning environments and educational play solutions for schools, preschools and institutions."
+        },
+        {
+          "type": "text",
+          "id": "primary_label",
+          "label": "Primary Button Label",
+          "default": "Explore Our Collection"
+        },
+        {
+          "type": "url",
+          "id": "primary_link",
+          "label": "Primary Button Link"
+        },
+        {
+          "type": "text",
+          "id": "secondary_label",
+          "label": "Secondary Button Label",
+          "default": "Request a Quote"
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary_opens_quote",
+          "label": "Open Quick Quote Popup on Click",
+          "default": true
+        },
+        {
+          "type": "url",
+          "id": "secondary_link",
+          "label": "Secondary Button Link (if not using popup)"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 15,
+          "max": 95,
+          "step": 5,
+          "unit": "%",
+          "label": "Light Daylight Backdrop Opacity",
+          "default": 85
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Scroll Showcase",
+      "blocks": [
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+<section class="sd-section sd-section-pad" style="--sd-pad-y: 64px;">
+  <div class="sd-container sd-container--narrow">
+    <h1 class="sd-heading sd-heading--xl">Create Account</h1>
+    {% form 'create_customer', class: 'sd-quote-form' %}
+      {%- if form.errors -%}
+        <div class="sd-alert sd-alert--error">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="sd-field">
+        <label for="RegisterFirstName">First Name</label>
+        <input type="text" name="customer[first_name]" id="RegisterFirstName" autocomplete="given-name">
+      </div>
+      <div class="sd-field">
+        <label for="RegisterLastName">Last Name</label>
+        <input type="text" name="customer[last_name]" id="RegisterLastName" autocomplete="family-name">
+      </div>
+      <div class="sd-field">
+        <label for="RegisterEmail">Email</label>
+        <input type="email" name="customer[email]" id="RegisterEmail" autocomplete="email" required>
+      </div>
+      <div class="sd-field">
+        <label for="RegisterPassword">Password</label>
+        <input type="password" name="customer[password]" id="RegisterPassword" autocomplete="new-password" required>
+      </div>
+      <button type="submit" class="sd-btn sd-btn--primary sd-btn--full">Register</button>
+    {% endform %}
+  </div>
+</section>

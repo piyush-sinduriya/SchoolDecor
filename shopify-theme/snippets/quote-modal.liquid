@@ -1,0 +1,72 @@
+<div id="sd-quote-modal" class="sd-modal" role="dialog" aria-modal="true" aria-labelledby="sd-quote-modal-title" hidden>
+  <div class="sd-modal__backdrop" data-close-modal></div>
+  <div class="sd-modal__dialog">
+    <button type="button" class="sd-icon-btn sd-modal__close" data-close-modal aria-label="{{ 'general.accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+    <div class="sd-quote-header">
+      <h2 id="sd-quote-modal-title">{{ 'quote.form.title' | t }}</h2>
+      <p>{{ 'quote.form.subtitle' | t }}</p>
+    </div>
+
+    {% form 'contact', id: 'sd-quote-modal-form', class: 'sd-quote-form' %}
+      {%- if form.posted_successfully? -%}
+        <div class="sd-alert sd-alert--success" role="status">
+          {{ 'quote.form.success' | t }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="sd-alert sd-alert--error" role="alert">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="sd-quote-alert" data-quote-status hidden role="status"></div>
+
+      <input type="hidden" name="contact[subject]" value="School Decor Quotation Request">
+      <input type="hidden" name="contact[product_url]" id="sd-quote-product-url" value="">
+
+      <div class="sd-form-grid">
+        <div class="sd-field">
+          <label for="sd-q-name">{{ 'quote.form.name' | t }} *</label>
+          <input type="text" id="sd-q-name" name="contact[name]" required autocomplete="name" placeholder="Dr. / Mr. / Ms. Full Name">
+        </div>
+        <div class="sd-field">
+          <label for="sd-q-phone">{{ 'quote.form.phone' | t }} *</label>
+          <input type="tel" id="sd-q-phone" name="contact[phone]" required autocomplete="tel" placeholder="+91 98XXXXXXXX">
+        </div>
+        <div class="sd-field">
+          <label for="sd-q-email">{{ 'quote.form.email' | t }} *</label>
+          <input type="email" id="sd-q-email" name="contact[email]" required autocomplete="email" placeholder="principal@school.edu.in">
+        </div>
+        <div class="sd-field">
+          <label for="sd-q-institution">{{ 'quote.form.institution' | t }} *</label>
+          <input type="text" id="sd-q-institution" name="contact[institution]" required placeholder="School or Institution Name">
+        </div>
+        <div class="sd-field">
+          <label for="sd-q-product">{{ 'quote.form.product_name' | t }}</label>
+          <input type="text" id="sd-q-product" name="contact[product_name]" placeholder="e.g. Kindergarten Furniture / Science Lab">
+        </div>
+        <div class="sd-field">
+          <label for="sd-q-quantity">{{ 'quote.form.quantity' | t }}</label>
+          <input type="text" id="sd-q-quantity" name="contact[quantity]" placeholder="e.g. 60 Desks / 2 Classrooms">
+        </div>
+        <div class="sd-field sd-field--full">
+          <label for="sd-q-location">{{ 'quote.form.location' | t }} *</label>
+          <input type="text" id="sd-q-location" name="contact[location]" required placeholder="City, State">
+        </div>
+        <div class="sd-field sd-field--full">
+          <label for="sd-q-requirements">{{ 'quote.form.requirements' | t }} *</label>
+          <textarea id="sd-q-requirements" name="contact[body]" rows="3" required placeholder="Share age group, room dimensions, timeline or custom requirements..."></textarea>
+        </div>
+      </div>
+
+      <div class="sd-form-actions">
+        <button type="submit" class="sd-btn sd-btn--primary sd-btn--full">
+          {{ 'quote.form.submit' | t }}
+        </button>
+      </div>
+    {% endform %}
+  </div>
+</div>
