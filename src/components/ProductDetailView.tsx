@@ -436,9 +436,9 @@ export function ProductDetailView({
         </MotionReveal>
 
         {/* RELATED PRODUCTS */}
-        <div className="mt-14 pt-8 border-t border-[#E5DEC9]">
-          <h2 className="text-xl md:text-2xl font-extrabold text-[#161A17] mb-6">Related Products</h2>
-          <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="mt-12 sm:mt-14 pt-8 border-t border-[#E5DEC9]">
+          <h2 className="text-xl md:text-2xl font-extrabold text-[#161A17] mb-5 sm:mb-6">Related Products</h2>
+          <MotionStagger className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[390px]:gap-3 sm:gap-4 md:gap-6">
             {related.map((p) => (
               <MotionStaggerItem key={p.id}>
                 <ProductCard

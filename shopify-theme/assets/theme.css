@@ -39,8 +39,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .sd-section-pad {
   background: var(--sd-section-bg, var(--sd-bg, #FFFFFF));
   padding-block: var(--sd-pad-y, 72px);
-  content-visibility: auto;
-  contain-intrinsic-size: auto 640px;
 }
 
 /* Typography */
@@ -632,18 +630,30 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 @media (max-width: 767px) {
-  .sd-container { padding-inline: 14px; }
-  .sd-logo-img { height: 32px; width: auto; max-width: 108px; object-fit: contain; }
+  .sd-container { padding-inline: 12px; }
+  .sd-section-pad { padding-block: 44px; }
+  .sd-header__inner { min-height: 60px; gap: 8px; }
+  .sd-logo-img { height: clamp(32px, 9.5vw, 38px); width: auto; max-width: clamp(100px, 30vw, 122px); object-fit: contain; }
   .sd-announcement__actions { display: none; }
-  .sd-hero, .sd-hero__slides, .sd-hero__slide.is-active { min-height: 460px; }
+  .sd-hero, .sd-hero__slides, .sd-hero__slide.is-active { min-height: 440px; }
+  .sd-hero__title { font-size: clamp(1.5rem, 6vw, 2.15rem); line-height: 1.15; }
+  .sd-hero__desc { font-size: clamp(0.8rem, 3.4vw, 0.94rem); margin-top: 12px; }
   .sd-trust__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .sd-collections-grid.sd-cols--4, .sd-collections-grid.sd-cols--3 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .sd-collection-card { border-radius: 12px; }
   .sd-collection-card__media { aspect-ratio: 16/10; }
-  .sd-collection-card__tag { top: 6px; left: 6px; padding: 2px 7px; font-size: 0.52rem; }
+  .sd-collection-card__tag {
+    top: 6px; left: 6px; max-width: calc(100% - 12px);
+    padding: 2px 7px; font-size: clamp(0.48rem, 2vw, 0.56rem);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .sd-collection-card__content { padding: 10px; }
-  .sd-collection-card__title { font-size: 0.78rem; line-height: 1.24; }
-  .sd-collection-card__subtitle { font-size: 0.66rem; line-height: 1.35; margin: 3px 0 0; }
-  .sd-collection-card__cta { margin-top: 8px; padding-top: 6px; font-size: 0.66rem; }
+  .sd-collection-card__title { font-size: clamp(0.75rem, 3.3vw, 0.88rem); line-height: 1.25; }
+  .sd-collection-card__subtitle {
+    font-size: clamp(0.64rem, 2.7vw, 0.74rem); line-height: 1.35; margin: 3px 0 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .sd-collection-card__cta { margin-top: 8px; padding-top: 6px; font-size: clamp(0.65rem, 2.7vw, 0.75rem); }
   .sd-product-grid.sd-cols--4, .sd-product-grid.sd-cols--3 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .sd-split, .sd-collection-banner__grid, .sd-pdp__layout, .sd-contact-grid, .sd-projects-grid, .sd-form-grid, .sd-spec-table { grid-template-columns: 1fr; }
   .sd-split--reverse .sd-split__media { order: 0; }

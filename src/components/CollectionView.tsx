@@ -398,7 +398,7 @@ export function CollectionView({
             ) : (
               <MotionStagger
                 key={`${handle}-${sortBy}-${columns}`}
-                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 ${
+                className={`grid grid-cols-2 md:grid-cols-3 gap-2.5 min-[390px]:gap-3 sm:gap-4 md:gap-5 ${
                   columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
                 }`}
               >

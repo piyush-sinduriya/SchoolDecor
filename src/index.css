@@ -151,10 +151,9 @@
   transform: translateZ(0);
 }
 
-/* Skip layout/paint cost for below-the-fold sections until scrolled near viewport */
+/* Smooth section rendering across all mobile and desktop viewports */
 .sd-lazy-section {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 640px;
+  position: relative;
 }
 
 .sd-light-grid-bg {

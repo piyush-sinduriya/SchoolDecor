@@ -209,28 +209,29 @@ export const SchoolCampusMap: React.FC<SchoolCampusMapProps> = ({
     <section
       id="campus-map-section"
       data-testid="campus-map-section"
-      className="py-12 md:py-24 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5DEC9]"
+      className="py-10 sm:py-14 md:py-24 px-3.5 sm:px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5DEC9]"
     >
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-7 md:mb-10">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-5 mb-6 md:mb-10">
         <div className="text-left">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C85A32] mb-2">
-            <Sparkles className="w-3.5 h-3.5" /> Head Office, Manufacturing Factory & Regional Hubs
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10.5px] sm:text-xs font-bold uppercase tracking-widest text-[#C85A32] mb-1.5 sm:mb-2">
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
+            <span>Head Office, Manufacturing Factory &amp; Regional Hubs</span>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#1E1E1C] leading-[1.15]">
-            Visit School Decor Showroom & Factory
+          <h2 className="font-serif text-[22px] sm:text-3xl md:text-4xl text-[#1E1E1C] leading-[1.15]">
+            Visit School Decor Showroom &amp; Factory
           </h2>
-          <p className="text-[#5C5A54] text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
+          <p className="text-[#5C5A54] text-xs sm:text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
             Inspect our 18mm FSC birch joinery, non-toxic Montessori learning kits, and heavy-duty school furniture at our Google-verified <strong>Laxmi Nagar, New Delhi Head Office</strong>, our <strong>Delhi NCR Manufacturing Factory</strong>, or our regional hubs across India.
           </p>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2">
           {[
             { id: 'all', label: 'All 6 Locations' },
             { id: 'studio', label: 'Head Office & Studios' },
-            { id: 'dispatch', label: 'School Decor Factory & Craft' },
+            { id: 'dispatch', label: 'Factory & Craft' },
             { id: 'stem', label: 'STEM & Labs' },
           ].map((tab) => {
             const active = activeCategory === tab.id;
@@ -246,7 +247,7 @@ export const SchoolCampusMap: React.FC<SchoolCampusMapProps> = ({
                     setSelectedHubId(nextList[0].id);
                   }
                 }}
-                className={`px-3.5 sm:px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-2.5 sm:px-4 py-2 rounded-lg text-[10.5px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer text-center truncate ${
                   active
                     ? 'bg-[#2C4C3E] text-white shadow-sm'
                     : 'bg-white text-[#1E1E1C] border border-[#E5DEC9] hover:border-[#2C4C3E]'

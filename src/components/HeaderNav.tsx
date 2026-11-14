@@ -71,15 +71,15 @@ export function HeaderNav({
 
   return (
     <>
-      <div className="bg-[#005D28] text-white text-xs py-2">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-          <p className="font-medium m-0 text-[11px] sm:text-xs">
-            <span className="sm:hidden">School Furniture, Play Zones &amp; Labs · Pan-India</span>
+      <div className="bg-[#005D28] text-white text-xs py-1.5 sm:py-2">
+        <div className="max-w-[1320px] mx-auto px-3 sm:px-4 md:px-6 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+          <p className="font-medium m-0 text-[10.5px] min-[375px]:text-[11px] sm:text-xs truncate max-w-[54vw] sm:max-w-none">
+            <span className="sm:hidden">School Furniture, Play &amp; Labs</span>
             <span className="hidden sm:inline">
               Complete School Furniture, Play Zones, Laboratories &amp; Campus Flooring Across India
             </span>
           </p>
-          <div className="flex md:hidden items-center gap-3 text-[11px]">
+          <div className="flex md:hidden items-center gap-2.5 text-[10.5px] min-[375px]:text-[11px] shrink-0">
             <a href={SCHOOL_DECOR_CONTACT.telHref} className="font-mono-num font-semibold underline-offset-2 hover:underline">
               {SCHOOL_DECOR_CONTACT.phoneDisplay}
             </a>
@@ -125,13 +125,14 @@ export function HeaderNav({
         }`}
         onMouseLeave={() => setActiveMega(null)}
       >
-        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 h-[60px] sm:h-[68px] md:h-[72px] flex items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <div className="relative max-w-[1320px] mx-auto px-3 sm:px-4 md:px-6 h-[60px] min-[375px]:h-[64px] sm:h-[68px] md:h-[72px] flex items-center justify-between gap-2 sm:gap-4">
+          {/* Left on Mobile: Hamburger Toggle; Left on Desktop: Brand Logo */}
+          <div className="flex items-center gap-2 min-w-[72px] lg:min-w-0">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open mobile navigation"
-              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 inline-flex items-center justify-center rounded-lg border border-[#E5DEC9] bg-[#FAF7F0] hover:bg-[#F0ECE1] text-[#181A18] shrink-0 cursor-pointer"
+              className="lg:hidden w-9 h-9 min-[375px]:w-10 min-[375px]:h-10 inline-flex items-center justify-center rounded-lg border border-[#E5DEC9] bg-[#FAF7F0] hover:bg-[#F0ECE1] text-[#181A18] shrink-0 cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -140,15 +141,29 @@ export function HeaderNav({
               type="button"
               onClick={() => handleNav({ page: 'home' })}
               aria-label="School Decor Home"
-              className="shrink-0 flex items-center py-1 cursor-pointer bg-transparent border-0 p-0 group"
+              className="hidden lg:flex shrink-0 items-center py-1.5 cursor-pointer bg-transparent border-0 p-0 group"
             >
               <img
                 src={LOGO_SRC}
                 alt="School Decor"
-                className="h-8 sm:h-9 md:h-10 w-auto max-w-[108px] sm:max-w-[126px] md:max-w-[138px] object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+                className="h-10 w-auto max-w-[136px] object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
               />
             </button>
           </div>
+
+          {/* Center on All Mobile & Tablet Sizes (<1024px): Crisp, Balanced Brand Logo */}
+          <button
+            type="button"
+            onClick={() => handleNav({ page: 'home' })}
+            aria-label="School Decor Home"
+            className="lg:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center py-1.5 px-1 cursor-pointer bg-transparent border-0"
+          >
+            <img
+              src={LOGO_SRC}
+              alt="School Decor"
+              className="h-[34px] min-[360px]:h-[36px] min-[390px]:h-[38px] sm:h-[42px] w-auto max-w-[104px] min-[360px]:max-w-[114px] min-[390px]:max-w-[122px] sm:max-w-[134px] object-contain block"
+            />
+          </button>
 
           <nav className="hidden lg:flex items-center gap-5" aria-label="Primary Storefront Navigation">
             {MEGA_MENUS.map((menu) => (

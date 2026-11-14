@@ -386,29 +386,29 @@ export function HomeView({
                     </p>
                   </div>
 
-                  <h1 className="text-[26px] sm:text-5xl lg:text-[3.35rem] font-extrabold leading-[1.12] sm:leading-[1.06] tracking-tight text-[#161A17] text-balance">
+                  <h1 className="text-[clamp(1.45rem,6vw,2.15rem)] sm:text-5xl lg:text-[3.35rem] font-extrabold leading-[1.12] sm:leading-[1.06] tracking-tight text-[#161A17] text-balance">
                     {slide.titleLead}{' '}
                     <span
-                      className="font-script text-[1.16em] sm:text-[1.18em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-3 sm:decoration-4 underline-offset-4"
+                      className="font-script text-[1.14em] sm:text-[1.18em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-3 sm:decoration-4 underline-offset-4"
                       style={{ color: slide.accentHex }}
                     >
                       {slide.titleScript}
                     </span>
                   </h1>
 
-                  <p className="mt-3 sm:mt-4 text-[13px] sm:text-base lg:text-[17px] text-[#353C36] max-w-[54ch] leading-relaxed font-medium">
+                  <p className="mt-2.5 sm:mt-4 text-[clamp(0.78rem,3.3vw,0.92rem)] sm:text-base lg:text-[17px] text-[#353C36] max-w-[54ch] leading-relaxed font-medium">
                     {slide.desc}
                   </p>
 
-                  <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-xs font-mono-num font-semibold text-[#4D554E]">
+                  <p className="mt-2 sm:mt-3 text-[10.5px] min-[375px]:text-[11px] sm:text-xs font-mono-num font-semibold text-[#4D554E]">
                     {slide.highlightStat}
                   </p>
 
-                  <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-3">
+                  <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-3">
                     <button
                       type="button"
                       onClick={() => onNavigate(slide.ctaTarget)}
-                      className="sd-btn-sheen group flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
+                      className="sd-btn-sheen group flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 sm:gap-2 px-3 min-[375px]:px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-[11.5px] min-[375px]:text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
                     >
                       <span>{slide.ctaLabel}</span>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -416,7 +416,7 @@ export function HomeView({
                     <button
                       type="button"
                       onClick={() => onOpenQuote(slide.title)}
-                      className="flex-1 sm:flex-initial text-center px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#DCD4C0] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
+                      className="flex-1 sm:flex-initial text-center px-3 min-[375px]:px-4 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-[11.5px] min-[375px]:text-xs sm:text-sm border border-[#DCD4C0] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
                     >
                       Request a Quote
                     </button>
@@ -1115,35 +1115,25 @@ export function HomeView({
       })()}
 
       {/* SECTION C: EXPLORE OUR COLLECTIONS */}
-      <section className="bg-white py-12 sm:py-14 md:py-20 sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="mb-6 sm:mb-7 md:mb-9 text-left"
-          >
-            <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
+      <section className="bg-white py-10 sm:py-14 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-3 sm:px-4 md:px-6">
+          <div className="mb-5 sm:mb-7 md:mb-9 text-left">
+            <p className="text-[10.5px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
               Product Universe
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#181A18] tracking-tight">
+            <h2 className="text-[clamp(1.35rem,5.2vw,1.85rem)] sm:text-3xl md:text-4xl font-extrabold text-[#181A18] tracking-tight">
               Explore Our Collections
             </h2>
-            <p className="text-[#525852] text-xs sm:text-sm md:text-base mt-1.5 sm:mt-2 max-w-[62ch] leading-relaxed">
+            <p className="text-[#525852] text-[clamp(0.75rem,3vw,0.88rem)] sm:text-sm md:text-base mt-1.5 sm:mt-2 max-w-[62ch] leading-relaxed">
               Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[390px]:gap-3 sm:gap-5">
             {COLLECTIONS_SHOWCASE.map((col, idx) => (
-              <motion.button
+              <button
                 key={col.title}
                 type="button"
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.12 }}
-                transition={{ duration: 0.55, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
                 onClick={() => onNavigate({ page: 'collection', handle: col.handle })}
                 className="group relative flex flex-col rounded-xl sm:rounded-2xl overflow-hidden border border-[#E5DEC9] text-left bg-white shadow-2xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-[#007B36]/40 cursor-pointer p-0 h-full"
               >
@@ -1157,24 +1147,24 @@ export function HomeView({
                   />
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none"
+                    className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-black/10 pointer-events-none"
                   />
-                  <span className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 z-10 px-1.5 sm:px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#181A18] shadow-xs border border-black/5 leading-tight">
+                  <span className="absolute top-1.5 left-1.5 min-[375px]:top-2 min-[375px]:left-2 sm:top-3 sm:left-3 z-10 px-1.5 min-[375px]:px-2 sm:px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-[clamp(0.48rem,2vw,0.58rem)] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#181A18] shadow-xs border border-black/5 leading-tight max-w-[calc(100%-12px)] truncate">
                     {col.tag}
                   </span>
                 </div>
 
-                {/* Bottom Dedicated White Content Area — Zero Overlap on All Mobile & Desktop Screens */}
-                <div className="p-2.5 sm:p-4 bg-white flex-1 flex flex-col justify-between text-left border-t border-[#EFEAD9] w-full">
+                {/* Bottom Dedicated White Content Area — Fluid Responsive Typography on All Mobile Sizes (320px–768px) */}
+                <div className="p-2.5 min-[375px]:p-3 sm:p-4 bg-white flex-1 flex flex-col justify-between text-left border-t border-[#EFEAD9] w-full">
                   <div>
-                    <h3 className="text-[12.5px] sm:text-[15px] md:text-base font-extrabold text-[#161A17] group-hover:text-[#007B36] leading-[1.24] transition-colors">
+                    <h3 className="text-[clamp(0.75rem,3.3vw,0.92rem)] sm:text-[15px] md:text-base font-extrabold text-[#161A17] group-hover:text-[#007B36] leading-[1.22] transition-colors">
                       {col.title}
                     </h3>
-                    <p className="text-[10.5px] sm:text-xs text-[#525852] mt-1 leading-[1.35] line-clamp-2">
+                    <p className="text-[clamp(0.64rem,2.7vw,0.74rem)] sm:text-xs text-[#525852] mt-1 leading-[1.35] line-clamp-2">
                       {col.subtitle}
                     </p>
                   </div>
-                  <span className="inline-flex items-center justify-between sm:justify-start gap-1 mt-2 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-[#F4F0E6] text-[10.5px] sm:text-xs font-bold text-[#C22768] group-hover:text-[#007B36] transition-colors w-full">
+                  <span className="inline-flex items-center justify-between sm:justify-start gap-1 mt-2 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-[#F4F0E6] text-[clamp(0.65rem,2.7vw,0.75rem)] sm:text-xs font-bold text-[#C22768] group-hover:text-[#007B36] transition-colors w-full">
                     <span>Explore Range</span>
                     <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover:translate-x-1 shrink-0" />
                   </span>
@@ -1184,7 +1174,7 @@ export function HomeView({
                   aria-hidden="true"
                   className={`absolute inset-x-0 bottom-0 h-[3px] ${LOGO_BAR_COLORS[idx % 4]} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-20`}
                 />
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -1288,9 +1278,9 @@ export function HomeView({
       />
 
       {/* SECTION E: ABOUT SCHOOL DECOR + KERNJOSH TACTILE PROCESS ACCORDION */}
-      <section className="bg-[#F5F1E6] py-16 md:py-20 border-y border-[#E6DFCE] sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6 space-y-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <section className="bg-[#F5F1E6] py-11 sm:py-16 md:py-20 border-y border-[#E6DFCE] sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 space-y-10 sm:space-y-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.98 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -1310,29 +1300,29 @@ export function HomeView({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.09, ease: EASE_OUT_EXPO }}
-              className="lg:col-span-6"
+              className="lg:col-span-6 text-left"
             >
               <div className="flex items-center gap-2.5 mb-2">
                 <span className="inline-block w-6 h-[3px] rounded-full bg-[#F088B0]" aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768]">
                   About School Decor
                 </p>
               </div>
-              <h2 className="text-2xl md:text-4xl font-extrabold text-[#181A18] tracking-tight text-balance">
+              <h2 className="text-[22px] sm:text-3xl md:text-4xl font-extrabold text-[#181A18] tracking-tight text-balance">
                 Creating Inspiring{' '}
                 <span className="font-script text-[1.2em] text-[#007B36]">Learning Environments</span>
               </h2>
-              <p className="mt-4 text-[#525852] leading-relaxed">
+              <p className="mt-3 sm:mt-4 text-xs sm:text-base text-[#525852] leading-relaxed">
                 School Decor equips schools, preschools and educational institutions with thoughtfully designed furniture, activity equipment, laboratories, outdoor play zones and complete campus infrastructure products.
               </p>
-              <p className="mt-3 text-[#525852] leading-relaxed">
+              <p className="mt-2.5 sm:mt-3 text-xs sm:text-base text-[#525852] leading-relaxed">
                 Whether you are launching a new early-learning center or upgrading a multi-wing K-12 campus, our team helps you plan spaces that balance ergonomics, safety and daily longevity.
               </p>
-              <div className="mt-6">
+              <div className="mt-5 sm:mt-6">
                 <button
                   type="button"
                   onClick={() => onNavigate({ page: 'about' })}
-                  className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-bold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                  className="group inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
                 >
                   <span>About Us</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -1341,23 +1331,23 @@ export function HomeView({
             </motion.div>
           </div>
 
-          {/* Interactive Numbered Process Accordion + Live Sticker Cutout Preview (webdesign.kernjosh.com signature) */}
-          <div className="pt-12 border-t border-[#E2DAC8] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-7">
-              <p className="font-script text-2xl font-bold text-[#C22768] mb-1">
+          {/* Interactive Numbered Process Accordion + Live Sticker Cutout Preview */}
+          <div className="pt-8 sm:pt-12 border-t border-[#E2DAC8] grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-7 text-left">
+              <p className="font-script text-xl sm:text-2xl font-bold text-[#C22768] mb-1">
                 From floor plan to first bell
               </p>
-              <h3 className="text-2xl md:text-3xl font-extrabold text-[#181A18] tracking-tight mb-6">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#181A18] tracking-tight mb-4 sm:mb-6">
                 How We Build Your Campus
               </h3>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3">
                 {PROCESS_STEPS.map((proc, idx) => {
                   const isOpen = openStepIdx === idx;
                   return (
                     <div
                       key={proc.step}
-                      className={`rounded-2xl border transition-colors duration-200 ${
+                      className={`rounded-xl sm:rounded-2xl border transition-colors duration-200 ${
                         isOpen
                           ? 'bg-white border-[#181A18] shadow-md'
                           : 'bg-white/65 border-[#DDD5C3] hover:bg-white'
@@ -1367,11 +1357,11 @@ export function HomeView({
                         type="button"
                         aria-expanded={isOpen}
                         onClick={() => setOpenStepIdx(idx)}
-                        className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left cursor-pointer"
+                        className="w-full px-3.5 py-3 sm:px-5 sm:py-4 flex items-center justify-between gap-2.5 sm:gap-4 text-left cursor-pointer"
                       >
-                        <div className="flex items-center gap-4 min-w-0">
+                        <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
                           <span
-                            className={`w-8 h-8 rounded-full font-mono-num text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
+                            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full font-mono-num text-[11px] sm:text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
                               isOpen
                                 ? 'bg-[#007B36] text-white'
                                 : 'bg-[#F5F1E6] text-[#181A18] border border-[#DDD5C3]'
@@ -1379,11 +1369,11 @@ export function HomeView({
                           >
                             {proc.step}
                           </span>
-                          <span className="text-sm sm:text-base font-bold text-[#181A18]">
+                          <span className="text-[13px] sm:text-base font-bold text-[#181A18] leading-snug">
                             {proc.title}
                           </span>
                         </div>
-                        <span className="w-7 h-7 rounded-full border border-[#E3E5E0] flex items-center justify-center text-[#525852] shrink-0">
+                        <span className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-[#E3E5E0] flex items-center justify-center text-[#525852] shrink-0">
                           {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                         </span>
                       </button>
@@ -1397,18 +1387,18 @@ export function HomeView({
                             transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
                             className="overflow-hidden"
                           >
-                            <div className="px-4 pb-4 sm:px-5 sm:pb-5 sm:pl-17 space-y-3">
+                            <div className="px-3.5 pb-3.5 sm:px-5 sm:pb-5 sm:pl-17 space-y-2.5 sm:space-y-3">
                               <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#EAF7EF] text-[#007B36] text-[10px] font-bold uppercase tracking-wider">
                                 {proc.phaseLabel}
                               </span>
-                              <p className="text-sm text-[#525852] leading-relaxed">
+                              <p className="text-xs sm:text-sm text-[#525852] leading-relaxed">
                                 {proc.desc}
                               </p>
-                              <div className="flex flex-wrap gap-2 pt-1">
+                              <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
                                 {proc.deliverables.map((del) => (
                                   <span
                                     key={del}
-                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F5F1E6] border border-[#E2DAC8] text-[11px] font-semibold text-[#181A18]"
+                                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg bg-[#F5F1E6] border border-[#E2DAC8] text-[10.5px] sm:text-[11px] font-semibold text-[#181A18]"
                                   >
                                     <CheckCircle2 className="w-3 h-3 text-[#007B36] shrink-0" />
                                     <span>{del}</span>
@@ -1430,17 +1420,17 @@ export function HomeView({
                 const activeStep = PROCESS_STEPS[openStepIdx] || PROCESS_STEPS[0];
                 const cutout = CUTOUT_SHOWCASE_ITEMS[activeStep.cutoutIdx] || CUTOUT_SHOWCASE_ITEMS[0];
                 return (
-                  <div className="rounded-3xl bg-white border border-[#DDD5C3] p-6 sm:p-8 shadow-sm text-center">
+                  <div className="rounded-2xl sm:rounded-3xl bg-white border border-[#DDD5C3] p-4 sm:p-8 shadow-sm text-center">
                     <div className="flex items-center justify-between gap-2">
-                      <p className="font-script text-xl font-bold text-[#007B36]">
+                      <p className="font-script text-lg sm:text-xl font-bold text-[#007B36]">
                         Step 0{activeStep.step} Studio Match
                       </p>
-                      <span className="text-[11px] font-mono-num font-semibold text-[#525852] bg-[#F5F1E6] px-2.5 py-0.5 rounded-full">
+                      <span className="text-[10.5px] sm:text-[11px] font-mono-num font-semibold text-[#525852] bg-[#F5F1E6] px-2.5 py-0.5 rounded-full">
                         {cutout.ageGroup}
                       </span>
                     </div>
                     <div
-                      className="mt-3 h-56 sm:h-64 rounded-2xl flex items-center justify-center p-6 relative overflow-hidden"
+                      className="mt-3 h-44 sm:h-64 rounded-2xl flex items-center justify-center p-4 sm:p-6 relative overflow-hidden"
                       style={{ backgroundColor: cutout.tintBg }}
                     >
                       <div
@@ -1460,17 +1450,17 @@ export function HomeView({
                         />
                       </AnimatePresence>
                     </div>
-                    <h4 className="mt-4 text-base font-bold text-[#181A18]">{cutout.title}</h4>
+                    <h4 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-[#181A18]">{cutout.title}</h4>
                     <p className="mt-1 text-xs text-[#525852]">{cutout.tagline}</p>
-                    <p className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono-num text-[#007B36] bg-[#EAF7EF] px-3 py-1 rounded-full">
-                      <Ruler className="w-3.5 h-3.5" />
-                      <span>{cutout.dimensions} · {cutout.materials}</span>
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono-num text-[#007B36] bg-[#EAF7EF] px-2.5 sm:px-3 py-1 rounded-full max-w-full">
+                      <Ruler className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">{cutout.dimensions} · {cutout.materials}</span>
                     </p>
                     <div>
                       <button
                         type="button"
                         onClick={() => openCutoutQuickView(cutout.productHandle, cutout.collectionHandle)}
-                        className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#181A18] hover:bg-[#007B36] text-white text-xs font-bold transition-colors cursor-pointer"
+                        className="mt-3.5 sm:mt-4 inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#181A18] hover:bg-[#007B36] text-white text-xs font-bold transition-colors cursor-pointer"
                       >
                         <span>Inspect Specification</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -1486,8 +1476,8 @@ export function HomeView({
 
       {/* SECTION F: PRODUCT CATEGORY SHOWCASE (5 ALTERNATING EDITORIAL SECTIONS WITH MULTI-PLANE DEPTH) */}
       {EDITORIAL_SHOWCASES.map((item) => (
-        <section key={item.title} className={`${item.bg} py-14 md:py-16 sd-lazy-section`}>
-          <div className="max-w-[1320px] mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <section key={item.title} className={`${item.bg} py-11 sm:py-14 md:py-16 sd-lazy-section`}>
+          <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-center">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1508,22 +1498,22 @@ export function HomeView({
               </div>
               {item.cutout && (
                 <div
-                  className={`flex items-center gap-2.5 sm:gap-3 absolute bottom-3 right-3 sm:-bottom-5 ${
+                  className={`flex items-center gap-2 sm:gap-3 absolute bottom-2.5 right-2.5 sm:-bottom-5 ${
                     item.reverse ? 'sm:-left-4 sm:right-auto' : 'sm:-right-4'
-                  } px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-white/95 backdrop-blur-xs border border-[#E3E5E0] shadow-lg sd-float-gentle`}
+                  } px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-xl bg-white/95 backdrop-blur-xs border border-[#E3E5E0] shadow-lg sd-float-gentle max-w-[calc(100%-20px)]`}
                 >
                   <img
                     src={item.cutout}
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    className="w-12 h-11 sm:w-16 sm:h-14 object-contain"
+                    className="w-10 h-9 sm:w-16 sm:h-14 object-contain shrink-0"
                   />
-                  <div className="pr-1 text-left">
-                    <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
+                  <div className="pr-1 text-left min-w-0">
+                    <p className="text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
                       Featured Unit
                     </p>
-                    <p className="text-[11px] sm:text-xs font-bold text-[#181A18] whitespace-nowrap">
+                    <p className="text-[10.5px] sm:text-xs font-bold text-[#181A18] truncate">
                       {item.cutoutLabel}
                     </p>
                   </div>
@@ -1537,17 +1527,17 @@ export function HomeView({
               transition={{ duration: 0.65, delay: 0.09, ease: EASE_OUT_EXPO }}
               className={`lg:col-span-6 text-left ${item.reverse ? 'lg:order-1' : ''}`}
             >
-              <div className="flex items-center gap-2.5 mb-2">
+              <div className="flex items-center gap-2.5 mb-1.5 sm:mb-2">
                 <span className={`inline-block w-6 h-[3px] rounded-full ${item.accentBar}`} aria-hidden="true" />
-                <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768]">
                   {item.eyebrow}
                 </p>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#181A18] tracking-tight text-balance">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#181A18] tracking-tight text-balance">
                 {item.title}
               </h2>
-              <p className="mt-3 text-sm sm:text-base text-[#525852] leading-relaxed max-w-[52ch]">{item.desc}</p>
-              <ul className="mt-4 space-y-2">
+              <p className="mt-2.5 sm:mt-3 text-xs sm:text-base text-[#525852] leading-relaxed max-w-[52ch]">{item.desc}</p>
+              <ul className="mt-3.5 sm:mt-4 space-y-1.5 sm:space-y-2">
                 {item.specs.map((spec) => (
                   <li key={spec} className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#181A18]">
                     <CheckCircle2 className="w-4 h-4 text-[#007B36] shrink-0" />
@@ -1555,19 +1545,19 @@ export function HomeView({
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 flex flex-wrap gap-2.5 sm:gap-3">
+              <div className="mt-5 sm:mt-6 flex flex-wrap gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => onNavigate({ page: 'collection', handle: item.handle })}
-                  className="group flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
+                  className="group flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
                 >
                   <span>Explore Collection</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenQuote(item.title)}
-                  className="flex-1 sm:flex-initial text-center px-5 py-2.5 rounded-md border border-[#F5C7DA] bg-[#FDF1F6] hover:bg-[#fadce9] text-sm font-semibold text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
+                  className="flex-1 sm:flex-initial text-center px-4 sm:px-5 py-2.5 rounded-md border border-[#F5C7DA] bg-[#FDF1F6] hover:bg-[#fadce9] text-xs sm:text-sm font-semibold text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
                 >
                   Request a Quote
                 </button>
