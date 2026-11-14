@@ -369,7 +369,7 @@ export function HomeView({
           />
 
           {/* Main Foreground Content Container */}
-          <div className="relative z-10 max-w-[1320px] w-full mx-auto px-4 md:px-6 pt-10 sm:pt-14 lg:pt-16 pb-6 flex-1 flex items-center">
+          <div className="relative z-10 max-w-[1320px] w-full mx-auto px-3.5 sm:px-4 md:px-6 pt-7 sm:pt-14 lg:pt-16 pb-4 sm:pb-6 flex-1 flex items-center">
             <div className="w-full max-w-[600px]">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -379,44 +379,44 @@ export function HomeView({
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.42, ease: EASE_OUT_EXPO }}
                 >
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <span className="inline-block w-7 h-[3px] rounded-full bg-[#C22768]" aria-hidden="true" />
-                    <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="inline-block w-5 sm:w-7 h-[3px] rounded-full bg-[#C22768] shrink-0" aria-hidden="true" />
+                    <p className="text-[10.5px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest text-[#C22768] leading-snug">
                       0{slideIdx + 1} / 0{HERO_SLIDES.length} · {slide.eyebrow}
                     </p>
                   </div>
 
-                  <h1 className="text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold leading-[1.06] tracking-tight text-[#161A17] text-balance">
+                  <h1 className="text-[26px] sm:text-5xl lg:text-[3.35rem] font-extrabold leading-[1.12] sm:leading-[1.06] tracking-tight text-[#161A17] text-balance">
                     {slide.titleLead}{' '}
                     <span
-                      className="font-script text-[1.18em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-4 underline-offset-4"
+                      className="font-script text-[1.16em] sm:text-[1.18em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-3 sm:decoration-4 underline-offset-4"
                       style={{ color: slide.accentHex }}
                     >
                       {slide.titleScript}
                     </span>
                   </h1>
 
-                  <p className="mt-4 text-sm sm:text-base lg:text-[17px] text-[#353C36] max-w-[54ch] leading-relaxed font-medium">
+                  <p className="mt-3 sm:mt-4 text-[13px] sm:text-base lg:text-[17px] text-[#353C36] max-w-[54ch] leading-relaxed font-medium">
                     {slide.desc}
                   </p>
 
-                  <p className="mt-3 text-xs font-mono-num font-semibold text-[#4D554E]">
+                  <p className="mt-2.5 sm:mt-3 text-[11px] sm:text-xs font-mono-num font-semibold text-[#4D554E]">
                     {slide.highlightStat}
                   </p>
 
-                  <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
+                  <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-3">
                     <button
                       type="button"
                       onClick={() => onNavigate(slide.ctaTarget)}
-                      className="sd-btn-sheen group flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
+                      className="sd-btn-sheen group flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
                     >
                       <span>{slide.ctaLabel}</span>
-                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </button>
                     <button
                       type="button"
                       onClick={() => onOpenQuote(slide.title)}
-                      className="flex-1 sm:flex-initial text-center px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#DCD4C0] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
+                      className="flex-1 sm:flex-initial text-center px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#DCD4C0] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
                     >
                       Request a Quote
                     </button>
@@ -427,13 +427,13 @@ export function HomeView({
           </div>
 
           {/* Bottom 5-Banner Navigation Strip + Prev/Next Arrows */}
-          <div className="relative z-20 max-w-[1320px] w-full mx-auto px-4 md:px-6 pb-9 sm:pb-12">
-            <div className="rounded-2xl bg-white/94 backdrop-blur-md border border-[#E5DEC9] shadow-lg p-2 sm:p-2.5 flex items-center gap-2">
+          <div className="relative z-20 max-w-[1320px] w-full mx-auto px-3.5 sm:px-4 md:px-6 pb-8 sm:pb-12">
+            <div className="rounded-2xl bg-white/94 backdrop-blur-md border border-[#E5DEC9] shadow-lg p-1.5 sm:p-2.5 flex items-center gap-1.5 sm:gap-2">
               <button
                 type="button"
                 onClick={() => handleSlideChange(slideIdx - 1)}
                 aria-label="Previous hero banner"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -453,20 +453,20 @@ export function HomeView({
                       aria-selected={isActive}
                       data-testid={`hero-banner-tab-${idx}`}
                       onClick={() => handleSlideChange(idx)}
-                      className={`snap-start text-left px-3 py-2 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2 shrink-0 lg:shrink lg:min-w-0 ${
+                      className={`snap-start text-left px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-1.5 sm:gap-2 shrink-0 lg:shrink lg:min-w-0 ${
                         isActive
                           ? 'bg-[#FAF3EB] border-[#007B36] text-[#161A17] shadow-xs'
                           : 'bg-white hover:bg-[#FAF7F0] border-transparent text-[#4D554E]'
                       }`}
                     >
                       <span
-                        className={`text-[11px] font-mono-num font-extrabold shrink-0 ${
+                        className={`text-[10px] sm:text-[11px] font-mono-num font-extrabold shrink-0 ${
                           isActive ? 'text-[#007B36]' : 'text-[#7A827A]'
                         }`}
                       >
                         0{idx + 1}
                       </span>
-                      <span className="text-xs font-bold whitespace-nowrap lg:truncate">{s.tabLabel}</span>
+                      <span className="text-[11px] sm:text-xs font-bold whitespace-nowrap lg:truncate">{s.tabLabel}</span>
                     </button>
                   );
                 })}
@@ -476,7 +476,7 @@ export function HomeView({
                 type="button"
                 onClick={() => handleSlideChange(slideIdx + 1)}
                 aria-label="Next hero banner"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -499,9 +499,9 @@ export function HomeView({
       </section>
 
       {/* SECTION B: TRUST HIGHLIGHTS + EXPRESSIVE TILTED STORYTELLING (MYFRIDA + KERNJOSH) */}
-      <section className="bg-[#F5F1E6] pt-6 pb-12 border-b border-[#E6DFCE]">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 pb-10 border-b border-[#E2DAC8]">
+      <section className="bg-[#F5F1E6] pt-5 pb-10 sm:pt-6 sm:pb-12 border-b border-[#E6DFCE]">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5 pb-8 sm:pb-10 border-b border-[#E2DAC8]">
             {[
               {
                 icon: Layers,
@@ -536,14 +536,14 @@ export function HomeView({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.55, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
-                  className="group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/80 sm:bg-transparent border border-[#E5DEC9] sm:border-transparent transition-colors hover:bg-white"
+                  className="group flex flex-col sm:flex-row items-start gap-2.5 sm:gap-3.5 p-3 sm:p-3.5 rounded-xl bg-white/85 sm:bg-transparent border border-[#E5DEC9] sm:border-transparent transition-colors hover:bg-white"
                 >
-                  <div className={`w-10 h-10 rounded-lg ${item.badge} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105`}>
-                    <Icon className="w-5 h-5" />
+                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg ${item.badge} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105`}>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div className="text-left">
-                    <h2 className="text-sm font-bold text-[#181A18]">{item.title}</h2>
-                    <p className="text-xs text-[#525852] mt-1 leading-relaxed">{item.desc}</p>
+                    <h2 className="text-[12.5px] sm:text-sm font-extrabold text-[#181A18] leading-snug">{item.title}</h2>
+                    <p className="text-[11px] sm:text-xs text-[#525852] mt-1 leading-snug">{item.desc}</p>
                   </div>
                 </motion.div>
               );
@@ -556,9 +556,9 @@ export function HomeView({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
-            className="pt-8 sm:pt-10 md:pt-12 text-center max-w-3xl mx-auto px-1"
+            className="pt-7 sm:pt-10 md:pt-12 text-center max-w-3xl mx-auto px-1"
           >
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 mb-3.5 sm:mb-4">
               {[
                 { label: 'Preschool Wings', handle: 'kindergarten-furniture', bg: 'bg-[#F01818] text-white', rot: '-rotate-2 sm:-rotate-3' },
                 { label: 'Montessori Rooms', handle: 'montessori-material', bg: 'bg-[#007B36] text-white', rot: 'rotate-1 sm:rotate-2' },
@@ -569,23 +569,23 @@ export function HomeView({
                   key={tag.label}
                   type="button"
                   onClick={() => onNavigate({ page: 'collection', handle: tag.handle })}
-                  className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold uppercase tracking-wider shadow-sm cursor-pointer transition-transform duration-200 hover:scale-105 hover:rotate-0 ${tag.bg} ${tag.rot}`}
+                  className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg text-[10.5px] sm:text-xs font-extrabold uppercase tracking-wider shadow-sm cursor-pointer transition-transform duration-200 hover:scale-105 hover:rotate-0 ${tag.bg} ${tag.rot}`}
                 >
                   {tag.label}
                 </button>
               ))}
             </div>
-            <h2 className="text-2xl sm:text-5xl font-extrabold tracking-tight text-[#181A18] leading-[1.1] text-balance">
+            <h2 className="text-[22px] sm:text-5xl font-extrabold tracking-tight text-[#181A18] leading-[1.12] text-balance">
               Whatever wing you&rsquo;re planning,
             </h2>
-            <p className="font-script text-2xl sm:text-4xl font-bold text-[#007B36] mt-2 leading-tight">
+            <p className="font-script text-2xl sm:text-4xl font-bold text-[#007B36] mt-1.5 sm:mt-2 leading-tight">
               School Decor makes every classroom come alive.
             </p>
-            <div className="mt-6">
+            <div className="mt-5 sm:mt-6">
               <button
                 type="button"
                 onClick={() => onNavigate({ page: 'about' })}
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#C22768] hover:bg-[#9e1d53] text-white font-bold text-sm shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                className="group inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#C22768] hover:bg-[#9e1d53] text-white font-bold text-xs sm:text-sm shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
               >
                 <span>Meet School Decor</span>
                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -644,10 +644,10 @@ export function HomeView({
             style={{ backgroundColor: activeStageItem.stageBg }}
             className="text-[#161A17] py-14 md:py-20 transition-colors duration-500 overflow-x-clip relative border-b border-[#E5DEC9]"
           >
-            <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+            <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
               {/* Interactive Category Switcher & Finish Palette Toolbar */}
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mb-8 md:mb-10">
-                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-10">
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto">
                   {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
                     const isSelected = stageIdx === idx;
                     return (
@@ -659,7 +659,7 @@ export function HomeView({
                           setActiveHotspotIdx(0);
                         }}
                         aria-pressed={isSelected}
-                        className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer border ${
+                        className={`px-3 sm:px-5 py-2 rounded-full text-[11px] sm:text-sm font-bold transition-all duration-200 cursor-pointer border text-center truncate ${
                           isSelected
                             ? 'bg-[#161A17] text-white border-[#161A17] shadow-md -translate-y-0.5'
                             : 'bg-white/95 hover:bg-white text-[#161A17] border-[#D9D2C0] shadow-2xs'
@@ -672,8 +672,8 @@ export function HomeView({
                 </div>
 
                 {/* Live Studio Material Finish Swatch Switcher */}
-                <div className="flex flex-wrap items-center justify-center gap-2 bg-white/90 border border-[#E5DEC9] rounded-full px-3 py-1.5 shadow-2xs">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E] px-1">
+                <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 bg-white/90 border border-[#E5DEC9] rounded-full px-2.5 sm:px-3 py-1.5 shadow-2xs w-full sm:w-auto">
+                  <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#4D554E] px-1">
                     Finish:
                   </span>
                   {FINISH_PALETTES.map((pal) => {
@@ -685,14 +685,14 @@ export function HomeView({
                         data-testid={`stage-finish-${pal.id}`}
                         aria-pressed={isPal}
                         onClick={() => setStagePaletteId(pal.id)}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                        className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold transition-all cursor-pointer ${
                           isPal
                             ? 'bg-[#161A17] text-white'
                             : 'text-[#4D554E] hover:text-[#161A17] hover:bg-[#FAF7F0]'
                         }`}
                       >
                         <span
-                          className="w-2.5 h-2.5 rounded-full border border-white/70"
+                          className="w-2.5 h-2.5 rounded-full border border-white/70 shrink-0"
                           style={{ backgroundColor: pal.accentHex }}
                         />
                         <span>{pal.name.split('+')[1]?.trim()}</span>
@@ -703,45 +703,45 @@ export function HomeView({
               </div>
 
               {/* Centered Featured Cutout Interactive Stage with Hotspot Engineering Callouts */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pb-12 md:pb-16 border-b border-[#161A17]/10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center pb-10 sm:pb-12 md:pb-16 border-b border-[#161A17]/10">
                 <div className="lg:col-span-5 text-left">
                   <p
                     style={{ color: activeFinish.accentHex }}
-                    className="font-script text-2xl sm:text-3xl font-bold leading-none mb-2"
+                    className="font-script text-xl sm:text-3xl font-bold leading-none mb-1.5 sm:mb-2"
                   >
                     {activeStageItem.scriptTag}
                   </p>
-                  <h2 className="text-2xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight leading-[1.08] text-[#161A17] text-balance">
+                  <h2 className="text-[22px] sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight leading-[1.12] sm:leading-[1.08] text-[#161A17] text-balance">
                     {activeStageItem.title}
                   </h2>
-                  <p className="mt-2.5 text-sm sm:text-base text-[#4D554E] max-w-[46ch] leading-relaxed">
+                  <p className="mt-2 text-xs sm:text-base text-[#4D554E] max-w-[46ch] leading-relaxed">
                     {activeStageItem.tagline}
                   </p>
 
                   {/* Clean Technical Spec Readout Grid */}
-                  <div className="mt-4 p-3 rounded-xl bg-white/85 border border-[#E5DEC9] grid grid-cols-3 gap-2 text-left">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                  <div className="mt-3.5 sm:mt-4 p-2.5 sm:p-3 rounded-xl bg-white/85 border border-[#E5DEC9] grid grid-cols-3 gap-1.5 sm:gap-2 text-left">
+                    <div className="min-w-0">
+                      <p className="text-[9.5px] sm:text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
                         Dimensions
                       </p>
-                      <p className="text-[11px] sm:text-xs font-mono-num font-bold text-[#161A17] mt-0.5 leading-snug">
+                      <p className="text-[10.5px] sm:text-xs font-mono-num font-bold text-[#161A17] mt-0.5 leading-snug">
                         {activeStageItem.dimensions}
                       </p>
                     </div>
-                    <div className="border-l border-[#E5DEC9] pl-2">
-                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                    <div className="border-l border-[#E5DEC9] pl-1.5 sm:pl-2 min-w-0">
+                      <p className="text-[9.5px] sm:text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
                         Age Wing
                       </p>
-                      <p className="text-[11px] sm:text-xs font-bold text-[#161A17] mt-0.5 leading-snug">
+                      <p className="text-[10.5px] sm:text-xs font-bold text-[#161A17] mt-0.5 leading-snug">
                         {activeStageItem.ageGroup}
                       </p>
                     </div>
-                    <div className="border-l border-[#E5DEC9] pl-2">
-                      <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
+                    <div className="border-l border-[#E5DEC9] pl-1.5 sm:pl-2 min-w-0">
+                      <p className="text-[9.5px] sm:text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
                         Finish
                       </p>
                       <p
-                        className="text-[11px] sm:text-xs font-bold mt-0.5 leading-snug truncate"
+                        className="text-[10.5px] sm:text-xs font-bold mt-0.5 leading-snug truncate"
                         style={{ color: activeFinish.accentHex }}
                       >
                         {activeFinish.name}
@@ -750,12 +750,12 @@ export function HomeView({
                   </div>
 
                   {/* Interactive Ergonomic Grade Quick-Matcher */}
-                  <div className="mt-4 rounded-xl bg-white/95 border border-[#E5DEC9] p-3.5 text-left shadow-2xs">
+                  <div className="mt-3 sm:mt-4 rounded-xl bg-white/95 border border-[#E5DEC9] p-3 sm:p-3.5 text-left shadow-2xs">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
                         Ergonomic Grade Advisor
                       </span>
-                      <span className="text-[11px] font-mono-num font-semibold text-[#007B36]">
+                      <span className="text-[10.5px] sm:text-[11px] font-mono-num font-semibold text-[#007B36]">
                         {activeErgo.ageRange}
                       </span>
                     </div>
@@ -767,7 +767,7 @@ export function HomeView({
                             key={preset.id}
                             type="button"
                             onClick={() => setErgoPresetId(preset.id)}
-                            className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
+                            className={`px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] font-bold transition-colors cursor-pointer ${
                               selected
                                 ? 'bg-[#007B36] text-white'
                                 : 'bg-[#FAF7F0] text-[#4D554E] hover:text-[#161A17]'
@@ -780,7 +780,7 @@ export function HomeView({
                     </div>
                     <p
                       data-testid="ergo-advisor-spec"
-                      className="mt-2 pt-2 border-t border-[#EFEAD9] text-[11px] font-mono-num text-[#161A17]"
+                      className="mt-2 pt-2 border-t border-[#EFEAD9] text-[10.5px] sm:text-[11px] font-mono-num text-[#161A17]"
                     >
                       Desk <strong>{activeErgo.deskHeightMm} mm</strong> · Seat{' '}
                       <strong>{activeErgo.seatHeightMm} mm</strong> · {activeErgo.cornerRadius}
@@ -789,11 +789,11 @@ export function HomeView({
 
                   {/* Component & Material Breakdown Explorer (Replaced Numbered Pins) */}
                   {activeHotspot && (
-                    <div className="mt-3 rounded-xl bg-white border border-[#E5DEC9] shadow-sm p-3.5 text-left">
+                    <div className="mt-3 rounded-xl bg-white border border-[#E5DEC9] shadow-sm p-3 sm:p-3.5 text-left">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#C22768] mb-2">
                         Build &amp; Material Highlights
                       </p>
-                      <div className="flex flex-wrap gap-1.5 mb-2.5" role="tablist" aria-label="Product build components">
+                      <div className="flex flex-wrap gap-1.5 mb-2" role="tablist" aria-label="Product build components">
                         {activeStageItem.hotspots.map((spot, sIdx) => {
                           const selected = activeHotspotIdx === sIdx;
                           return (
@@ -803,7 +803,7 @@ export function HomeView({
                               role="tab"
                               aria-selected={selected}
                               onClick={() => setActiveHotspotIdx(sIdx)}
-                              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer border ${
+                              className={`px-2 sm:px-2.5 py-1 rounded-md text-[10.5px] sm:text-[11px] font-bold transition-colors cursor-pointer border ${
                                 selected
                                   ? 'bg-[#161A17] text-white border-[#161A17]'
                                   : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:text-[#161A17]'
@@ -822,7 +822,7 @@ export function HomeView({
                           exit={{ opacity: 0, y: -4 }}
                           transition={{ duration: 0.2 }}
                           data-testid="cutout-component-detail"
-                          className="text-xs text-[#4D554E] leading-relaxed"
+                          className="text-[11.5px] sm:text-xs text-[#4D554E] leading-relaxed"
                         >
                           {activeHotspot.detail}
                         </motion.p>
@@ -841,7 +841,7 @@ export function HomeView({
 
                     return (
                       <>
-                        <div className="mt-3 rounded-xl bg-white/95 border border-[#E5DEC9] p-3.5 text-left">
+                        <div className="mt-3 rounded-xl bg-white/95 border border-[#E5DEC9] p-3 sm:p-3.5 text-left">
                           {bulkQuote ? (
                             <>
                               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
@@ -853,17 +853,17 @@ export function HomeView({
                                   <span className="text-[10px] font-normal text-[#4D554E]">/ unit</span>
                                 </span>
                               </div>
-                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                              <div className="grid grid-cols-3 gap-1 sm:gap-1.5">
                                 {[
                                   { qty: 1 as const, label: 'Single 1–19' },
-                                  { qty: 25 as const, label: 'Class 20+ (8% Off)' },
-                                  { qty: 60 as const, label: 'Wing 50+ (14% Off)' },
+                                  { qty: 25 as const, label: 'Class 20+ (8%)' },
+                                  { qty: 60 as const, label: 'Wing 50+ (14%)' },
                                 ].map((t) => (
                                   <button
                                     key={t.qty}
                                     type="button"
                                     onClick={() => setCutoutTierQty(t.qty)}
-                                    className={`px-2 py-1.5 rounded-md text-[11px] sm:text-[10px] font-bold transition-colors cursor-pointer border ${
+                                    className={`px-1.5 sm:px-2 py-1.5 rounded-md text-[10px] font-bold transition-colors cursor-pointer border text-center ${
                                       cutoutTierQty === t.qty
                                         ? 'bg-[#007B36] text-white border-[#007B36]'
                                         : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:text-[#161A17]'
@@ -886,7 +886,7 @@ export function HomeView({
                           )}
                         </div>
 
-                        <div className="mt-4 flex flex-wrap items-center justify-start gap-2 sm:gap-2.5">
+                        <div className="mt-3.5 sm:mt-4 flex flex-wrap items-center justify-start gap-2 sm:gap-2.5">
                           <button
                             type="button"
                             onClick={() =>
@@ -895,9 +895,9 @@ export function HomeView({
                                 activeStageItem.collectionHandle
                               )
                             }
-                            className="sd-btn-sheen flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
+                            className="sd-btn-sheen flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             <span>Inspect Product</span>
                           </button>
                           <button
@@ -908,13 +908,13 @@ export function HomeView({
                             className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap"
                           >
                             <span>Explore Range</span>
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           </button>
                           {matchedProduct && (
                             <button
                               type="button"
                               onClick={() => onToggleCompare(matchedProduct)}
-                              className={`w-full sm:w-auto justify-center inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full border text-xs font-bold transition-colors cursor-pointer ${
+                              className={`w-full sm:w-auto justify-center inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-3 rounded-full border text-xs font-bold transition-colors cursor-pointer ${
                                 isCompared
                                   ? 'bg-[#161A17] text-white border-[#161A17]'
                                   : 'bg-white text-[#161A17] border-[#D9D2C0] hover:border-[#C22768]'
@@ -945,7 +945,7 @@ export function HomeView({
                     <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
 
-                  <div className="relative w-full max-w-[480px] h-[230px] sm:h-[350px] flex items-center justify-center">
+                  <div className="relative w-full max-w-[480px] h-[210px] sm:h-[350px] flex items-center justify-center">
                     <div
                       aria-hidden="true"
                       className="absolute inset-6 rounded-full blur-3xl pointer-events-none transition-colors duration-500"
@@ -1006,27 +1006,27 @@ export function HomeView({
               </div>
 
               {/* Scroll-Linked Parallax Grid of All 4 Cutouts */}
-              <div className="pt-10 md:pt-12">
-                <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+              <div className="pt-8 sm:pt-10 md:pt-12">
+                <div className="flex flex-wrap items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
+                    <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
                       Studio Cutout Series
                     </p>
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#161A17] tracking-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#161A17] tracking-tight">
                       Signature Floating Collection
                     </h3>
                   </div>
                   <button
                     type="button"
                     onClick={() => onNavigate({ page: 'collection', handle: 'all' })}
-                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#161A17] hover:bg-[#007B36] text-white text-xs sm:text-sm font-bold transition-all cursor-pointer"
+                    className="group inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#161A17] hover:bg-[#007B36] text-white text-xs sm:text-sm font-bold transition-all cursor-pointer"
                   >
                     <span>Shop All Products</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5 md:gap-6">
                   {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
                     const parallaxY = idx % 2 === 0 ? parallaxUp : parallaxDown;
                     return (
@@ -1049,33 +1049,33 @@ export function HomeView({
                               openCutoutQuickView(item.productHandle, item.collectionHandle);
                             }
                           }}
-                          className="group relative flex flex-col rounded-2xl border border-[#E5DEC9] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer h-full"
+                          className="group relative flex flex-col rounded-xl sm:rounded-2xl border border-[#E5DEC9] bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer h-full"
                         >
                           <div
-                            className="relative h-56 sm:h-60 flex items-center justify-center p-5 pb-7 overflow-hidden"
+                            className="relative h-36 sm:h-56 md:h-60 flex items-center justify-center p-3 sm:p-5 pb-5 sm:pb-7 overflow-hidden"
                             style={{ backgroundColor: item.tintBg }}
                           >
                             <div
                               aria-hidden="true"
-                              className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/5 h-3.5 rounded-full bg-[#161A17]/18 blur-md transition-all duration-500 group-hover:scale-x-115 group-hover:opacity-65"
+                              className="absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 w-3/5 h-3 sm:h-3.5 rounded-full bg-[#161A17]/18 blur-md transition-all duration-500 group-hover:scale-x-115 group-hover:opacity-65"
                             />
                             <img
                               src={item.image}
                               alt={item.title}
                               loading="lazy"
-                              className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_14px_18px_rgba(22,26,23,0.14)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-3 group-hover:scale-105"
+                              className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_14px_18px_rgba(22,26,23,0.14)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-2 sm:group-hover:-translate-y-3 group-hover:scale-105"
                             />
                           </div>
 
-                          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3 bg-white border-t border-[#EFEAD9]">
+                          <div className="p-2.5 sm:p-5 flex-1 flex flex-col justify-between gap-2 sm:gap-3 bg-white border-t border-[#EFEAD9]">
                             <div>
-                              <p className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E]">
+                              <p className="text-[9.5px] sm:text-[11px] font-bold uppercase tracking-wider text-[#4D554E] leading-snug">
                                 {item.category} · <span className="text-[#007B36]">{item.ageGroup}</span>
                               </p>
-                              <h4 className="text-sm sm:text-base font-bold text-[#161A17] mt-1 leading-snug group-hover:text-[#007B36] transition-colors">
+                              <h4 className="text-[12.5px] sm:text-base font-extrabold text-[#161A17] mt-1 leading-snug group-hover:text-[#007B36] transition-colors">
                                 {item.title}
                               </h4>
-                              <ul className="mt-2.5 space-y-1">
+                              <ul className="hidden sm:block mt-2.5 space-y-1">
                                 {item.specHighlights.slice(0, 2).map((spec) => (
                                   <li
                                     key={spec}
@@ -1087,13 +1087,13 @@ export function HomeView({
                                 ))}
                               </ul>
                             </div>
-                            <div className="flex items-center justify-between gap-2 pt-2.5 border-t border-[#F1EDE0]">
-                              <span className="text-xs font-semibold font-mono-num text-[#161A17]">
+                            <div className="flex items-center justify-between gap-1.5 pt-2 sm:pt-2.5 border-t border-[#F1EDE0]">
+                              <span className="text-[10.5px] sm:text-xs font-semibold font-mono-num text-[#161A17] truncate">
                                 {item.priceLabel}
                               </span>
-                              <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C22768] transition-transform duration-200 group-hover:translate-x-1">
+                              <span className="inline-flex items-center gap-0.5 sm:gap-1 text-[10.5px] sm:text-xs font-bold text-[#C22768] transition-transform duration-200 group-hover:translate-x-1 shrink-0">
                                 <span>Inspect</span>
-                                <ArrowRight className="w-3.5 h-3.5" />
+                                <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                               </span>
                             </div>
                           </div>
@@ -1115,27 +1115,27 @@ export function HomeView({
       })()}
 
       {/* SECTION C: EXPLORE OUR COLLECTIONS */}
-      <section className="bg-white py-14 md:py-20 sd-lazy-section">
+      <section className="bg-white py-12 sm:py-14 md:py-20 sd-lazy-section">
         <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="mb-7 md:mb-9 text-left"
+            className="mb-6 sm:mb-7 md:mb-9 text-left"
           >
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1.5">
+            <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1">
               Product Universe
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#181A18] tracking-tight">
               Explore Our Collections
             </h2>
-            <p className="text-[#525852] text-xs sm:text-sm md:text-base mt-2 max-w-[62ch] leading-relaxed">
+            <p className="text-[#525852] text-xs sm:text-sm md:text-base mt-1.5 sm:mt-2 max-w-[62ch] leading-relaxed">
               Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
             {COLLECTIONS_SHOWCASE.map((col, idx) => (
               <motion.button
                 key={col.title}
@@ -1147,8 +1147,8 @@ export function HomeView({
                 onClick={() => onNavigate({ page: 'collection', handle: col.handle })}
                 className="group relative flex flex-col rounded-xl sm:rounded-2xl overflow-hidden border border-[#E5DEC9] text-left bg-white shadow-2xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-[#007B36]/40 cursor-pointer p-0 h-full"
               >
-                {/* Top Image Frame with Clean Non-Overlapping Tag Pill */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F5F1E6] shrink-0">
+                {/* Top Image Frame with Compact Non-Overlapping Tag Pill */}
+                <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden bg-[#F5F1E6] shrink-0">
                   <img
                     src={col.image}
                     alt={col.title}
@@ -1157,26 +1157,26 @@ export function HomeView({
                   />
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 pointer-events-none"
+                    className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none"
                   />
-                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 px-2 sm:px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#181A18] shadow-xs border border-black/5">
+                  <span className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 z-10 px-1.5 sm:px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#181A18] shadow-xs border border-black/5 leading-tight">
                     {col.tag}
                   </span>
                 </div>
 
-                {/* Bottom Dedicated White Content Area — Never Overlaps Image or Badge */}
-                <div className="p-3 sm:p-4 bg-white flex-1 flex flex-col justify-between text-left border-t border-[#EFEAD9] w-full">
+                {/* Bottom Dedicated White Content Area — Zero Overlap on All Mobile & Desktop Screens */}
+                <div className="p-2.5 sm:p-4 bg-white flex-1 flex flex-col justify-between text-left border-t border-[#EFEAD9] w-full">
                   <div>
-                    <h3 className="text-[13px] sm:text-base font-extrabold text-[#161A17] group-hover:text-[#007B36] leading-snug transition-colors">
+                    <h3 className="text-[12.5px] sm:text-[15px] md:text-base font-extrabold text-[#161A17] group-hover:text-[#007B36] leading-[1.24] transition-colors">
                       {col.title}
                     </h3>
-                    <p className="text-[11px] sm:text-xs text-[#525852] mt-1 leading-snug line-clamp-2">
+                    <p className="text-[10.5px] sm:text-xs text-[#525852] mt-1 leading-[1.35] line-clamp-2">
                       {col.subtitle}
                     </p>
                   </div>
-                  <span className="inline-flex items-center gap-1 mt-2.5 pt-2 border-t border-[#F4F0E6] text-[11px] sm:text-xs font-bold text-[#C22768] group-hover:text-[#007B36] transition-colors w-full">
+                  <span className="inline-flex items-center justify-between sm:justify-start gap-1 mt-2 sm:mt-2.5 pt-1.5 sm:pt-2 border-t border-[#F4F0E6] text-[10.5px] sm:text-xs font-bold text-[#C22768] group-hover:text-[#007B36] transition-colors w-full">
                     <span>Explore Range</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 shrink-0" />
+                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover:translate-x-1 shrink-0" />
                   </span>
                 </div>
 
@@ -1191,17 +1191,17 @@ export function HomeView({
       </section>
 
       {/* SECTION D: FEATURED PRODUCTS */}
-      <section className="bg-[#FAF7F0] py-16 md:py-20 sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+      <section className="bg-[#FAF7F0] py-12 sm:py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="flex flex-wrap items-end justify-between gap-4 mb-9"
+            className="flex flex-wrap items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-9"
           >
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+              <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1.5 sm:mb-2">
                 Curated Catalog
               </p>
               <h2 className="text-2xl md:text-4xl font-bold text-[#161A17] tracking-tight">
@@ -1221,7 +1221,7 @@ export function HomeView({
                   role="tab"
                   aria-selected={activeTab === t.key}
                   onClick={() => setActiveTab(t.key as typeof activeTab)}
-                  className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  className={`px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-xs md:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                     activeTab === t.key
                       ? 'bg-[#007B36] text-white shadow-xs'
                       : 'text-[#4D554E] hover:text-[#161A17]'
@@ -1240,7 +1240,7 @@ export function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.32, ease: EASE_OUT_EXPO }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6"
             >
               {tabProducts.map((product, idx) => (
                 <motion.div
@@ -1267,11 +1267,11 @@ export function HomeView({
             </motion.div>
           </AnimatePresence>
 
-          <div className="mt-9 text-center">
+          <div className="mt-7 sm:mt-9 text-center">
             <button
               type="button"
               onClick={() => onNavigate({ page: 'collection', handle: 'all' })}
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#D9D2C0] bg-white hover:border-[#C22768] hover:text-[#C22768] text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+              className="group inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-[#D9D2C0] bg-white hover:border-[#C22768] hover:text-[#C22768] text-xs sm:text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
             >
               <span>Browse Full Catalog</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -1578,26 +1578,26 @@ export function HomeView({
       ))}
 
       {/* SECTION G: SCHOOL ENVIRONMENT GALLERY */}
-      <section className="bg-white py-16 md:py-20 sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+      <section className="bg-white py-12 sm:py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="mb-9"
+            className="mb-6 sm:mb-9"
           >
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+            <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1.5 sm:mb-2">
               Spaces in Focus
             </p>
             <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
               School Environment Gallery
             </h2>
-            <p className="text-[#525852] mt-2 max-w-[60ch]">
+            <p className="text-xs sm:text-sm md:text-base text-[#525852] mt-1.5 sm:mt-2 max-w-[60ch]">
               A visual look across classrooms, preschool interiors, Montessori rooms, laboratories, activity spaces, sensory rooms and playgrounds.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
             {ENVIRONMENT_GALLERY.map((tile, idx) => (
               <motion.button
                 key={tile.caption}
@@ -1608,7 +1608,7 @@ export function HomeView({
                 transition={{ duration: 0.52, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
                 onClick={() => onNavigate({ page: 'collection', handle: tile.handle })}
                 className={`group relative rounded-xl overflow-hidden border border-[#E3E5E0] text-left cursor-pointer p-0 transition-shadow duration-300 hover:shadow-lg ${
-                  tile.wide ? 'sm:col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
+                  tile.wide ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
                 }`}
               >
                 <img
@@ -1618,9 +1618,9 @@ export function HomeView({
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
                 <div
-                  className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white font-semibold text-xs sm:text-sm transition-transform duration-200 group-hover:-translate-y-0.5"
+                  className="absolute inset-x-0 bottom-0 p-2.5 sm:p-4 text-white font-bold text-[11.5px] sm:text-sm transition-transform duration-200 group-hover:-translate-y-0.5 leading-snug"
                   style={{
-                    background: 'linear-gradient(180deg, transparent, rgba(14,28,20,0.84))',
+                    background: 'linear-gradient(180deg, transparent, rgba(14,28,20,0.86))',
                   }}
                 >
                   {tile.caption}
@@ -1632,23 +1632,23 @@ export function HomeView({
       </section>
 
       {/* SECTION H: WHY CHOOSE SCHOOL DECOR */}
-      <section className="bg-[#F7F7F5] py-16 md:py-20 sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+      <section className="bg-[#F7F7F5] py-12 sm:py-16 md:py-20 sd-lazy-section">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="mb-9"
+            className="mb-6 sm:mb-9"
           >
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+            <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1.5 sm:mb-2">
               Our Approach
             </p>
             <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
               Why Choose School Decor
             </h2>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-4">
             {[
               {
                 icon: Layers,
@@ -1689,13 +1689,15 @@ export function HomeView({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.12 }}
                   transition={{ duration: 0.5, delay: idx * 0.06, ease: EASE_OUT_EXPO }}
-                  className="group p-6 bg-white border border-[#E3E5E0] rounded-xl transition-all duration-250 hover:-translate-y-1 hover:shadow-md hover:border-[#F5C7DA]"
+                  className={`group p-3.5 sm:p-6 bg-white border border-[#E3E5E0] rounded-xl transition-all duration-250 hover:-translate-y-1 hover:shadow-md hover:border-[#F5C7DA] ${
+                    idx === 4 ? 'col-span-2 lg:col-span-1' : ''
+                  }`}
                 >
-                  <div className={`w-10 h-10 rounded-lg ${pillar.badge} flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105`}>
-                    <Icon className="w-5 h-5" />
+                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg ${pillar.badge} flex items-center justify-center mb-2.5 sm:mb-4 transition-transform duration-200 group-hover:scale-105`}>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <h3 className="text-sm font-bold text-[#181A18] mb-2">{pillar.title}</h3>
-                  <p className="text-xs text-[#525852] leading-relaxed">{pillar.desc}</p>
+                  <h3 className="text-[12.5px] sm:text-sm font-extrabold text-[#181A18] mb-1 sm:mb-2 leading-snug">{pillar.title}</h3>
+                  <p className="text-[11px] sm:text-xs text-[#525852] leading-snug sm:leading-relaxed">{pillar.desc}</p>
                 </motion.div>
               );
             })}

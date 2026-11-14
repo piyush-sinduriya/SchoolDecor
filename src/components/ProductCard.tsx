@@ -24,7 +24,7 @@ export function ProductCard({
   const primaryIsCutout = Boolean(product.isCutout || product.images[0]?.includes('cutout_'));
 
   return (
-    <article className="group flex flex-col bg-white border border-[#E5DEC9] rounded-2xl overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:border-[#BDE2CB]">
+    <article className="group flex flex-col bg-white border border-[#E5DEC9] rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:border-[#BDE2CB]">
       <div className="relative aspect-[4/3] bg-[#FAF7F0] overflow-hidden">
         <button
           type="button"
@@ -33,10 +33,10 @@ export function ProductCard({
           className="relative block w-full h-full p-0 border-0 bg-transparent cursor-pointer"
         >
           {primaryIsCutout ? (
-            <div className="w-full h-full flex items-center justify-center p-4 pb-6 bg-[radial-gradient(circle_at_50%_45%,#FFFFFF_0%,#F6F2E8_100%)]">
+            <div className="w-full h-full flex items-center justify-center p-2.5 sm:p-4 pb-4 sm:pb-6 bg-[radial-gradient(circle_at_50%_45%,#FFFFFF_0%,#F6F2E8_100%)]">
               <div
                 aria-hidden="true"
-                className="absolute bottom-3 left-1/2 -translate-x-1/2 w-3/5 h-3.5 rounded-full bg-[#161A17]/15 blur-md transition-all duration-500 group-hover:scale-x-110 group-hover:opacity-60"
+                className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 w-3/5 h-3 sm:h-3.5 rounded-full bg-[#161A17]/15 blur-md transition-all duration-500 group-hover:scale-x-110 group-hover:opacity-60"
               />
               <img
                 src={product.images[0]}
@@ -64,15 +64,15 @@ export function ProductCard({
         </button>
 
         {onSale ? (
-          <span className="absolute top-2.5 left-2.5 z-30 px-2 py-0.5 rounded bg-[#D91B22] text-white text-[10px] font-bold tracking-wider uppercase">
+          <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-30 px-1.5 sm:px-2 py-0.5 rounded bg-[#D91B22] text-white text-[8.5px] sm:text-[10px] font-bold tracking-wider uppercase">
             Sale
           </span>
         ) : product.quoteOnly ? (
-          <span className="absolute top-2.5 left-2.5 z-30 px-2 py-0.5 rounded bg-[#FDF2F7] border border-[#F4C5D8] text-[#C22768] text-[10px] font-bold tracking-wide">
+          <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-30 px-1.5 sm:px-2 py-0.5 rounded bg-[#FDF2F7] border border-[#F4C5D8] text-[#C22768] text-[8.5px] sm:text-[10px] font-bold tracking-wide">
             Quotation
           </span>
         ) : !product.available ? (
-          <span className="absolute top-2.5 left-2.5 z-30 px-2 py-0.5 rounded bg-white border border-[#E5DEC9] text-[#4D554E] text-[10px] font-bold">
+          <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-30 px-1.5 sm:px-2 py-0.5 rounded bg-white border border-[#E5DEC9] text-[#4D554E] text-[8.5px] sm:text-[10px] font-bold">
             Unavailable
           </span>
         ) : null}
@@ -80,17 +80,17 @@ export function ProductCard({
         <button
           type="button"
           onClick={() => onQuickView(product)}
-          className="absolute right-2.5 bottom-2.5 z-30 px-2.5 py-1 rounded-lg bg-white/95 border border-[#E5DEC9] text-xs font-semibold text-[#161A17] opacity-100 sm:opacity-0 sm:translate-y-1.5 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 focus-visible:opacity-100 focus-visible:translate-y-0 transition-all duration-200 shadow-sm cursor-pointer"
+          className="absolute right-1.5 bottom-1.5 sm:right-2.5 sm:bottom-2.5 z-30 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-white/95 border border-[#E5DEC9] text-[10px] sm:text-xs font-semibold text-[#161A17] opacity-100 sm:opacity-0 sm:translate-y-1.5 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 focus-visible:opacity-100 focus-visible:translate-y-0 transition-all duration-200 shadow-sm cursor-pointer"
         >
           Quick View
         </button>
       </div>
 
-      <div className="p-4 flex flex-col flex-1 gap-1.5">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-[#4D554E]">
+      <div className="p-2.5 sm:p-4 flex flex-col flex-1 gap-1 sm:gap-1.5">
+        <p className="text-[9.5px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#4D554E] truncate">
           {product.category}
         </p>
-        <h3 className="text-sm md:text-base font-bold text-[#161A17] leading-snug">
+        <h3 className="text-[12.5px] sm:text-sm md:text-base font-extrabold text-[#161A17] leading-snug line-clamp-2">
           <button
             type="button"
             onClick={() => onOpenProduct(product.handle)}
@@ -100,18 +100,18 @@ export function ProductCard({
           </button>
         </h3>
 
-        <div className="font-mono-num flex items-baseline gap-2 mt-0.5">
+        <div className="font-mono-num flex flex-wrap items-baseline gap-1.5 sm:gap-2 mt-0.5">
           {product.quoteOnly ? (
-            <span className="text-xs md:text-sm font-semibold text-[#C22768]">
-              Custom Institutional Pricing
+            <span className="text-[11px] sm:text-xs md:text-sm font-semibold text-[#C22768]">
+              Custom Quote
             </span>
           ) : (
             <>
-              <span className="text-sm md:text-base font-bold text-[#161A17]">
+              <span className="text-[12.5px] sm:text-sm md:text-base font-bold text-[#161A17]">
                 ₹{product.price.toLocaleString('en-IN')}
               </span>
               {onSale && product.compareAtPrice && (
-                <s className="text-xs text-[#4D554E]">
+                <s className="text-[10.5px] sm:text-xs text-[#4D554E]">
                   ₹{product.compareAtPrice.toLocaleString('en-IN')}
                 </s>
               )}
@@ -120,33 +120,33 @@ export function ProductCard({
         </div>
 
         {(product.dimensions || product.materials) && (
-          <p className="text-[11px] font-mono-num text-[#4D554E] line-clamp-1 pt-0.5">
+          <p className="hidden sm:block text-[11px] font-mono-num text-[#4D554E] line-clamp-1 pt-0.5">
             {product.dimensions || product.materials}
           </p>
         )}
 
-        <p className="text-xs text-[#4D554E]">
+        <p className="text-[10px] sm:text-xs text-[#4D554E] truncate">
           {product.quoteOnly
-            ? 'Made to Order · Custom Specification'
+            ? 'Made to Order · Custom Spec'
             : product.available
               ? 'In Stock · Dispatch Ready'
               : 'Currently Unavailable'}
         </p>
 
-        <div className="mt-auto pt-3 flex items-center gap-2">
+        <div className="mt-auto pt-2 sm:pt-3 flex items-center gap-1.5 sm:gap-2">
           {product.quoteOnly ? (
             <button
               type="button"
               onClick={() => onOpenQuote(product.title)}
-              className="flex-1 py-2 px-3 rounded-lg border border-[#C22768] text-[#C22768] hover:bg-[#FDF2F7] active:scale-[0.985] text-xs font-bold transition-all cursor-pointer"
+              className="flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg border border-[#C22768] text-[#C22768] hover:bg-[#FDF2F7] active:scale-[0.985] text-[11px] sm:text-xs font-bold transition-all cursor-pointer truncate"
             >
-              Request a Quote
+              Request Quote
             </button>
           ) : (
             <button
               type="button"
               onClick={() => onAddToCart(product)}
-              className="sd-btn-sheen flex-1 py-2 px-3 rounded-lg bg-[#007B36] hover:bg-[#005D28] active:scale-[0.985] text-white text-xs font-bold transition-all shadow-xs hover:shadow cursor-pointer"
+              className="sd-btn-sheen flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg bg-[#007B36] hover:bg-[#005D28] active:scale-[0.985] text-white text-[11px] sm:text-xs font-bold transition-all shadow-xs hover:shadow cursor-pointer truncate"
             >
               Add to Cart
             </button>
@@ -160,7 +160,7 @@ export function ProductCard({
               aria-label={isCompared ? `Remove ${product.title} from comparison` : `Compare ${product.title}`}
               title={isCompared ? 'Added to Compare' : 'Compare Specs'}
               onClick={() => onToggleCompare(product)}
-              className={`inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg border text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
+              className={`inline-flex items-center justify-center gap-1 px-2 sm:px-2.5 py-1.5 sm:py-2 rounded-lg border text-xs font-semibold transition-colors cursor-pointer shrink-0 ${
                 isCompared
                   ? 'bg-[#161A17] text-white border-[#161A17]'
                   : 'bg-[#FAF7F0] text-[#4D554E] border-[#E5DEC9] hover:border-[#161A17] hover:text-[#161A17]'

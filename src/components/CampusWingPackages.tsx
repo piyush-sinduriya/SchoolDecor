@@ -115,7 +115,7 @@ export function CampusWingPackages({
 
         {/* 4 Wing Package Switcher Tabs */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 mb-7"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5 mb-6 sm:mb-7"
           role="tablist"
           aria-label="Choose campus wing kit"
         >
@@ -129,24 +129,24 @@ export function CampusWingPackages({
                 aria-selected={active}
                 data-testid={`wing-tab-${item.id}`}
                 onClick={() => setSelectedId(item.id)}
-                className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-3 sm:p-4 rounded-xl border text-left transition-all cursor-pointer ${
                   active
                     ? 'bg-[#161A17] text-white border-[#161A17] shadow-md -translate-y-0.5'
                     : 'bg-white text-[#161A17] border-[#E5DEC9] hover:border-[#161A17]'
                 }`}
               >
                 <span
-                  className={`block text-[10px] font-mono-num uppercase tracking-wider font-bold ${
+                  className={`block text-[9.5px] sm:text-[10px] font-mono-num uppercase tracking-wider font-bold ${
                     active ? 'text-[#F8D000]' : 'text-[#C22768]'
                   }`}
                 >
                   {item.ageGroup}
                 </span>
-                <span className="block text-sm sm:text-base font-extrabold mt-0.5">
+                <span className="block text-[12.5px] sm:text-base font-extrabold mt-0.5 leading-snug">
                   {item.shortLabel}
                 </span>
                 <span
-                  className={`block text-[11px] mt-1 font-mono-num ${
+                  className={`block text-[10px] sm:text-[11px] mt-1 font-mono-num leading-snug ${
                     active ? 'text-white/75' : 'text-[#4D554E]'
                   }`}
                 >

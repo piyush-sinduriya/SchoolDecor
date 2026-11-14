@@ -51,7 +51,7 @@ export function BrandsShowcase({ onNavigate, compact = false }: BrandsShowcasePr
           </button>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 md:gap-5">
           {MATERIAL_BRANDS.map((brand, idx) => (
             <motion.button
               key={brand.id}
@@ -62,12 +62,12 @@ export function BrandsShowcase({ onNavigate, compact = false }: BrandsShowcasePr
               viewport={{ once: true, amount: 0.12 }}
               transition={{ duration: 0.45, delay: idx * 0.05, ease: PAGE_EASE_OUT }}
               onClick={() => onNavigate({ page: 'collection', handle: brand.collectionHandle })}
-              className="group text-left rounded-2xl bg-white border border-[#E5DEC9] hover:border-[#161A17] p-5 sm:p-6 transition-all duration-250 hover:-translate-y-1 hover:shadow-lg cursor-pointer flex flex-col justify-between gap-4"
+              className="group text-left rounded-xl sm:rounded-2xl bg-white border border-[#E5DEC9] hover:border-[#161A17] p-3 sm:p-6 transition-all duration-250 hover:-translate-y-1 hover:shadow-lg cursor-pointer flex flex-col justify-between gap-3 sm:gap-4"
             >
-              <div className="space-y-3.5">
-                <div className="flex items-center justify-between gap-3">
+              <div className="space-y-2.5 sm:space-y-3.5">
+                <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-3">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center font-mono-num text-xs font-extrabold tracking-tight border transition-transform duration-250 group-hover:scale-105"
+                    className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center font-mono-num text-[10px] sm:text-xs font-extrabold tracking-tight border transition-transform duration-250 group-hover:scale-105 shrink-0"
                     style={{
                       backgroundColor: brand.surfaceTint,
                       color: brand.accentHex,
@@ -77,37 +77,37 @@ export function BrandsShowcase({ onNavigate, compact = false }: BrandsShowcasePr
                     {brand.markCode}
                   </div>
                   <span
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono-num font-semibold border"
+                    className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-mono-num font-semibold border truncate max-w-full"
                     style={{
                       backgroundColor: brand.surfaceTint,
                       color: brand.accentHex,
                       borderColor: `${brand.accentHex}30`,
                     }}
                   >
-                    <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-                    <span>{brand.standard}</span>
+                    <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                    <span className="truncate">{brand.standard}</span>
                   </span>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-extrabold text-[#161A17] group-hover:text-[#007B36] transition-colors">
+                  <h3 className="text-[13px] sm:text-lg font-extrabold text-[#161A17] group-hover:text-[#007B36] transition-colors leading-snug">
                     {brand.name}
                   </h3>
-                  <p className="text-sm text-[#4D554E] mt-1 leading-relaxed">{brand.specialty}</p>
+                  <p className="text-[11px] sm:text-sm text-[#4D554E] mt-1 leading-snug sm:leading-relaxed line-clamp-3 sm:line-clamp-none">{brand.specialty}</p>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#EFEAD9] flex items-center justify-between text-xs font-bold">
-                <span className="inline-flex items-center gap-1.5 text-[#4D554E]">
+              <div className="pt-2.5 sm:pt-3 border-t border-[#EFEAD9] flex items-center justify-between gap-1 text-[10.5px] sm:text-xs font-bold">
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-[#4D554E]">
                   <Award className="w-3.5 h-3.5" style={{ color: brand.accentHex }} />
                   <span>Certified School Spec</span>
                 </span>
                 <span
-                  className="inline-flex items-center gap-1 transition-transform duration-200 group-hover:translate-x-1"
+                  className="inline-flex items-center justify-between sm:justify-start w-full sm:w-auto gap-1 transition-transform duration-200 group-hover:translate-x-1"
                   style={{ color: brand.accentHex }}
                 >
                   <span>View Collection</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                 </span>
               </div>
             </motion.button>
