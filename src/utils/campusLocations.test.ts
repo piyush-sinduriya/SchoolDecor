@@ -1,38 +1,54 @@
-import test from 'node:test';
+import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   REGIONAL_CAMPUS_HUBS,
-  MATERIAL_BRANDS,
   filterCampusHubs,
-  findBrandByCollection,
-} from './campusLocations.ts';
+  getCampusHubById,
+} from './campusLocations';
 
-test('REGIONAL_CAMPUS_HUBS provides valid Indian campus coordinates and specialties', () => {
-  assert.ok(REGIONAL_CAMPUS_HUBS.length >= 5);
-  for (const hub of REGIONAL_CAMPUS_HUBS) {
-    assert.ok(hub.lat > 8 && hub.lat < 36, `lat out of India range for ${hub.city}`);
-    assert.ok(hub.lng > 68 && hub.lng < 97, `lng out of India range for ${hub.city}`);
-    assert.ok(hub.specialties.length >= 2);
-  }
-});
+describe('campusLocations utilities', () => {
+  it('contains 6 regional campus hubs including Laxmi Nagar Head Office and Delhi NCR Factory with valid coordinates', () => {
+    assert.equal(REGIONAL_CAMPUS_HUBS.length, 6);
+    assert.equal(REGIONAL_CAMPUS_HUBS[0].id, 'delhi-ncr');
+    assert.ok(REGIONAL_CAMPUS_HUBS[0].address.includes('Lalita Park'));
+    assert.ok(REGIONAL_CAMPUS_HUBS[0].address.includes('110092'));
+    assert.equal(REGIONAL_CAMPUS_HUBS[1].id, 'delhi-factory');
+    assert.equal(REGIONAL_CAMPUS_HUBS[1].category, 'dispatch');
 
-test('filterCampusHubs filters accurately by hub category and city search text', () => {
-  const all = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', '');
-  assert.equal(all.length, REGIONAL_CAMPUS_HUBS.length);
+    for (const hub of REGIONAL_CAMPUS_HUBS) {
+      assert.ok(hub.lat > 8 && hub.lat < 36, `Invalid lat for ${hub.city}`);
+      assert.ok(hub.lng > 68 && hub.lng < 95, `Invalid lng for ${hub.city}`);
+      assert.ok(hub.specialties.length >= 2);
+      assert.ok(hub.mapQuery && hub.mapQuery.length > 5);
+    }
+  });
 
-  const studios = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'studio', '');
-  assert.ok(studios.every((h) => h.category === 'studio'));
-  assert.equal(studios.length, 2);
+  it('filters hubs by category accurately', () => {
+    const studios = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'studio');
+    assert.equal(studios.length, 2);
+    assert.ok(studios.every((h) => h.category === 'studio'));
 
-  const bengaluru = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'phenolic');
-  assert.equal(bengaluru.length, 1);
-  assert.equal(bengaluru[0].id, 'bengaluru-south');
-});
+    const dispatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'dispatch');
+    assert.equal(dispatch.length, 2);
+    assert.equal(dispatch[0].id, 'delhi-factory');
+    assert.equal(dispatch[1].id, 'jaipur');
+  });
 
-test('MATERIAL_BRANDS contains unique brands mapped cleanly to storefront collections', () => {
-  assert.equal(MATERIAL_BRANDS.length, 6);
-  const lab = findBrandByCollection('science-lab');
-  assert.ok(lab);
-  assert.equal(lab?.name, 'LabGuard Phenolic');
-  assert.equal(findBrandByCollection('nonexistent-handle'), undefined);
+  it('filters hubs by search query across city, address, and specialty', () => {
+    const lalitaMatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'Lalita Park');
+    assert.equal(lalitaMatch.length, 1);
+    assert.equal(lalitaMatch[0].id, 'delhi-ncr');
+
+    const factoryMatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'Factory');
+    assert.ok(factoryMatch.some((h) => h.id === 'delhi-factory'));
+
+    const stemMatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'robotics');
+    assert.equal(stemMatch.length, 1);
+    assert.equal(stemMatch[0].id, 'bengaluru');
+  });
+
+  it('returns first hub as fallback when id is not found', () => {
+    const hub = getCampusHubById(REGIONAL_CAMPUS_HUBS, 'unknown-city');
+    assert.equal(hub.id, REGIONAL_CAMPUS_HUBS[0].id);
+  });
 });

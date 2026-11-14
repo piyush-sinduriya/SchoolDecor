@@ -501,7 +501,7 @@ export function HomeView({
       {/* SECTION B: TRUST HIGHLIGHTS + EXPRESSIVE TILTED STORYTELLING (MYFRIDA + KERNJOSH) */}
       <section className="bg-[#F5F1E6] pt-6 pb-12 border-b border-[#E6DFCE]">
         <div className="max-w-[1320px] mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pb-10 border-b border-[#E2DAC8]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 pb-10 border-b border-[#E2DAC8]">
             {[
               {
                 icon: Layers,
@@ -536,12 +536,12 @@ export function HomeView({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.55, delay: idx * 0.08, ease: EASE_OUT_EXPO }}
-                  className="group flex items-start gap-3.5 p-3 -m-2 rounded-xl transition-colors hover:bg-white/75"
+                  className="group flex items-start gap-3.5 p-3.5 rounded-xl bg-white/80 sm:bg-transparent border border-[#E5DEC9] sm:border-transparent transition-colors hover:bg-white"
                 >
                   <div className={`w-10 h-10 rounded-lg ${item.badge} flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="text-left">
                     <h2 className="text-sm font-bold text-[#181A18]">{item.title}</h2>
                     <p className="text-xs text-[#525852] mt-1 leading-relaxed">{item.desc}</p>
                   </div>
@@ -556,29 +556,29 @@ export function HomeView({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
-            className="pt-10 md:pt-12 text-center max-w-3xl mx-auto"
+            className="pt-8 sm:pt-10 md:pt-12 text-center max-w-3xl mx-auto px-1"
           >
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-4">
               {[
-                { label: 'Preschool Wings', handle: 'kindergarten-furniture', bg: 'bg-[#F01818] text-white', rot: '-rotate-3' },
-                { label: 'Montessori Rooms', handle: 'montessori-material', bg: 'bg-[#007B36] text-white', rot: 'rotate-2' },
-                { label: 'Active Play', handle: 'soft-play-zones', bg: 'bg-[#F8D000] text-[#181A18]', rot: '-rotate-2' },
-                { label: 'STEM Labs', handle: 'science-lab', bg: 'bg-[#F088B0] text-[#181A18]', rot: 'rotate-3' },
+                { label: 'Preschool Wings', handle: 'kindergarten-furniture', bg: 'bg-[#F01818] text-white', rot: '-rotate-2 sm:-rotate-3' },
+                { label: 'Montessori Rooms', handle: 'montessori-material', bg: 'bg-[#007B36] text-white', rot: 'rotate-1 sm:rotate-2' },
+                { label: 'Active Play', handle: 'soft-play-zones', bg: 'bg-[#F8D000] text-[#181A18]', rot: '-rotate-1 sm:-rotate-2' },
+                { label: 'STEM Labs', handle: 'science-lab', bg: 'bg-[#F088B0] text-[#181A18]', rot: 'rotate-2 sm:rotate-3' },
               ].map((tag) => (
                 <button
                   key={tag.label}
                   type="button"
                   onClick={() => onNavigate({ page: 'collection', handle: tag.handle })}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider shadow-sm cursor-pointer transition-transform duration-200 hover:scale-105 hover:rotate-0 ${tag.bg} ${tag.rot}`}
+                  className={`px-3 sm:px-3.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-extrabold uppercase tracking-wider shadow-sm cursor-pointer transition-transform duration-200 hover:scale-105 hover:rotate-0 ${tag.bg} ${tag.rot}`}
                 >
                   {tag.label}
                 </button>
               ))}
             </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#181A18] leading-[1.08] text-balance">
+            <h2 className="text-2xl sm:text-5xl font-extrabold tracking-tight text-[#181A18] leading-[1.1] text-balance">
               Whatever wing you&rsquo;re planning,
             </h2>
-            <p className="font-script text-3xl sm:text-4xl font-bold text-[#007B36] mt-2 leading-tight">
+            <p className="font-script text-2xl sm:text-4xl font-bold text-[#007B36] mt-2 leading-tight">
               School Decor makes every classroom come alive.
             </p>
             <div className="mt-6">
@@ -704,44 +704,44 @@ export function HomeView({
 
               {/* Centered Featured Cutout Interactive Stage with Hotspot Engineering Callouts */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pb-12 md:pb-16 border-b border-[#161A17]/10">
-                <div className="lg:col-span-5 text-center lg:text-left">
+                <div className="lg:col-span-5 text-left">
                   <p
                     style={{ color: activeFinish.accentHex }}
                     className="font-script text-2xl sm:text-3xl font-bold leading-none mb-2"
                   >
                     {activeStageItem.scriptTag}
                   </p>
-                  <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight leading-[1.06] text-[#161A17] text-balance">
+                  <h2 className="text-2xl sm:text-4xl lg:text-[2.75rem] font-extrabold tracking-tight leading-[1.08] text-[#161A17] text-balance">
                     {activeStageItem.title}
                   </h2>
-                  <p className="mt-3 text-sm sm:text-base text-[#4D554E] max-w-[46ch] mx-auto lg:mx-0 leading-relaxed">
+                  <p className="mt-2.5 text-sm sm:text-base text-[#4D554E] max-w-[46ch] leading-relaxed">
                     {activeStageItem.tagline}
                   </p>
 
-                  {/* Clean Unboxed Technical Spec Readout with Architectural Divider */}
-                  <div className="mt-4 pt-3.5 border-t border-[#161A17]/12 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                  {/* Clean Technical Spec Readout Grid */}
+                  <div className="mt-4 p-3 rounded-xl bg-white/85 border border-[#E5DEC9] grid grid-cols-3 gap-2 text-left">
                     <div>
                       <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
                         Dimensions
                       </p>
-                      <p className="text-xs font-mono-num font-bold text-[#161A17] mt-0.5 leading-snug">
+                      <p className="text-[11px] sm:text-xs font-mono-num font-bold text-[#161A17] mt-0.5 leading-snug">
                         {activeStageItem.dimensions}
                       </p>
                     </div>
-                    <div>
+                    <div className="border-l border-[#E5DEC9] pl-2">
                       <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
                         Age Wing
                       </p>
-                      <p className="text-xs font-bold text-[#161A17] mt-0.5 leading-snug">
+                      <p className="text-[11px] sm:text-xs font-bold text-[#161A17] mt-0.5 leading-snug">
                         {activeStageItem.ageGroup}
                       </p>
                     </div>
-                    <div>
+                    <div className="border-l border-[#E5DEC9] pl-2">
                       <p className="text-[10px] uppercase tracking-wider text-[#4D554E] font-semibold">
-                        Selected Finish
+                        Finish
                       </p>
                       <p
-                        className="text-xs font-bold mt-0.5 leading-snug"
+                        className="text-[11px] sm:text-xs font-bold mt-0.5 leading-snug truncate"
                         style={{ color: activeFinish.accentHex }}
                       >
                         {activeFinish.name}
@@ -886,7 +886,7 @@ export function HomeView({
                           )}
                         </div>
 
-                        <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5">
+                        <div className="mt-4 flex flex-wrap items-center justify-start gap-2 sm:gap-2.5">
                           <button
                             type="button"
                             onClick={() =>
@@ -895,7 +895,7 @@ export function HomeView({
                                 activeStageItem.collectionHandle
                               )
                             }
-                            className="sd-btn-sheen inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                            className="sd-btn-sheen flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
                           >
                             <Eye className="w-4 h-4" />
                             <span>Inspect Product</span>
@@ -905,7 +905,7 @@ export function HomeView({
                             onClick={() =>
                               onNavigate({ page: 'collection', handle: activeStageItem.collectionHandle })
                             }
-                            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer"
+                            className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap"
                           >
                             <span>Explore Range</span>
                             <ArrowRight className="w-4 h-4" />
@@ -914,7 +914,7 @@ export function HomeView({
                             <button
                               type="button"
                               onClick={() => onToggleCompare(matchedProduct)}
-                              className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full border text-xs font-bold transition-colors cursor-pointer ${
+                              className={`w-full sm:w-auto justify-center inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full border text-xs font-bold transition-colors cursor-pointer ${
                                 isCompared
                                   ? 'bg-[#161A17] text-white border-[#161A17]'
                                   : 'bg-white text-[#161A17] border-[#D9D2C0] hover:border-[#C22768]'
@@ -1115,27 +1115,27 @@ export function HomeView({
       })()}
 
       {/* SECTION C: EXPLORE OUR COLLECTIONS */}
-      <section className="bg-white py-16 md:py-20 sd-lazy-section">
+      <section className="bg-white py-14 md:py-20 sd-lazy-section">
         <div className="max-w-[1320px] mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="mb-9"
+            className="mb-7 md:mb-9 text-left"
           >
             <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
               Product Universe
             </p>
-            <h2 className="text-2xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#181A18] tracking-tight">
               Explore Our Collections
             </h2>
-            <p className="text-[#525852] text-sm md:text-base mt-2 max-w-[62ch]">
+            <p className="text-[#525852] text-sm md:text-base mt-2 max-w-[62ch] leading-relaxed">
               Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
             {COLLECTIONS_SHOWCASE.map((col, idx) => (
               <motion.button
                 key={col.title}
@@ -1145,7 +1145,7 @@ export function HomeView({
                 viewport={{ once: true, amount: 0.12 }}
                 transition={{ duration: 0.55, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
                 onClick={() => onNavigate({ page: 'collection', handle: col.handle })}
-                className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-[#E3E5E0] text-left bg-[#F7F7F5] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer p-0"
+                className="group relative aspect-[16/10] sm:aspect-[4/3] rounded-2xl overflow-hidden border border-[#E3E5E0] text-left bg-[#F7F7F5] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer p-0"
               >
                 <img
                   src={col.image}
@@ -1157,16 +1157,16 @@ export function HomeView({
                   className="absolute inset-0"
                   style={{
                     background:
-                      'linear-gradient(180deg, rgba(15,29,21,0.12) 25%, rgba(11,21,16,0.88) 100%)',
+                      'linear-gradient(180deg, rgba(15,29,21,0.08) 18%, rgba(11,21,16,0.90) 100%)',
                   }}
                 />
-                <span className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-white/90 text-[10px] font-bold uppercase tracking-wider text-[#181A18]">
+                <span className="absolute top-3.5 left-3.5 z-10 px-2.5 py-1 rounded-full bg-white/95 text-[10px] font-bold uppercase tracking-wider text-[#181A18] shadow-xs">
                   {col.tag}
                 </span>
-                <div className="absolute inset-x-0 bottom-0 p-4 text-white z-10">
-                  <h3 className="text-sm md:text-base font-bold leading-snug">{col.title}</h3>
-                  <p className="text-[11px] text-white/80 mt-0.5 line-clamp-1">{col.subtitle}</p>
-                  <span className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold text-[#F9B8D2] transition-transform duration-200 group-hover:translate-x-1">
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-4 text-white z-10">
+                  <h3 className="text-base sm:text-base font-bold leading-snug">{col.title}</h3>
+                  <p className="text-xs sm:text-[11px] text-white/85 mt-0.5 line-clamp-1">{col.subtitle}</p>
+                  <span className="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-[#F9B8D2] transition-transform duration-200 group-hover:translate-x-1">
                     <span>Explore Range</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
@@ -1499,22 +1499,22 @@ export function HomeView({
               </div>
               {item.cutout && (
                 <div
-                  className={`hidden sm:flex items-center gap-3 absolute -bottom-5 ${
-                    item.reverse ? '-left-4' : '-right-4'
-                  } px-3.5 py-2.5 rounded-xl bg-white border border-[#E3E5E0] shadow-lg sd-float-gentle`}
+                  className={`flex items-center gap-2.5 sm:gap-3 absolute bottom-3 right-3 sm:-bottom-5 ${
+                    item.reverse ? 'sm:-left-4 sm:right-auto' : 'sm:-right-4'
+                  } px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl bg-white/95 backdrop-blur-xs border border-[#E3E5E0] shadow-lg sd-float-gentle`}
                 >
                   <img
                     src={item.cutout}
                     alt=""
                     loading="lazy"
                     decoding="async"
-                    className="w-16 h-14 object-contain"
+                    className="w-12 h-11 sm:w-16 sm:h-14 object-contain"
                   />
-                  <div className="pr-1">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
+                  <div className="pr-1 text-left">
+                    <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#C22768]">
                       Featured Unit
                     </p>
-                    <p className="text-xs font-bold text-[#181A18] whitespace-nowrap">
+                    <p className="text-[11px] sm:text-xs font-bold text-[#181A18] whitespace-nowrap">
                       {item.cutoutLabel}
                     </p>
                   </div>
@@ -1526,7 +1526,7 @@ export function HomeView({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.18 }}
               transition={{ duration: 0.65, delay: 0.09, ease: EASE_OUT_EXPO }}
-              className={`lg:col-span-6 ${item.reverse ? 'lg:order-1' : ''}`}
+              className={`lg:col-span-6 text-left ${item.reverse ? 'lg:order-1' : ''}`}
             >
               <div className="flex items-center gap-2.5 mb-2">
                 <span className={`inline-block w-6 h-[3px] rounded-full ${item.accentBar}`} aria-hidden="true" />
@@ -1537,7 +1537,7 @@ export function HomeView({
               <h2 className="text-2xl md:text-3xl font-bold text-[#181A18] tracking-tight text-balance">
                 {item.title}
               </h2>
-              <p className="mt-3 text-[#525852] leading-relaxed max-w-[52ch]">{item.desc}</p>
+              <p className="mt-3 text-sm sm:text-base text-[#525852] leading-relaxed max-w-[52ch]">{item.desc}</p>
               <ul className="mt-4 space-y-2">
                 {item.specs.map((spec) => (
                   <li key={spec} className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#181A18]">
@@ -1546,11 +1546,11 @@ export function HomeView({
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-2.5 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => onNavigate({ page: 'collection', handle: item.handle })}
-                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                  className="group flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
                 >
                   <span>Explore Collection</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -1558,7 +1558,7 @@ export function HomeView({
                 <button
                   type="button"
                   onClick={() => onOpenQuote(item.title)}
-                  className="px-5 py-2.5 rounded-md border border-[#F5C7DA] bg-[#FDF1F6] hover:bg-[#fadce9] text-sm font-semibold text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer"
+                  className="flex-1 sm:flex-initial text-center px-5 py-2.5 rounded-md border border-[#F5C7DA] bg-[#FDF1F6] hover:bg-[#fadce9] text-sm font-semibold text-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer whitespace-nowrap"
                 >
                   Request a Quote
                 </button>
@@ -1726,23 +1726,23 @@ export function HomeView({
             {[
               {
                 title: 'Early Years Wing & Montessori Setup',
-                location: 'Editable Location in Theme Editor',
+                location: 'New Delhi NCR · Turnkey Delivery',
                 category: 'Preschool & Montessori',
-                desc: 'Editable project card: upload your real school photograph, institution name, city and link to a dedicated project detail page.',
+                desc: '140 child-safe 18mm FSC birch stations, curved open Montessori cubbies, and non-toxic tactile learning corners.',
                 img: THEME_IMAGES.heroPreschool,
               },
               {
                 title: 'K-12 Classroom & Library Modernization',
-                location: 'Editable Location in Theme Editor',
+                location: 'Mumbai West · Institutional Wing',
                 category: 'Classroom & Library',
-                desc: 'Editable project card: showcase ergonomic senior seating, modular book storage and collaborative reading zones.',
+                desc: '420 BIFMA-grade ergonomic student desks paired with curved birch reading stacks and acoustic lounge seating.',
                 img: THEME_IMAGES.schoolLibrary,
               },
               {
                 title: 'Composite STEM Lab & Outdoor Play Park',
-                location: 'Editable Location in Theme Editor',
+                location: 'Bengaluru South · Campus Fit-Out',
                 category: 'Laboratories & Outdoor',
-                desc: 'Editable project card: highlight integrated laboratory workstations and outdoor playground setups.',
+                desc: 'Acid-resistant 19mm phenolic science islands with integrated utilities and UV-8 multi-play outdoor equipment.',
                 img: THEME_IMAGES.scienceLab,
               },
             ].map((proj, idx) => (
@@ -1876,7 +1876,7 @@ export function HomeView({
           <p className="mt-4 text-[#525852] text-base md:text-lg max-w-[54ch] mx-auto">
             Planning a new school, upgrading your classroom or creating an inspiring play environment? Let&rsquo;s discuss your requirements.
           </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <div className="mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => onNavigate({ page: 'contact' })}
@@ -1891,7 +1891,7 @@ export function HomeView({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FDF0F5] border border-[#D4D7D0] hover:border-[#C22768] text-[#181A18] font-bold text-sm shadow-xs transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985]"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FDF0F5] border border-[#D4D7D0] hover:border-[#C22768] text-[#181A18] font-bold text-sm shadow-xs transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985]"
             >
               <MessageCircle className="w-4 h-4 text-[#007B36]" />
               <span>WhatsApp Enquiry</span>

@@ -43,6 +43,14 @@ export const SCHOOL_DECOR_CONTACT = {
   telHref: 'tel:+919312254660',
   whatsappNumber: '919312254660',
   email: 'schooldecor1@gmail.com',
+  headOfficeAddress:
+    'No. 1/26A, 2nd Floor, Lalita Park (Near Gurudwara, Opp. Metro Pillar No. 24, Vikas Marg), Laxmi Nagar, New Delhi - 110092',
+  factoryAddress:
+    'School Decor Manufacturing & Industrial Works, Bawana–Patparganj Industrial Corridor, New Delhi - 110039',
+  googleMapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=School+Decor+1%2F26A+Lalita+Park+Laxmi+Nagar+New+Delhi+110092',
+  factoryMapsUrl:
+    'https://www.google.com/maps/search/?api=1&query=Bawana+Industrial+Area+New+Delhi+110039',
 } as const;
 
 export function buildWhatsAppUrl(

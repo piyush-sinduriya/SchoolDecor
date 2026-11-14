@@ -125,30 +125,30 @@ export function HeaderNav({
         }`}
         onMouseLeave={() => setActiveMega(null)}
       >
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6 h-[72px] flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 lg:hidden">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open mobile navigation"
-              className="w-10 h-10 inline-flex items-center justify-center rounded-md hover:bg-[#F7F7F5]"
+              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-lg border border-[#E5DEC9] bg-[#FAF7F0] hover:bg-[#F0ECE1] text-[#181A18] shrink-0 cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
-          </div>
 
-          <button
-            type="button"
-            onClick={() => handleNav({ page: 'home' })}
-            aria-label="School Decor Home"
-            className="shrink-0 flex items-center cursor-pointer bg-transparent border-0 p-0 group"
-          >
-            <img
-              src={LOGO_SRC}
-              alt="School Decor"
-              className="w-[118px] md:w-[144px] h-auto object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
-            />
-          </button>
+            <button
+              type="button"
+              onClick={() => handleNav({ page: 'home' })}
+              aria-label="School Decor Home"
+              className="shrink-0 flex items-center cursor-pointer bg-transparent border-0 p-0 group"
+            >
+              <img
+                src={LOGO_SRC}
+                alt="School Decor"
+                className="h-10 sm:h-11 md:h-12 w-auto max-w-[132px] sm:max-w-[152px] object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+              />
+            </button>
+          </div>
 
           <nav className="hidden lg:flex items-center gap-5" aria-label="Primary Storefront Navigation">
             {MEGA_MENUS.map((menu) => (
@@ -389,8 +389,8 @@ export function HeaderNav({
         <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true" aria-label="Mobile menu">
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
           <div className="relative z-10 w-[min(360px,88vw)] h-full bg-white flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#E3E5E0]">
-              <img src={LOGO_SRC} alt="School Decor" className="w-[110px] h-auto" />
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E3E5E0]">
+              <img src={LOGO_SRC} alt="School Decor" className="h-10 w-auto max-w-[130px] object-contain" />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
@@ -453,7 +453,7 @@ export function HeaderNav({
                 onClick={() => handleNav({ page: 'contact' })}
                 className="block w-full text-left py-2 font-semibold text-sm border-b border-[#E3E5E0] bg-transparent"
               >
-                Contact
+                Contact &amp; Locations
               </button>
               <button
                 type="button"
@@ -474,6 +474,9 @@ export function HeaderNav({
                 <a href={`mailto:${SCHOOL_DECOR_CONTACT.email}`} className="block text-[#C22768] hover:underline">
                   {SCHOOL_DECOR_CONTACT.email}
                 </a>
+                <p className="text-[11px] leading-snug text-[#4D554E] pt-1">
+                  <strong className="text-[#161A17]">Head Office:</strong> {SCHOOL_DECOR_CONTACT.headOfficeAddress}
+                </p>
               </div>
             </div>
           </div>
