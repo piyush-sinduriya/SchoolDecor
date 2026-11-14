@@ -1116,7 +1116,7 @@ export function HomeView({
 
       {/* SECTION C: EXPLORE OUR COLLECTIONS */}
       <section className="bg-white py-14 md:py-20 sd-lazy-section">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1124,18 +1124,18 @@ export function HomeView({
             transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
             className="mb-7 md:mb-9 text-left"
           >
-            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-2">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1.5">
               Product Universe
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#181A18] tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#181A18] tracking-tight">
               Explore Our Collections
             </h2>
-            <p className="text-[#525852] text-sm md:text-base mt-2 max-w-[62ch] leading-relaxed">
+            <p className="text-[#525852] text-xs sm:text-sm md:text-base mt-2 max-w-[62ch] leading-relaxed">
               Browse 12 specialized categories spanning classrooms, early years, laboratories, active play and outdoor environments.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
             {COLLECTIONS_SHOWCASE.map((col, idx) => (
               <motion.button
                 key={col.title}
@@ -1145,32 +1145,41 @@ export function HomeView({
                 viewport={{ once: true, amount: 0.12 }}
                 transition={{ duration: 0.55, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
                 onClick={() => onNavigate({ page: 'collection', handle: col.handle })}
-                className="group relative aspect-[16/10] sm:aspect-[4/3] rounded-2xl overflow-hidden border border-[#E3E5E0] text-left bg-[#F7F7F5] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer p-0"
+                className="group relative flex flex-col rounded-xl sm:rounded-2xl overflow-hidden border border-[#E5DEC9] text-left bg-white shadow-2xs transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-[#007B36]/40 cursor-pointer p-0 h-full"
               >
-                <img
-                  src={col.image}
-                  alt={col.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(180deg, rgba(15,29,21,0.08) 18%, rgba(11,21,16,0.90) 100%)',
-                  }}
-                />
-                <span className="absolute top-3.5 left-3.5 z-10 px-2.5 py-1 rounded-full bg-white/95 text-[10px] font-bold uppercase tracking-wider text-[#181A18] shadow-xs">
-                  {col.tag}
-                </span>
-                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-4 text-white z-10">
-                  <h3 className="text-base sm:text-base font-bold leading-snug">{col.title}</h3>
-                  <p className="text-xs sm:text-[11px] text-white/85 mt-0.5 line-clamp-1">{col.subtitle}</p>
-                  <span className="inline-flex items-center gap-1 mt-2 text-xs font-semibold text-[#F9B8D2] transition-transform duration-200 group-hover:translate-x-1">
-                    <span>Explore Range</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                {/* Top Image Frame with Clean Non-Overlapping Tag Pill */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F5F1E6] shrink-0">
+                  <img
+                    src={col.image}
+                    alt={col.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 pointer-events-none"
+                  />
+                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 px-2 sm:px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#181A18] shadow-xs border border-black/5">
+                    {col.tag}
                   </span>
                 </div>
+
+                {/* Bottom Dedicated White Content Area — Never Overlaps Image or Badge */}
+                <div className="p-3 sm:p-4 bg-white flex-1 flex flex-col justify-between text-left border-t border-[#EFEAD9] w-full">
+                  <div>
+                    <h3 className="text-[13px] sm:text-base font-extrabold text-[#161A17] group-hover:text-[#007B36] leading-snug transition-colors">
+                      {col.title}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-[#525852] mt-1 leading-snug line-clamp-2">
+                      {col.subtitle}
+                    </p>
+                  </div>
+                  <span className="inline-flex items-center gap-1 mt-2.5 pt-2 border-t border-[#F4F0E6] text-[11px] sm:text-xs font-bold text-[#C22768] group-hover:text-[#007B36] transition-colors w-full">
+                    <span>Explore Range</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1 shrink-0" />
+                  </span>
+                </div>
+
                 <span
                   aria-hidden="true"
                   className={`absolute inset-x-0 bottom-0 h-[3px] ${LOGO_BAR_COLORS[idx % 4]} origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out z-20`}

@@ -754,7 +754,7 @@ export function StorefrontFooter({ onNavigate }: { onNavigate: (r: PreviewRoute)
           <img
             src={LOGO_SRC}
             alt="School Decor"
-            className="h-11 sm:h-12 w-auto max-w-[148px] object-contain"
+            className="h-9 sm:h-10 w-auto max-w-[128px] object-contain"
           />
           <p className="text-sm text-[#4D554E] max-w-[40ch] leading-relaxed">
             School Decor designs and manufactures ergonomic school furniture, Montessori classrooms, active soft-play zones, STEM laboratories, outdoor playground equipment, and campus flooring across India.

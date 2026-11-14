@@ -125,13 +125,13 @@ export function HeaderNav({
         }`}
         onMouseLeave={() => setActiveMega(null)}
       >
-        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div className="max-w-[1320px] mx-auto px-3.5 sm:px-4 md:px-6 h-[60px] sm:h-[68px] md:h-[72px] flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open mobile navigation"
-              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-lg border border-[#E5DEC9] bg-[#FAF7F0] hover:bg-[#F0ECE1] text-[#181A18] shrink-0 cursor-pointer"
+              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 inline-flex items-center justify-center rounded-lg border border-[#E5DEC9] bg-[#FAF7F0] hover:bg-[#F0ECE1] text-[#181A18] shrink-0 cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -140,12 +140,12 @@ export function HeaderNav({
               type="button"
               onClick={() => handleNav({ page: 'home' })}
               aria-label="School Decor Home"
-              className="shrink-0 flex items-center cursor-pointer bg-transparent border-0 p-0 group"
+              className="shrink-0 flex items-center py-1 cursor-pointer bg-transparent border-0 p-0 group"
             >
               <img
                 src={LOGO_SRC}
                 alt="School Decor"
-                className="h-10 sm:h-11 md:h-12 w-auto max-w-[132px] sm:max-w-[152px] object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
+                className="h-8 sm:h-9 md:h-10 w-auto max-w-[108px] sm:max-w-[126px] md:max-w-[138px] object-contain transition-transform duration-200 ease-out group-hover:scale-[1.03]"
               />
             </button>
           </div>
@@ -389,13 +389,13 @@ export function HeaderNav({
         <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true" aria-label="Mobile menu">
           <div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
           <div className="relative z-10 w-[min(360px,88vw)] h-full bg-white flex flex-col shadow-2xl">
-            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E3E5E0]">
-              <img src={LOGO_SRC} alt="School Decor" className="h-10 w-auto max-w-[130px] object-contain" />
+            <div className="flex items-center justify-between px-5 py-3 border-b border-[#E3E5E0]">
+              <img src={LOGO_SRC} alt="School Decor" className="h-8 w-auto max-w-[112px] object-contain" />
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close mobile menu"
-                className="w-10 h-10 inline-flex items-center justify-center rounded-md hover:bg-[#F7F7F5]"
+                className="w-9 h-9 inline-flex items-center justify-center rounded-md hover:bg-[#F7F7F5]"
               >
                 <X className="w-5 h-5" />
               </button>
