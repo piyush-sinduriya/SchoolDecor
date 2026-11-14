@@ -19,7 +19,7 @@ export function CompareTrayBar({
   return (
     <div
       data-testid="compare-tray-bar"
-      className="fixed left-4 bottom-4 z-30 max-w-[min(460px,calc(100vw-84px))] rounded-2xl bg-[#161A17] text-white shadow-2xl border border-white/15 px-3.5 py-2.5 flex items-center gap-3"
+      className="fixed left-2.5 bottom-2.5 sm:left-4 sm:bottom-4 z-30 max-w-[calc(100vw-72px)] sm:max-w-[min(460px,calc(100vw-84px))] rounded-2xl bg-[#161A17] text-white shadow-2xl border border-white/15 px-2.5 sm:px-3.5 py-2 sm:py-2.5 flex items-center gap-2 sm:gap-3"
     >
       <div className="flex items-center gap-1.5 shrink-0">
         {products.map((p) => (
@@ -134,6 +134,9 @@ export function CompareModal({
           </div>
         ) : (
           <div className="mt-5 overflow-x-auto">
+            <p className="sm:hidden text-[11px] font-mono-num text-[#4D554E] mb-2">
+              ← Swipe table horizontally to inspect all columns →
+            </p>
             <table className="w-full min-w-[600px] border-collapse text-left text-xs sm:text-sm">
               <thead>
                 <tr className="border-b border-[#EFEAD9]">

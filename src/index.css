@@ -4,7 +4,7 @@
   --sd-linen: #FAF7F0;
   --sd-stone: #F4EFE2;
   --sd-porcelain: #FFFFFF;
-  --sd-sage-mist: #EFF7F2;
+  --sd-sage-mist: #FAF3EB;
   --sd-rose-cream: #FDF2F7;
   --sd-buttercream: #FFF9E3;
   --sd-studio-mist: #EEF3F7;
@@ -32,6 +32,14 @@
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     font-variant-numeric: tabular-nums;
   }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes sdRibbonSweep {

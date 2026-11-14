@@ -1,7 +1,7 @@
 <section
   id="section-{{ section.id }}"
   class="sd-section sd-section-pad sd-cutout-section{% if section.settings.enable_color_stage %} is-stage-active{% endif %}"
-  style="--sd-section-bg: {{ section.settings.bg_color | default: '#EAF6EF' }}; --sd-pad-y: {{ section.settings.padding_y | default: 72 }}px;"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#FAF3EB' }}; --sd-pad-y: {{ section.settings.padding_y | default: 72 }}px;"
   data-cutout-stage-section
 >
   <div class="sd-container">
@@ -37,7 +37,7 @@
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
             class="sd-stage-tab{% if forloop.first %} is-active{% endif %}"
             data-stage-tab="{{ forloop.index0 }}"
-            data-stage-bg="{{ block.settings.stage_bg | default: '#EAF6EF' }}"
+            data-stage-bg="{{ block.settings.stage_bg | default: '#FAF3EB' }}"
             data-stage-script="{{ block.settings.script_tag | default: block.settings.category | escape }}"
             data-stage-title="{{ b_title | escape }}"
             data-stage-price="{{ block.settings.price_label | default: 'Available for Order' | escape }}"
@@ -139,7 +139,7 @@
             data-sd-reveal
             style="--sd-stagger: {{ forloop.index0 }}; --sd-cutout-bar: {{ block.settings.bar_color | default: '#00A048' }};"
           >
-            <div class="sd-cutout-card__stage" style="background-color: {{ block.settings.tint_color | default: '#EAF7EF' }};">
+            <div class="sd-cutout-card__stage" style="background-color: {{ block.settings.tint_color | default: '#FAF3EB' }};">
               {%- if block.settings.age_group != blank -%}
                 <span class="sd-cutout-card__age">{{ block.settings.age_group | escape }}</span>
               {%- endif -%}
@@ -253,7 +253,7 @@
       "type": "color",
       "id": "bg_color",
       "label": "Initial Section Background",
-      "default": "#EAF6EF"
+      "default": "#FAF3EB"
     },
     {
       "type": "range",
@@ -361,13 +361,13 @@
           "type": "color",
           "id": "stage_bg",
           "label": "Interactive Stage Background",
-          "default": "#EAF6EF"
+          "default": "#FAF3EB"
         },
         {
           "type": "color",
           "id": "tint_color",
           "label": "Pedestal Tint Color",
-          "default": "#EAF7EF"
+          "default": "#FAF3EB"
         },
         {
           "type": "color",

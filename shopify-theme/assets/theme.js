@@ -30,79 +30,36 @@
     });
   });
 
-  // 3. Hero Slider + Scroll-Scrubbed Split Choreography
+  // 3. Big 5-Banner Hero Carousel
   document.querySelectorAll('[data-hero-slider]').forEach((slider) => {
     const slides = Array.from(slider.querySelectorAll('[data-hero-slide]'));
     const dots = Array.from(slider.querySelectorAll('[data-hero-dot]'));
-    const progressBars = Array.from(slider.querySelectorAll('[data-hero-progress]'));
     if (slides.length <= 1) return;
 
     let current = 0;
+    let isPaused = false;
     const goTo = (index) => {
       current = (index + slides.length) % slides.length;
       slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
-      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+      dots.forEach((d, i) => {
+        const active = i === current;
+        d.classList.toggle('is-active', active);
+        d.setAttribute('aria-selected', String(active));
+      });
     };
 
     slider.querySelector('[data-hero-prev]')?.addEventListener('click', () => goTo(current - 1));
     slider.querySelector('[data-hero-next]')?.addEventListener('click', () => goTo(current + 1));
     dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
 
-    if (slider.hasAttribute('data-hero-scroll-track')) {
-      const splitLeft = slider.querySelector('[data-hero-split-left]');
-      const splitRight = slider.querySelector('[data-hero-split-right]');
-      let cachedScrollable = Math.max(1, slider.offsetHeight - window.innerHeight);
-      let heroTicking = false;
-
-      const updateHeroScroll = () => {
-        heroTicking = false;
-        const rect = slider.getBoundingClientRect();
-        const progress = Math.min(1, Math.max(0, -rect.top / cachedScrollable));
-        const barWidth = Math.max(15, Math.min(100, progress * 100));
-        progressBars.forEach((bar) => {
-          bar.style.width = `${barWidth.toFixed(1)}%`;
-        });
-        if (window.innerWidth < 1024) return;
-
-        const meetRatio = Math.min(1, progress / 0.14);
-        const eased = 1 - Math.pow(1 - meetRatio, 3);
-        const spread = 56 * (1 - eased) + 2;
-        const tilt = 2.5 * (1 - eased);
-        if (splitLeft) {
-          splitLeft.style.setProperty('--sd-desk-x', `${-spread.toFixed(1)}px`);
-          splitLeft.style.setProperty('--sd-desk-rot', `${-tilt.toFixed(2)}deg`);
-        }
-        if (splitRight) {
-          splitRight.style.setProperty('--sd-chair-x', `${spread.toFixed(1)}px`);
-          splitRight.style.setProperty('--sd-chair-rot', `${tilt.toFixed(2)}deg`);
-        }
-
-        let nextIdx = 0;
-        if (progress >= 0.28) {
-          const step = (1 - 0.28) / Math.max(1, slides.length - 1);
-          nextIdx = Math.min(slides.length - 1, Math.floor((progress - 0.28) / step) + 1);
-        }
-        if (nextIdx !== current) goTo(nextIdx);
-      };
-
-      const scheduleHeroScroll = () => {
-        if (!heroTicking) {
-          heroTicking = true;
-          window.requestAnimationFrame(updateHeroScroll);
-        }
-      };
-
-      window.addEventListener('resize', () => {
-        cachedScrollable = Math.max(1, slider.offsetHeight - window.innerHeight);
-        scheduleHeroScroll();
-      }, { passive: true });
-      window.addEventListener('scroll', scheduleHeroScroll, { passive: true });
-      updateHeroScroll();
-    }
+    slider.addEventListener('mouseenter', () => { isPaused = true; });
+    slider.addEventListener('mouseleave', () => { isPaused = false; });
 
     if (slider.dataset.autoplay === 'true') {
       const ms = parseInt(slider.dataset.interval || '6000', 10);
-      setInterval(() => goTo(current + 1), ms);
+      setInterval(() => {
+        if (!isPaused) goTo(current + 1);
+      }, ms);
     }
   });
 
@@ -874,6 +831,81 @@
         if (outHours) outHours.textContent = btn.dataset.hubHours || '';
       });
     });
+  });
+
+  // 20. Turnkey Wing Starter Kits Controller
+  document.querySelectorAll('[data-wing-packages]').forEach((sec) => {
+    const tabs = Array.from(sec.querySelectorAll('[data-wp-tab]'));
+    const editionBtns = Array.from(sec.querySelectorAll('[data-wp-edition]'));
+    const outMeta = sec.querySelector('[data-wp-out-meta]');
+    const outTitle = sec.querySelector('[data-wp-out-title]');
+    const outSummary = sec.querySelector('[data-wp-out-summary]');
+    const outDispatch = sec.querySelector('[data-wp-out-dispatch]');
+    const outWarranty = sec.querySelector('[data-wp-out-warranty]');
+    const outSafety = sec.querySelector('[data-wp-out-safety]');
+    const outLink = sec.querySelector('[data-wp-out-link]');
+    const outEditionNote = sec.querySelector('[data-wp-out-edition-note]');
+    const outList = sec.querySelector('[data-wp-out-list]');
+    const outTotal = sec.querySelector('[data-wp-out-total]');
+    const quoteBtn = sec.querySelector('[data-wp-quote-btn]');
+    const waLink = sec.querySelector('[data-wp-wa-link]');
+
+    let activeTab = tabs.find((t) => t.classList.contains('is-active')) || tabs[0];
+    let activeEdition = 'standard-pack';
+
+    const syncWingUI = () => {
+      if (!activeTab) return;
+      const title = activeTab.dataset.wpTitle || '';
+      const baseNum = Number(activeTab.dataset.wpPrice || 0);
+      const mult = activeEdition === 'custom-branding' ? 1.045 : 1;
+      const estNum = baseNum > 0 ? Math.round(baseNum * mult) : 0;
+
+      if (outMeta) outMeta.textContent = `${activeTab.dataset.wpAge || ''} · ${activeTab.dataset.wpCap || ''}`;
+      if (outTitle) outTitle.textContent = title;
+      if (outSummary) outSummary.textContent = activeTab.dataset.wpSummary || '';
+      if (outDispatch) outDispatch.textContent = activeTab.dataset.wpDispatch || '';
+      if (outWarranty) outWarranty.textContent = activeTab.dataset.wpWarranty || '';
+      if (outSafety) outSafety.textContent = activeTab.dataset.wpSafety || '';
+      if (outLink && activeTab.dataset.wpLink) outLink.setAttribute('href', activeTab.dataset.wpLink);
+      if (outEditionNote) {
+        outEditionNote.textContent = activeEdition === 'standard-pack'
+          ? 'Ready-to-Ship Standard Pack (10% Wing Bundle Savings)'
+          : 'Custom School Branding & RAL Finishes (6% Institutional Savings)';
+      }
+      if (outList && activeTab.dataset.wpItems) {
+        outList.innerHTML = activeTab.dataset.wpItems.split('|').map((row) => `<li>${row.trim()}</li>`).join('');
+      }
+      if (outTotal) {
+        outTotal.textContent = estNum > 0 ? `₹${estNum.toLocaleString('en-IN')}` : 'Custom Institutional BOQ';
+      }
+      if (quoteBtn) quoteBtn.dataset.productTitle = `Turnkey Kit: ${title}`;
+      if (waLink) {
+        const msg = `School Decor Turnkey Wing Kit: ${title} (${activeEdition === 'standard-pack' ? 'Ready-to-Ship' : 'Custom RAL Branding'})`;
+        waLink.setAttribute('href', `https://wa.me/919312254660?text=${encodeURIComponent(msg)}`);
+      }
+    };
+
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => {
+        activeTab = t;
+        tabs.forEach((other) => {
+          const sel = other === t;
+          other.classList.toggle('is-active', sel);
+          other.setAttribute('aria-selected', String(sel));
+        });
+        syncWingUI();
+      });
+    });
+
+    editionBtns.forEach((b) => {
+      b.addEventListener('click', () => {
+        activeEdition = b.dataset.wpEdition || 'standard-pack';
+        editionBtns.forEach((other) => other.classList.toggle('is-active', other === b));
+        syncWingUI();
+      });
+    });
+
+    syncWingUI();
   });
 
   // Close modals on Escape

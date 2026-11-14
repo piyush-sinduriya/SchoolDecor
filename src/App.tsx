@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion, useScroll, useSpring } from 'motion/react';
-import { Download, Eye, PackageCheck, MessageCircle, RotateCcw } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { EntryLogoCurtain } from './components/EntryLogoCurtain';
 import { HeaderNav, type PreviewRoute } from './components/HeaderNav';
 import { HomeView } from './components/HomeView';
 import { CollectionView } from './components/CollectionView';
 import { ProductDetailView } from './components/ProductDetailView';
-import { ThemePackageView } from './components/ThemePackageView';
 import {
   AboutPage,
   ProjectsPage,
@@ -40,7 +39,6 @@ function shouldPlayInitialIntro(): boolean {
 
 export default function App() {
   const [showIntro, setShowIntro] = useState<boolean>(() => shouldPlayInitialIntro());
-  const [studioMode, setStudioMode] = useState<'preview' | 'package'>('preview');
   const [route, setRoute] = useState<PreviewRoute>({ page: 'home' });
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -190,84 +188,16 @@ export default function App() {
         style={{ scaleX: scaleProgress, transformOrigin: '0% 50%' }}
         className="fixed top-0 inset-x-0 h-[3px] z-[90] pointer-events-none bg-gradient-to-r from-[#F088B0] via-[#F8D000] to-[#00A048]"
       />
-      {/* Non-sticky Theme Studio Utility Bar */}
-      <div className="bg-[#181A18] text-white border-b border-white/10">
-        <div className="max-w-[1320px] mx-auto px-3 sm:px-6 py-2 flex items-center justify-between gap-2">
-          <div className="hidden md:flex items-center gap-3 shrink-0">
-            <span className="inline-flex items-center gap-1.5" aria-hidden="true">
-              <span className="w-2 h-2 rounded-full bg-[#F088B0]" />
-              <span className="w-2 h-2 rounded-full bg-[#F01818]" />
-              <span className="w-2 h-2 rounded-full bg-[#F8D000]" />
-              <span className="w-2 h-2 rounded-full bg-[#00A048]" />
-            </span>
-            <span className="text-xs font-semibold tracking-wide text-[#F9B8D2] whitespace-nowrap">
-              School Decor · Shopify OS 2.0 Theme
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2 w-full md:w-auto overflow-x-auto">
-            <div className="inline-flex p-0.5 bg-white/10 rounded-md shrink-0">
-              <button
-                type="button"
-                onClick={() => setStudioMode('preview')}
-                className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap shrink-0 cursor-pointer ${
-                  studioMode === 'preview' ? 'bg-white text-[#181A18]' : 'text-white/85 hover:text-white'
-                }`}
-              >
-                <Eye className="w-3.5 h-3.5 shrink-0" />
-                <span className="sm:hidden">Preview</span>
-                <span className="hidden sm:inline">Live Storefront Preview</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setStudioMode('package')}
-                className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap shrink-0 cursor-pointer ${
-                  studioMode === 'package' ? 'bg-white text-[#181A18]' : 'text-white/85 hover:text-white'
-                }`}
-              >
-                <PackageCheck className="w-3.5 h-3.5 shrink-0" />
-                <span className="sm:hidden">Theme &amp; Guide</span>
-                <span className="hidden sm:inline">Theme Files &amp; Setup Guide</span>
-              </button>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setShowIntro(true)}
-              aria-label="Replay entry logo animation"
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white/90 text-xs font-semibold whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-              <span>Replay Logo</span>
-            </button>
-
-            <a
-              href="/school-decor-shopify-theme.zip"
-              download="school-decor-shopify-theme.zip"
-              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white text-xs font-semibold border border-white/25 whitespace-nowrap shrink-0"
-            >
-              <Download className="w-3.5 h-3.5 shrink-0" />
-              <span className="sm:hidden">Get ZIP</span>
-              <span className="hidden sm:inline">Download Theme ZIP</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
       <EntryLogoCurtain visible={showIntro} onDismiss={() => setShowIntro(false)} />
 
-      {studioMode === 'package' ? (
-        <main className="flex-1 bg-[#F7F7F5]">
-          <ThemePackageView />
-        </main>
-      ) : (
-        <>
-          <HeaderNav
+      <HeaderNav
             route={route}
             cartCount={cartCount}
+            compareCount={compareIds.length}
             onNavigate={setRoute}
             onOpenCart={() => setCartOpen(true)}
             onOpenQuote={(title) => setQuoteModalState({ open: true, productTitle: title })}
+            onOpenCompare={() => setCompareModalOpen(true)}
           />
 
           <main className="flex-1">
@@ -319,6 +249,11 @@ export default function App() {
                     onAddToCart={handleAddToCart}
                     onQuickView={setQuickViewProduct}
                     onOpenQuote={(title) => setQuoteModalState({ open: true, productTitle: title })}
+                    isCompared={compareIds.some(
+                      (cid) =>
+                        PREVIEW_PRODUCTS.find((p) => p.handle === route.handle)?.id === cid
+                    )}
+                    onToggleCompare={handleToggleCompare}
                   />
                 )}
 
@@ -411,8 +346,6 @@ export default function App() {
               />
             </>
           )}
-        </>
-      )}
     </div>
     </MotionConfig>
   );

@@ -1,0 +1,226 @@
+<section
+  id="section-{{ section.id }}"
+  class="sd-section sd-section-pad sd-wing-pkg-sec"
+  style="--sd-section-bg: {{ section.settings.bg_color | default: '#FAF6EE' }}; --sd-pad-y: {{ section.settings.padding_y | default: 76 }}px;"
+  data-wing-packages
+>
+  <div class="sd-container">
+    <div class="sd-section__header-row" data-sd-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="sd-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="sd-heading">
+          {{ section.settings.heading | escape }}
+          {%- if section.settings.heading_script != blank -%}
+            <span class="sd-script-inline">{{ section.settings.heading_script | escape }}</span>
+          {%- endif -%}
+        </h2>
+        {%- if section.settings.description != blank -%}
+          <p class="sd-subtext">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="sd-wp-edition-toggle" role="group" aria-label="Select kit configuration edition">
+        <button type="button" class="sd-wp-ed-btn is-active" data-wp-edition="standard-pack">
+          Ready-to-Ship (10% Off)
+        </button>
+        <button type="button" class="sd-wp-ed-btn" data-wp-edition="custom-branding">
+          Custom RAL &amp; Logo (6% Off)
+        </button>
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="sd-wp-tabs" role="tablist" aria-label="Select turnkey campus wing kit">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            class="sd-wp-tab{% if forloop.first %} is-active{% endif %}"
+            data-wp-tab="{{ forloop.index0 }}"
+            data-wp-title="{{ block.settings.title | escape }}"
+            data-wp-age="{{ block.settings.age_group | escape }}"
+            data-wp-cap="{{ block.settings.capacity_label | escape }}"
+            data-wp-dispatch="{{ block.settings.dispatch_timeline | escape }}"
+            data-wp-warranty="{{ block.settings.warranty_label | escape }}"
+            data-wp-safety="{{ block.settings.safety_standard | escape }}"
+            data-wp-summary="{{ block.settings.summary | escape }}"
+            data-wp-items="{{ block.settings.included_items | escape }}"
+            data-wp-price="{{ block.settings.standard_total | default: 0 }}"
+            data-wp-link="{{ block.settings.collection_link | default: '/collections/all' }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="sd-wp-tab__age">{{ block.settings.age_group | escape }}</span>
+            <strong class="sd-wp-tab__name">{{ block.settings.short_label | escape }}</strong>
+            <span class="sd-wp-tab__cap">{{ block.settings.capacity_label | escape }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- assign first_pkg = section.blocks.first -%}
+      <div class="sd-wp-grid">
+        <div class="sd-wp-card">
+          <div class="sd-wp-card__head">
+            <p class="sd-eyebrow" data-wp-out-meta>
+              {{ first_pkg.settings.age_group | escape }} · {{ first_pkg.settings.capacity_label | escape }}
+            </p>
+            <h3 class="sd-wp-card__title" data-wp-out-title>{{ first_pkg.settings.title | escape }}</h3>
+          </div>
+          <p class="sd-wp-card__summary" data-wp-out-summary>{{ first_pkg.settings.summary | escape }}</p>
+
+          <dl class="sd-wp-specs">
+            <div>
+              <dt>Dispatch Window</dt>
+              <dd data-wp-out-dispatch>{{ first_pkg.settings.dispatch_timeline | escape }}</dd>
+            </div>
+            <div>
+              <dt>Structural Cover</dt>
+              <dd data-wp-out-warranty>{{ first_pkg.settings.warranty_label | escape }}</dd>
+            </div>
+            <div>
+              <dt>Safety Compliance</dt>
+              <dd data-wp-out-safety>{{ first_pkg.settings.safety_standard | escape }}</dd>
+            </div>
+          </dl>
+
+          <div class="sd-wp-card__foot">
+            <a href="{{ first_pkg.settings.collection_link | default: '/collections/all' }}" class="sd-link-arrow" data-wp-out-link>
+              Browse Individual Units {% render 'icon', name: 'arrow-right' %}
+            </a>
+          </div>
+        </div>
+
+        <div class="sd-wp-card">
+          <div class="sd-wp-card__head sd-wp-card__head--split">
+            <div>
+              <span class="sd-eyebrow">Included Furniture &amp; Zones</span>
+              <p class="sd-wp-edition-note" data-wp-out-edition-note>
+                Ready-to-Ship Standard Pack (10% Wing Bundle Savings)
+              </p>
+            </div>
+          </div>
+
+          <ul class="sd-wp-list" data-wp-out-list>
+            {%- assign item_lines = first_pkg.settings.included_items | split: '|' -%}
+            {%- for row in item_lines -%}
+              <li>{{ row | strip | escape }}</li>
+            {%- endfor -%}
+          </ul>
+
+          <div class="sd-wp-total-row">
+            <span>Turnkey Kit Estimate</span>
+            <strong data-wp-out-total>
+              {%- if first_pkg.settings.standard_total > 0 -%}
+                ₹{{ first_pkg.settings.standard_total }}
+              {%- else -%}
+                Custom Institutional BOQ
+              {%- endif -%}
+            </strong>
+          </div>
+
+          <div class="sd-wp-actions">
+            <button
+              type="button"
+              class="sd-btn sd-btn--primary"
+              data-open-quote
+              data-wp-quote-btn
+              data-product-title="Turnkey Kit: {{ first_pkg.settings.title | escape }}"
+            >
+              Request Institutional Quote
+            </button>
+            <a
+              href="https://wa.me/919312254660?text={{ 'School Decor Turnkey Wing Kit Enquiry' | url_encode }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="sd-btn sd-btn--outline"
+              data-wp-wa-link
+            >
+              {% render 'icon', name: 'whatsapp' %}
+              <span>WhatsApp Team</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Wing Starter Kits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small Lead-in Text",
+      "default": "Turnkey Campus Kits & Institutional Bundles"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready-to-Launch"
+    },
+    {
+      "type": "text",
+      "id": "heading_script",
+      "label": "Handwritten Accent Words",
+      "default": "Wing Starter Kits"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Subtitle",
+      "default": "Choose a pre-engineered campus wing kit tailored to student age, room capacity, and dispatch timeline."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#FAF6EE"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "min": 36,
+      "max": 112,
+      "step": 4,
+      "unit": "px",
+      "label": "Vertical Spacing",
+      "default": 76
+    }
+  ],
+  "blocks": [
+    {
+      "type": "wing_kit",
+      "name": "Wing Starter Kit",
+      "settings": [
+        { "type": "text", "id": "short_label", "label": "Tab Label", "default": "K–5 Classroom" },
+        { "type": "text", "id": "title", "label": "Kit Title", "default": "Modern Primary Classroom Pack" },
+        { "type": "text", "id": "age_group", "label": "Age Group", "default": "Grades 1–5 (Ages 6–10)" },
+        { "type": "text", "id": "capacity_label", "label": "Room Capacity", "default": "30 Students + Teacher" },
+        { "type": "text", "id": "dispatch_timeline", "label": "Dispatch Window", "default": "10–14 Days Pan-India" },
+        { "type": "text", "id": "warranty_label", "label": "Warranty Cover", "default": "7-Yr Frame & Weld Warranty" },
+        { "type": "text", "id": "safety_standard", "label": "Safety Standard", "default": "BIFMA Posture Grade · R16 Waterfall Edge" },
+        { "type": "textarea", "id": "summary", "label": "Summary", "default": "Uniform batch of posture-tuned 18mm birchwood desks and contoured chairs paired with side storage trays." },
+        { "type": "textarea", "id": "included_items", "label": "Included Items (Separate with |)", "default": "30x Ergonomic Birch & Steel Desk Set | 2x Classroom Resource Birch Shelf Unit" },
+        { "type": "number", "id": "standard_total", "label": "Estimated Bundle Price (INR, 0 for Quote)", "default": 285390 },
+        { "type": "url", "id": "collection_link", "label": "Collection Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wing Starter Kits",
+      "blocks": [
+        { "type": "wing_kit", "settings": { "short_label": "Pre-K & Montessori", "title": "Early Years & Montessori Wing Kit", "age_group": "Ages 2–6 Years", "capacity_label": "20 Children / Room", "standard_total": 67410 } },
+        { "type": "wing_kit", "settings": { "short_label": "K–5 Classroom", "title": "Modern Primary Classroom Pack", "age_group": "Grades 1–5", "capacity_label": "30 Students + Teacher", "standard_total": 285390 } },
+        { "type": "wing_kit", "settings": { "short_label": "STEM & Science Lab", "title": "Composite Science & STEM Lab Suite", "age_group": "Grades 6–12", "capacity_label": "24 Workstations", "standard_total": 51030 } },
+        { "type": "wing_kit", "settings": { "short_label": "Outdoor Park & Court", "title": "Outdoor Multi-Play & Surfacing Package", "age_group": "Ages 3–14 Years", "capacity_label": "35+ Simultaneous Children", "standard_total": 44100 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

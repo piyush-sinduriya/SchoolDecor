@@ -112,6 +112,48 @@ export function AboutPage({
         </MotionStagger>
       </section>
 
+      {/* Material Engineering Standards Matrix */}
+      <section className="max-w-[1320px] mx-auto px-4 md:px-6 pb-12">
+        <div className="rounded-3xl border border-[#E5DEC9] bg-[#FAF7F0] p-6 sm:p-8 overflow-x-auto">
+          <div className="mb-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+              Engineering Benchmark
+            </p>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#161A17] mt-1">
+              Material &amp; Safety Standards Matrix
+            </h2>
+            <p className="sm:hidden text-[11px] font-mono-num text-[#4D554E] mt-1">
+              ← Swipe table horizontally to view all columns →
+            </p>
+          </div>
+          <table className="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
+            <thead>
+              <tr className="border-b border-[#E5DEC9] text-[#4D554E] uppercase text-[11px] tracking-wider">
+                <th className="py-3 pr-4 font-bold">Core Material</th>
+                <th className="py-3 pr-4 font-bold">Gauge / Thickness</th>
+                <th className="py-3 pr-4 font-bold">Child Safety Standard</th>
+                <th className="py-3 font-bold">Campus Cover</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#EFEAD9] text-[#161A17]">
+              {[
+                ['FSC European Birch', '18mm Multi-Ply Veneer', 'R16 / R20 Chamfer · Zero-VOC PU', '5-Yr Structural Warranty'],
+                ['Powder-Coated Frame', '1.6mm Cold-Rolled Steel', 'Anti-Chip Epoxy · Non-Marking Shoes', '7-Yr Frame & Weld Cover'],
+                ['Soft-Play Foam Core', '28-Density High-Resilience PU', 'Phthalate-Free Antimicrobial Vinyl', '3-Yr Core Compression'],
+                ['Lab Phenolic Resin', '19mm Solid Compact Top', 'SEFA Acid & 180°C Thermal Proof', '10-Yr Lab Surface Cover'],
+              ].map(([mat, thick, safety, warranty]) => (
+                <tr key={mat}>
+                  <td className="py-3.5 pr-4 font-bold">{mat}</td>
+                  <td className="py-3.5 pr-4 font-mono-num text-[#4D554E]">{thick}</td>
+                  <td className="py-3.5 pr-4 text-[#007B36] font-semibold">{safety}</td>
+                  <td className="py-3.5 font-mono-num font-bold">{warranty}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Partner Brands Strip integrated cleanly on About Page */}
       <BrandsShowcase onNavigate={onNavigate} compact />
     </div>
@@ -126,6 +168,7 @@ export function ProjectsPage({
   onOpenQuote: (t?: string) => void;
 }) {
   const [filterCat, setFilterCat] = useState<'all' | 'preschool' | 'classroom' | 'stem'>('all');
+  const [expandedProject, setExpandedProject] = useState<string | null>(null);
 
   const items = [
     {
@@ -134,6 +177,9 @@ export function ProjectsPage({
       category: 'Preschool & Montessori',
       location: 'New Delhi NCR · Studio Spec',
       highlight: '140 Birch Stations + Sensory Corner',
+      footprint: '4,200 sq.ft (6 Classrooms)',
+      turnaround: '14 Days Supply & Assembly',
+      specSummary: 'Curved Montessori open cubbies, toddler height seating, acoustic mats, and tactile wall stations.',
       img: THEME_IMAGES.heroPreschool,
       collectionHandle: 'kindergarten-furniture',
     },
@@ -143,6 +189,9 @@ export function ProjectsPage({
       category: 'Classroom & Library',
       location: 'Mumbai West · Institutional',
       highlight: '420 BIFMA Desks + Modular Reading Pods',
+      footprint: '11,500 sq.ft (14 Sections + Library)',
+      turnaround: '21 Days Phased Dispatch',
+      specSummary: 'Height-graded Grades 1–12 ergonomic birch desks paired with curved amphitheater library stacks.',
       img: THEME_IMAGES.schoolLibrary,
       collectionHandle: 'senior',
     },
@@ -152,6 +201,9 @@ export function ProjectsPage({
       category: 'Laboratories & Outdoor',
       location: 'Bengaluru South · Campus Turnkey',
       highlight: 'Phenolic Island Benches + Multi-Play Zone',
+      footprint: '6,800 sq.ft (Indoor Labs + Court)',
+      turnaround: '24 Days Plumbing & Anchoring',
+      specSummary: '8 six-seater phenolic science islands with brass gas/water turrets plus galvanized UV-8 playground.',
       img: THEME_IMAGES.scienceLab,
       collectionHandle: 'science-lab',
     },
@@ -234,10 +286,30 @@ export function ProjectsPage({
                       <span>{p.location}</span>
                     </p>
                     <h2 className="text-lg font-extrabold text-[#161A17] mt-1.5">{p.title}</h2>
-                    <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#EFF7F2] text-[#007B36] text-xs font-semibold">
-                      <Building2 className="w-3.5 h-3.5" />
+                    <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#FAF3EB] border border-[#E5DEC9] text-[#161A17] text-xs font-semibold">
+                      <Building2 className="w-3.5 h-3.5 text-[#007B36]" />
                       <span>{p.highlight}</span>
                     </p>
+                    <div className="mt-3">
+                      <button
+                        type="button"
+                        onClick={() => setExpandedProject(expandedProject === p.title ? null : p.title)}
+                        className="text-xs font-bold text-[#007B36] hover:underline bg-transparent border-0 p-0 cursor-pointer"
+                      >
+                        {expandedProject === p.title ? 'Hide Installation Specs ▲' : 'Inspect Site Specs ▼'}
+                      </button>
+                      {expandedProject === p.title && (
+                        <div className="mt-2.5 p-3 rounded-xl bg-[#FAF7F0] border border-[#E5DEC9] text-xs space-y-1">
+                          <p className="font-mono-num">
+                            <strong className="text-[#161A17]">Footprint:</strong> {p.footprint}
+                          </p>
+                          <p className="font-mono-num">
+                            <strong className="text-[#161A17]">Turnaround:</strong> {p.turnaround}
+                          </p>
+                          <p className="text-[#4D554E] leading-relaxed">{p.specSummary}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="pt-4 border-t border-[#EFEAD9] flex flex-wrap items-center justify-between gap-2">
@@ -440,6 +512,7 @@ export function FaqPage({
 }
 
 export function ContactPage({ onOpenQuote }: { onOpenQuote?: (title?: string) => void }) {
+  const [purpose, setPurpose] = useState<'New Campus Setup' | 'Classroom Upgrade' | 'Tender / BOQ' | 'Studio Visit'>('New Campus Setup');
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -455,7 +528,10 @@ export function ContactPage({ onOpenQuote }: { onOpenQuote?: (title?: string) =>
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const check = validateQuoteForm(form);
+    const check = validateQuoteForm({
+      ...form,
+      requirements: `[${purpose}] ${form.requirements}`.trim(),
+    });
     if (!check.valid) {
       setErrors(check.errors);
       setSent(false);
@@ -517,7 +593,7 @@ export function ContactPage({ onOpenQuote }: { onOpenQuote?: (title?: string) =>
               </a>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#EFF7F2] border border-[#BCE3CB] space-y-1.5">
+            <div className="p-5 rounded-2xl bg-[#FAF3EB] border border-[#E5DEC9] space-y-1.5">
               <p className="text-xs font-bold text-[#007B36] flex items-center gap-1.5">
                 <Award className="w-4 h-4" />
                 <span>Verified Material Partner Network</span>
@@ -534,7 +610,28 @@ export function ContactPage({ onOpenQuote }: { onOpenQuote?: (title?: string) =>
             transition={{ duration: 0.48, delay: 0.08, ease: PAGE_EASE_OUT }}
             className="lg:col-span-7 p-6 md:p-8 rounded-3xl border border-[#E5DEC9] bg-white shadow-sm"
           >
-            <h2 className="text-xl font-extrabold text-[#161A17] mb-4">Request a Quote / Send Enquiry</h2>
+            <h2 className="text-xl font-extrabold text-[#161A17] mb-3">Request a Quote / Send Enquiry</h2>
+            <div className="mb-5">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E] mb-2">
+                Enquiry Purpose
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {(['New Campus Setup', 'Classroom Upgrade', 'Tender / BOQ', 'Studio Visit'] as const).map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setPurpose(item)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+                      purpose === item
+                        ? 'bg-[#161A17] text-white border-[#161A17]'
+                        : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:border-[#161A17]'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
             {errors.length > 0 && (
               <div role="alert" className="mb-4 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-800 space-y-1">
                 <div className="flex items-center gap-1.5 font-bold"><AlertCircle className="w-4 h-4" /><span>Please fix these fields:</span></div>

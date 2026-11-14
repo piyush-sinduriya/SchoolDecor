@@ -80,7 +80,7 @@ export function ProductCard({
         <button
           type="button"
           onClick={() => onQuickView(product)}
-          className="absolute right-2.5 bottom-2.5 z-30 px-2.5 py-1 rounded-lg bg-white/95 border border-[#E5DEC9] text-xs font-semibold text-[#161A17] opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 focus-visible:opacity-100 focus-visible:translate-y-0 transition-all duration-200 shadow-sm cursor-pointer"
+          className="absolute right-2.5 bottom-2.5 z-30 px-2.5 py-1 rounded-lg bg-white/95 border border-[#E5DEC9] text-xs font-semibold text-[#161A17] opacity-100 sm:opacity-0 sm:translate-y-1.5 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 focus-visible:opacity-100 focus-visible:translate-y-0 transition-all duration-200 shadow-sm cursor-pointer"
         >
           Quick View
         </button>

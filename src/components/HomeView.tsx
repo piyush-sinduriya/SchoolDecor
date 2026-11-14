@@ -1,11 +1,8 @@
-import { useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
-  useMotionValueEvent,
   useScroll,
-  useSpring,
   useTransform,
 } from 'motion/react';
 import {
@@ -23,9 +20,7 @@ import {
   Minus,
   CheckCircle2,
   Ruler,
-  Sparkles,
-  ShoppingBag,
-  FileText,
+  Scale,
 } from 'lucide-react';
 import {
   COLLECTIONS_SHOWCASE,
@@ -37,18 +32,15 @@ import {
   THEME_IMAGES,
 } from '../data/previewCatalog';
 import {
-  computeHeroScrollState,
-  getHeroScrollRatioForSet,
-} from '../utils/heroScrollChoreography';
-import {
   ERGO_GRADE_PRESETS,
   FINISH_PALETTES,
   getFinishPalette,
   type FinishPaletteId,
 } from '../utils/smartPlanner';
+import { calculateBulkTierPricing } from '../utils/wingPackages';
 import { buildWhatsAppUrl, type StoreProduct } from '../utils/storefrontHelpers';
 import { ProductCard } from './ProductCard';
-import { SmartCampusPlanner } from './SmartCampusPlanner';
+import { CampusWingPackages } from './CampusWingPackages';
 import { BrandsShowcase } from './BrandsShowcase';
 import { SchoolCampusMap } from './SchoolCampusMap';
 import type { PreviewRoute } from './HeaderNav';
@@ -68,24 +60,79 @@ const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const HERO_SLIDES = [
   {
+    id: 'banner-classrooms',
+    tabLabel: 'Classrooms',
     eyebrow: 'School Furniture & Educational Infrastructure',
     titleLead: 'Designing Better Spaces for',
     titleScript: 'Brighter Futures',
     title: 'Designing Better Spaces for Brighter Futures',
-    desc: 'Discover thoughtfully designed furniture, innovative learning environments and educational play solutions for schools, preschools and institutions.',
+    desc: 'Discover ergonomic classroom desks, contoured seating, modular storage and complete learning environments crafted for modern K-12 campuses.',
+    highlightStat: 'Grades 1–12 Ergonomic Sizing · FSC 18mm Birchwood',
     image: THEME_IMAGES.heroClassroom,
-    ctaLabel: 'Explore Our Collection',
-    ctaTarget: { page: 'collection', handle: 'all' } as PreviewRoute,
+    imageAlt: 'Sunlit modern K-12 school classroom furnished with ergonomic birchwood desks and chairs',
+    accentHex: '#007B36',
+    ctaLabel: 'Explore Classrooms',
+    ctaTarget: { page: 'collection', handle: 'senior' } as PreviewRoute,
   },
   {
-    eyebrow: 'Early Years & Montessori Environments',
+    id: 'banner-preschool',
+    tabLabel: 'Preschool & Play',
+    eyebrow: 'Early Years, Montessori & Active Play',
     titleLead: 'Crafted Classrooms That Spark',
     titleScript: 'Curious Minds',
     title: 'Crafted Classrooms That Spark Curious Minds',
-    desc: 'Child-scaled birchwood classrooms, Montessori shelving, sensory corners and safe active play rooms crafted for joyful early learning.',
+    desc: 'Child-scaled birchwood classrooms, Montessori shelving bays, soft-play zones and tactile sensory corners crafted for joyful early learning.',
+    highlightStat: 'R20 Safety Corners · EN-71 Zero-VOC Child-Safe Finishes',
     image: THEME_IMAGES.heroPreschool,
+    imageAlt: 'Bright early years Montessori preschool interior with birch tables and soft play learning corner',
+    accentHex: '#C22768',
     ctaLabel: 'Shop Kindergarten',
     ctaTarget: { page: 'collection', handle: 'kindergarten-furniture' } as PreviewRoute,
+  },
+  {
+    id: 'banner-labs',
+    tabLabel: 'STEM & Science Labs',
+    eyebrow: 'Academic, Robotics & STEM Laboratories',
+    titleLead: 'Future-Ready Labs Built for',
+    titleScript: 'STEM Discovery',
+    title: 'Future-Ready Labs Built for STEM Discovery',
+    desc: '19mm chemical-resistant phenolic resin worktops, integrated utility turrets and ventilated glass bays engineered for senior wings.',
+    highlightStat: 'SEFA Chemical Grade Tops · Complete Turnkey Lab Utility Lines',
+    image: THEME_IMAGES.scienceLab,
+    imageAlt: 'Composite chemistry and STEM school laboratory equipped with island workbenches',
+    accentHex: '#007B36',
+    ctaLabel: 'Explore Science Labs',
+    ctaTarget: { page: 'collection', handle: 'science-lab' } as PreviewRoute,
+  },
+  {
+    id: 'banner-outdoor',
+    tabLabel: 'Outdoor Parks',
+    eyebrow: 'Outdoor Playgrounds & Open-Air Gyms',
+    titleLead: 'Safe Outdoor Parks Made for',
+    titleScript: 'Active Growth',
+    title: 'Safe Outdoor Parks Made for Active Growth',
+    desc: 'Hot-dip galvanized multi-play climbers, UV-8 stabilized LLDPE slides, sensory parks and outdoor campus benches built for every season.',
+    highlightStat: 'Galvanized Steel Frames · UV-8 Weather-Stabilized Chutes',
+    image: THEME_IMAGES.outdoorPlay,
+    imageAlt: 'Lush outdoor school playground park with multi-play slides and climbing towers',
+    accentHex: '#C22768',
+    ctaLabel: 'Explore Outdoor Parks',
+    ctaTarget: { page: 'collection', handle: 'outdoor-fun-equipment' } as PreviewRoute,
+  },
+  {
+    id: 'banner-libraries',
+    tabLabel: 'Libraries & Flooring',
+    eyebrow: 'Libraries, Surfacing & Turnkey Campuses',
+    titleLead: 'Complete Campus Solutions',
+    titleScript: 'Under One Roof',
+    title: 'Complete Campus Solutions Under One Roof',
+    desc: 'Acoustic reading pods, modular library shelving, shock-attenuating EPDM play surfacing and multi-sport courts with pan-India installation.',
+    highlightStat: '5 Regional Experience Studios · Pan-India Institutional Dispatch',
+    image: THEME_IMAGES.schoolLibrary,
+    imageAlt: 'Modern curved birchwood school library and terraced student collaboration lounge',
+    accentHex: '#007B36',
+    ctaLabel: 'Browse Full Catalog',
+    ctaTarget: { page: 'collection', handle: 'all' } as PreviewRoute,
   },
 ];
 
@@ -202,92 +249,23 @@ export function HomeView({
   onToggleCompare,
 }: HomeViewProps) {
   const [slideIdx, setSlideIdx] = useState(0);
-  const [heroCutoutIdx, setHeroCutoutIdx] = useState(0);
-  const [heroHotspotIdx, setHeroHotspotIdx] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
   const [stageIdx, setStageIdx] = useState(0);
   const [stagePaletteId, setStagePaletteId] = useState<FinishPaletteId>('birch-emerald');
   const [ergoPresetId, setErgoPresetId] = useState<string>('primary');
   const [activeHotspotIdx, setActiveHotspotIdx] = useState(0);
+  const [cutoutTierQty, setCutoutTierQty] = useState<1 | 25 | 60>(25);
   const [openStepIdx, setOpenStepIdx] = useState(0);
   const [activeTab, setActiveTab] = useState<'best-sellers' | 'new-arrivals' | 'featured'>('best-sellers');
   const [testimonialIdx, setTestimonialIdx] = useState(0);
 
-  // Sticky centered scroll-scrubbed Hero track (split Desk left / Chair right -> Set 2 -> Set 3 -> Set 4)
-  const heroTrackRef = useRef<HTMLElement>(null);
-  const pointerRafRef = useRef<number | null>(null);
-  const { scrollYProgress: rawHeroScroll } = useScroll({
-    target: heroTrackRef,
-    offset: ['start start', 'end end'],
-  });
-  const smoothHeroScroll = useSpring(rawHeroScroll, {
-    stiffness: 180,
-    damping: 26,
-    mass: 0.45,
-  });
-
-  useMotionValueEvent(rawHeroScroll, 'change', (latest) => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
-    const next = computeHeroScrollState(latest, CUTOUT_SHOWCASE_ITEMS.length);
-    setHeroCutoutIdx((prev) => {
-      if (prev !== next.activeIndex) setHeroHotspotIdx(0);
-      return prev === next.activeIndex ? prev : next.activeIndex;
-    });
-  });
-
-  // Smooth GPU cursor parallax + subtle 3D stage tilt for Hero Collage (rAF throttled)
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const springX = useSpring(pointerX, { stiffness: 130, damping: 20, mass: 0.55 });
-  const springY = useSpring(pointerY, { stiffness: 130, damping: 20, mass: 0.55 });
-  const stageRotateY = useTransform(springX, [-12, 12], [-2.5, 2.5]);
-  const stageRotateX = useTransform(springY, [-10, 10], [2.2, -2.2]);
-
-  // Scroll-scrubbed Desk (left wing -> center) & Chair (right wing -> center) + settling tilt
-  const deskScrollX = useTransform(smoothHeroScroll, [0, 0.14, 0.25], [-64, -4, 0]);
-  const chairScrollX = useTransform(smoothHeroScroll, [0, 0.14, 0.25], [64, 4, 0]);
-  const deskRotateDeg = useTransform(smoothHeroScroll, [0, 0.14], [-2.5, 0]);
-  const chairRotateDeg = useTransform(smoothHeroScroll, [0, 0.14], [2.5, 0]);
-  const heroTrackProgress = useTransform(smoothHeroScroll, [0, 1], [0.12, 1]);
-
-  const handleHeroPointerMove = (e: MouseEvent<HTMLElement>) => {
-    const target = e.currentTarget;
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-    if (pointerRafRef.current !== null) return;
-    pointerRafRef.current = window.requestAnimationFrame(() => {
-      pointerRafRef.current = null;
-      const rect = target.getBoundingClientRect();
-      const nx = (clientX - rect.left) / Math.max(1, rect.width) - 0.5;
-      const ny = (clientY - rect.top) / Math.max(1, rect.height) - 0.5;
-      pointerX.set(nx * 20);
-      pointerY.set(ny * 14);
-    });
-  };
-
-  const handleHeroPointerLeave = () => {
-    if (pointerRafRef.current !== null) {
-      window.cancelAnimationFrame(pointerRafRef.current);
-      pointerRafRef.current = null;
-    }
-    pointerX.set(0);
-    pointerY.set(0);
-  };
-
-  const scrollToHeroSet = (idx: number) => {
-    setHeroCutoutIdx(idx);
-    setHeroHotspotIdx(0);
-    const el = heroTrackRef.current;
-    if (!el || typeof window === 'undefined') return;
-    if (window.innerWidth >= 1024) {
-      const rect = el.getBoundingClientRect();
-      const trackTop = window.scrollY + rect.top;
-      const scrollable = Math.max(0, el.offsetHeight - window.innerHeight);
-      if (scrollable > 40) {
-        const ratio = getHeroScrollRatioForSet(idx, CUTOUT_SHOWCASE_ITEMS.length);
-        window.scrollTo({ top: trackTop + scrollable * ratio, behavior: 'smooth' });
-      }
-    }
-  };
+  useEffect(() => {
+    if (heroPaused) return;
+    const timer = window.setInterval(() => {
+      setSlideIdx((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [heroPaused]);
 
   const cutoutBandRef = useRef<HTMLElement>(null);
   const { scrollYProgress: cutoutScroll } = useScroll({
@@ -297,12 +275,7 @@ export function HomeView({
   const parallaxUp = useTransform(cutoutScroll, [0, 1], [-14, 14]);
   const parallaxDown = useTransform(cutoutScroll, [0, 1], [14, -14]);
 
-  const slide = HERO_SLIDES[slideIdx];
-  const activeHeroCutout = CUTOUT_SHOWCASE_ITEMS[heroCutoutIdx] || CUTOUT_SHOWCASE_ITEMS[0];
-  const activeHeroProduct = PREVIEW_PRODUCTS.find((p) => p.handle === activeHeroCutout.productHandle);
-  const activeHeroHotspot =
-    activeHeroCutout.hotspots[heroHotspotIdx] || activeHeroCutout.hotspots[0];
-  const activeHeroFinish = getFinishPalette(stagePaletteId);
+  const slide = HERO_SLIDES[slideIdx] || HERO_SLIDES[0];
   const activeStageItem = CUTOUT_SHOWCASE_ITEMS[stageIdx] || CUTOUT_SHOWCASE_ITEMS[0];
   const activeHotspot =
     activeStageItem.hotspots[activeHotspotIdx] || activeStageItem.hotspots[0];
@@ -320,7 +293,6 @@ export function HomeView({
   const handleSlideChange = (nextIdx: number) => {
     const wrapped = (nextIdx + HERO_SLIDES.length) % HERO_SLIDES.length;
     setSlideIdx(wrapped);
-    scrollToHeroSet(wrapped === 0 ? 0 : 1);
   };
 
   const testimonials = [
@@ -346,499 +318,169 @@ export function HomeView({
 
   return (
     <div className="overflow-x-clip">
-      {/* SECTION A: LIGHT SUNLIT ARCHITECTURAL CENTERED HERO + SCROLL-SCRUBBED SPLIT FURNITURE CHOREOGRAPHY */}
+      {/* SECTION A: BIG 5-BANNER ARCHITECTURAL HERO CAROUSEL */}
       <section
-        ref={heroTrackRef}
-        data-testid="hero-scroll-track"
-        onMouseMove={handleHeroPointerMove}
-        onMouseLeave={handleHeroPointerLeave}
-        className="relative bg-gradient-to-b from-[#FAF7F0] via-[#FFFFFF] to-[#F5F1E6] lg:min-h-[250vh]"
+        data-testid="hero-banner-carousel"
+        aria-roledescription="carousel"
+        aria-label="Featured School Infrastructure Banners"
+        onMouseEnter={() => setHeroPaused(true)}
+        onMouseLeave={() => setHeroPaused(false)}
+        className="relative bg-[#FAF7F0] overflow-hidden"
       >
-        <div className="relative lg:sticky lg:top-[74px] lg:min-h-[calc(100vh-74px)] flex flex-col justify-between overflow-hidden pb-12 sm:pb-6 lg:pb-3">
-          {/* Soft Sunlit Classroom Watermark & Fine Architectural Grid (zero heavy dark wash) */}
-          <div aria-hidden="true" className="absolute inset-0 sd-light-grid-bg opacity-55 pointer-events-none" />
+        <div className="relative min-h-[540px] sm:min-h-[590px] lg:min-h-[650px] flex flex-col justify-between">
+          {/* Full-Bleed Big Architectural Banner Image */}
           <AnimatePresence mode="wait">
-            <motion.img
-              key={`hero-img-${slideIdx}`}
-              src={slide.image}
-              alt=""
-              initial={{ opacity: 0.04, scale: 1.04 }}
-              animate={{ opacity: 0.08, scale: 1 }}
-              exit={{ opacity: 0.03 }}
-              transition={{ duration: 0.9, ease: EASE_OUT_EXPO }}
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            />
+            <motion.div
+              key={slide.id}
+              initial={{ opacity: 0.25, scale: 1.03 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0.2 }}
+              transition={{ duration: 0.65, ease: EASE_OUT_EXPO }}
+              className="absolute inset-0 pointer-events-none"
+            >
+              <img
+                src={slide.image}
+                alt={slide.imageAlt}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-center"
+              />
+            </motion.div>
           </AnimatePresence>
+
+          {/* Measured Sunlit Editorial Gradient Scrim: High-contrast readable text left + bright showcase right */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 pointer-events-none transition-colors duration-500"
+            className="absolute inset-0 pointer-events-none lg:hidden"
             style={{
-              background: `radial-gradient(ellipse 72% 56% at 50% 54%, ${activeHeroFinish.stageGlow} 0%, ${activeHeroCutout.tintBg}D8 34%, rgba(250,247,240,0.92) 68%, rgba(255,255,255,0.97) 100%)`,
+              background:
+                'linear-gradient(180deg, rgba(250,247,240,0.94) 0%, rgba(250,247,240,0.88) 46%, rgba(250,247,240,0.52) 78%, rgba(250,247,240,0.82) 100%)',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="hidden lg:block absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'linear-gradient(94deg, rgba(250,247,240,0.97) 0%, rgba(250,247,240,0.93) 38%, rgba(250,247,240,0.68) 56%, rgba(250,247,240,0.14) 78%, rgba(250,247,240,0.04) 100%)',
             }}
           />
 
-          <div className="relative z-10 max-w-[1320px] w-full mx-auto px-4 md:px-6 pt-2 sm:pt-3 pb-2 flex flex-col items-center">
-            {/* TOP CENTERED EDITORIAL HEADER & ACTION BUTTONS */}
-            <div className="text-center max-w-3xl mx-auto">
+          {/* Main Foreground Content Container */}
+          <div className="relative z-10 max-w-[1320px] w-full mx-auto px-4 md:px-6 pt-10 sm:pt-14 lg:pt-16 pb-6 flex-1 flex items-center">
+            <div className="w-full max-w-[600px]">
               <AnimatePresence mode="wait">
-                <motion.div key={`hero-copy-${slideIdx}`}>
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.42, ease: EASE_OUT_EXPO }}
-                    className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[#C22768] mb-1"
-                  >
-                    {slide.eyebrow}
-                  </motion.p>
+                <motion.div
+                  key={`hero-copy-${slide.id}`}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.42, ease: EASE_OUT_EXPO }}
+                >
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <span className="inline-block w-7 h-[3px] rounded-full bg-[#C22768]" aria-hidden="true" />
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#C22768]">
+                      0{slideIdx + 1} / 0{HERO_SLIDES.length} · {slide.eyebrow}
+                    </p>
+                  </div>
 
-                  <motion.h1
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.06, ease: EASE_OUT_EXPO }}
-                    className="text-2xl sm:text-4xl lg:text-[2.7rem] font-extrabold leading-[1.05] tracking-tight text-[#161A17] text-balance"
-                  >
+                  <h1 className="text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold leading-[1.06] tracking-tight text-[#161A17] text-balance">
                     {slide.titleLead}{' '}
                     <span
-                      className="font-script text-[1.22em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-3 underline-offset-4 transition-colors duration-300"
-                      style={{ color: activeHeroFinish.accentHex }}
+                      className="font-script text-[1.18em] font-bold inline-block -rotate-1 underline decoration-[#F8D000] decoration-4 underline-offset-4"
+                      style={{ color: slide.accentHex }}
                     >
                       {slide.titleScript}
                     </span>
-                  </motion.h1>
+                  </h1>
 
-                  <motion.p
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55, delay: 0.12, ease: EASE_OUT_EXPO }}
-                    className="mt-1.5 text-xs sm:text-[14.5px] text-[#4D554E] max-w-[58ch] mx-auto leading-snug"
-                  >
+                  <p className="mt-4 text-sm sm:text-base lg:text-[17px] text-[#353C36] max-w-[54ch] leading-relaxed font-medium">
                     {slide.desc}
-                  </motion.p>
+                  </p>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.18, ease: EASE_OUT_EXPO }}
-                    className="mt-2.5 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3"
-                  >
+                  <p className="mt-3 text-xs font-mono-num font-semibold text-[#4D554E]">
+                    {slide.highlightStat}
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
                     <button
                       type="button"
                       onClick={() => onNavigate(slide.ctaTarget)}
-                      className="sd-btn-sheen group inline-flex items-center gap-2 px-5 sm:px-6 py-2 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
+                      className="sd-btn-sheen group flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white font-bold text-xs sm:text-sm transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-md whitespace-nowrap"
                     >
                       <span>{slide.ctaLabel}</span>
                       <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </button>
                     <button
                       type="button"
-                      onClick={() => onOpenQuote()}
-                      className="px-5 sm:px-6 py-2 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#E5DEC9] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
+                      onClick={() => onOpenQuote(slide.title)}
+                      className="flex-1 sm:flex-initial text-center px-4 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white hover:bg-[#FDF2F7] text-[#161A17] font-bold text-xs sm:text-sm border border-[#DCD4C0] hover:border-[#C22768] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.985] cursor-pointer shadow-xs whitespace-nowrap"
                     >
                       Request a Quote
                     </button>
-                  </motion.div>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
+          </div>
 
-            {/* CENTERED ARCHITECTURAL FURNITURE STAGE */}
-            <div className="relative w-full max-w-[1040px] mt-2 sm:mt-2.5 flex flex-col items-center sd-hero-perspective">
-              {/* Outer Rotating Blueprint Compass Ring + Sculpted Studio Halo */}
-              <div
-                aria-hidden="true"
-                className="hidden sm:block absolute left-1/2 -translate-x-1/2 top-1 w-[250px] lg:w-[295px] h-[250px] lg:h-[295px] rounded-full border-2 border-dashed sd-blueprint-spin pointer-events-none transition-colors duration-500"
-                style={{ borderColor: `${activeHeroFinish.accentHex}38` }}
-              />
-              <div
-                aria-hidden="true"
-                className="hidden sm:block absolute left-1/2 -translate-x-1/2 top-6 w-[205px] lg:w-[235px] h-[205px] lg:h-[235px] rounded-full border pointer-events-none transition-colors duration-500"
-                style={{
-                  borderColor: activeHeroFinish.borderTint,
-                  backgroundColor: activeHeroFinish.surfaceTint,
-                  opacity: 0.55,
-                }}
-              />
-
-              {/* Left Architectural Spec & Finish Swatches (Desktop lg+) */}
-              <div className="hidden lg:flex flex-col items-start gap-2.5 absolute left-0 top-[130px] -translate-y-1/2 z-20 max-w-[185px]">
-                <div className="border-t border-[#E5DEC9] pt-2 w-full">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E]">
-                    Dimensions
-                  </p>
-                  <p className="text-xs font-mono-num font-bold text-[#161A17] mt-0.5">
-                    {activeHeroCutout.dimensions}
-                  </p>
-                </div>
-                <div className="border-t border-[#E5DEC9] pt-2 w-full">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E] mb-1.5">
-                    Studio Finish
-                  </p>
-                  <div className="flex items-center gap-1.5" role="group" aria-label="Preview studio finish">
-                    {FINISH_PALETTES.map((pal) => {
-                      const activePal = pal.id === stagePaletteId;
-                      return (
-                        <button
-                          key={pal.id}
-                          type="button"
-                          data-testid={`hero-finish-${pal.id}`}
-                          aria-label={`Preview ${pal.name}`}
-                          aria-pressed={activePal}
-                          title={pal.name}
-                          onClick={() => setStagePaletteId(pal.id)}
-                          className={`w-6 h-6 rounded-full flex items-center justify-center border transition-transform cursor-pointer ${
-                            activePal
-                              ? 'border-[#161A17] scale-115 shadow-xs'
-                              : 'border-[#E5DEC9] hover:scale-105'
-                          }`}
-                        >
-                          <span
-                            className="w-4 h-4 rounded-full"
-                            style={{ backgroundColor: pal.accentHex }}
-                          />
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <p
-                    data-testid="hero-active-finish-name"
-                    className="text-[11px] font-semibold mt-1 truncate"
-                    style={{ color: activeHeroFinish.accentHex }}
-                  >
-                    {activeHeroFinish.name}
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Core Material & Quick Hotspot Switcher (Desktop lg+) */}
-              <div className="hidden lg:flex flex-col items-end text-right gap-2.5 absolute right-0 top-[130px] -translate-y-1/2 z-20 max-w-[195px]">
-                <div className="border-t border-[#E5DEC9] pt-2 w-full">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E]">
-                    Core Specification
-                  </p>
-                  <p className="text-xs font-semibold text-[#161A17] mt-0.5 leading-snug">
-                    {activeHeroCutout.materials}
-                  </p>
-                </div>
-                <div className="border-t border-[#E5DEC9] pt-2 w-full">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#4D554E] mb-1.5">
-                    Detail Callouts
-                  </p>
-                  <div className="flex items-center justify-end gap-1.5">
-                    {activeHeroCutout.hotspots.map((spot, hIdx) => {
-                      const activeSpot = heroHotspotIdx === hIdx;
-                      return (
-                        <button
-                          key={spot.id}
-                          type="button"
-                          onClick={() => setHeroHotspotIdx(hIdx)}
-                          aria-pressed={activeSpot}
-                          className={`px-2 py-1 rounded-md text-[11px] font-mono-num font-bold border transition-colors cursor-pointer ${
-                            activeSpot
-                              ? 'bg-[#161A17] text-white border-[#161A17]'
-                              : 'bg-white/90 text-[#4D554E] border-[#E5DEC9] hover:border-[#161A17]'
-                          }`}
-                        >
-                          0{hIdx + 1}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* Center Stage Canvas: GPU 3D tilt + Interactive Hotspot Pins + Split Left Desk / Right Chair */}
-              <motion.div
-                style={{ x: springX, y: springY, rotateX: stageRotateX, rotateY: stageRotateY }}
-                className="relative w-full max-w-[660px] h-[220px] sm:h-[255px] lg:h-[268px] flex items-center justify-center px-2 sm:px-8 will-change-transform"
+          {/* Bottom 5-Banner Navigation Strip + Prev/Next Arrows */}
+          <div className="relative z-20 max-w-[1320px] w-full mx-auto px-4 md:px-6 pb-9 sm:pb-12">
+            <div className="rounded-2xl bg-white/94 backdrop-blur-md border border-[#E5DEC9] shadow-lg p-2 sm:p-2.5 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSlideChange(slideIdx - 1)}
+                aria-label="Previous hero banner"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
               >
-                {/* Grounded Studio Floor Shadow Ellipse */}
-                <div
-                  aria-hidden="true"
-                  className="absolute bottom-1 left-1/2 -translate-x-1/2 w-[84%] max-w-[520px] h-7 rounded-[50%] pointer-events-none transition-colors duration-500 blur-[2px]"
-                  style={{
-                    background: `radial-gradient(ellipse at center, ${activeHeroFinish.borderTint}88 0%, ${activeHeroFinish.surfaceTint}70 55%, transparent 100%)`,
-                  }}
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute bottom-2.5 left-1/2 -translate-x-1/2 w-60 sm:w-84 h-3 rounded-full bg-[#181A18]/20 blur-md pointer-events-none"
-                />
+                <ChevronLeft className="w-4 h-4" />
+              </button>
 
-                {heroCutoutIdx === 0 &&
-                activeHeroCutout.splitLeftImage &&
-                activeHeroCutout.splitRightImage ? (
-                  <motion.div
-                    key="hero-split-desk-chair"
-                    initial={{ opacity: 0.9, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.24, ease: EASE_OUT_EXPO }}
-                    onClick={() =>
-                      openCutoutQuickView(
-                        activeHeroCutout.productHandle,
-                        activeHeroCutout.collectionHandle
-                      )
-                    }
-                    className="relative w-full max-w-[640px] h-full flex items-center justify-center gap-2 sm:gap-5 cursor-pointer z-10"
-                  >
-                    {/* LEFT WING: ISOLATED DESK SLIDING IN FROM LEFT */}
-                    <motion.div
-                      style={{ x: deskScrollX, rotate: deskRotateDeg }}
-                      className="w-[52%] sm:w-[50%] h-full flex items-center justify-end"
-                    >
-                      <img
-                        src={activeHeroCutout.splitLeftImage}
-                        alt="Ergonomic Birch Student Desk"
-                        loading="eager"
-                        decoding="async"
-                        fetchPriority="high"
-                        className="max-h-[92%] max-w-full object-contain sd-cutout-sticker sd-float-gentle transition-transform duration-300 hover:scale-[1.04]"
-                      />
-                    </motion.div>
-
-                    {/* RIGHT WING: ISOLATED CHAIR SLIDING IN FROM RIGHT */}
-                    <motion.div
-                      style={{ x: chairScrollX, rotate: chairRotateDeg }}
-                      className="w-[42%] sm:w-[40%] h-[92%] flex items-center justify-start"
-                    >
-                      <img
-                        src={activeHeroCutout.splitRightImage}
-                        alt="Contoured Birch Student Chair"
-                        loading="eager"
-                        decoding="async"
-                        fetchPriority="high"
-                        className="max-h-[92%] max-w-full object-contain sd-cutout-sticker sd-float-gentle-delay transition-transform duration-300 hover:scale-[1.04]"
-                      />
-                    </motion.div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key={activeHeroCutout.id}
-                    initial={{ opacity: 0.85, y: 10, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.24, ease: EASE_OUT_EXPO }}
-                    onClick={() =>
-                      openCutoutQuickView(
-                        activeHeroCutout.productHandle,
-                        activeHeroCutout.collectionHandle
-                      )
-                    }
-                    className="relative w-full max-w-[580px] h-full flex items-center justify-center cursor-pointer z-10"
-                  >
-                    <img
-                      src={activeHeroCutout.image}
-                      alt={activeHeroCutout.title}
-                      loading="eager"
-                      decoding="async"
-                      className="max-h-[90%] max-w-full object-contain sd-cutout-sticker sd-float-gentle transition-transform duration-300 hover:scale-[1.04]"
-                    />
-                  </motion.div>
-                )}
-
-                {/* Interactive Engineering Pins Directly on Hero Furniture */}
-                {activeHeroCutout.hotspots.map((spot, hIdx) => {
-                  const isPinActive = heroHotspotIdx === hIdx;
+              <div
+                className="flex-1 flex lg:grid lg:grid-cols-5 gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar snap-x"
+                role="tablist"
+                aria-label="Select hero banner"
+              >
+                {HERO_SLIDES.map((s, idx) => {
+                  const isActive = idx === slideIdx;
                   return (
                     <button
-                      key={`hero-pin-${spot.id}`}
+                      key={s.id}
                       type="button"
-                      data-testid={`hero-pin-${hIdx + 1}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHeroHotspotIdx(hIdx);
-                      }}
-                      onMouseEnter={() => setHeroHotspotIdx(hIdx)}
-                      aria-label={`Inspect hero detail: ${spot.label}`}
-                      aria-pressed={isPinActive}
-                      style={{
-                        top: spot.top,
-                        left: spot.left,
-                        backgroundColor: isPinActive ? activeHeroFinish.accentHex : '#161A17',
-                      }}
-                      className="absolute -translate-x-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-mono-num font-bold text-white shadow-md transition-transform hover:scale-110 ring-2 ring-white cursor-pointer"
+                      role="tab"
+                      aria-selected={isActive}
+                      data-testid={`hero-banner-tab-${idx}`}
+                      onClick={() => handleSlideChange(idx)}
+                      className={`snap-start text-left px-3 py-2 rounded-xl border transition-all duration-200 cursor-pointer flex items-center gap-2 shrink-0 lg:shrink lg:min-w-0 ${
+                        isActive
+                          ? 'bg-[#FAF3EB] border-[#007B36] text-[#161A17] shadow-xs'
+                          : 'bg-white hover:bg-[#FAF7F0] border-transparent text-[#4D554E]'
+                      }`}
                     >
-                      {isPinActive && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0 rounded-full sd-hotspot-ring pointer-events-none"
-                          style={{ backgroundColor: `${activeHeroFinish.accentHex}55` }}
-                        />
-                      )}
-                      <span className="relative z-10">{hIdx + 1}</span>
+                      <span
+                        className={`text-[11px] font-mono-num font-extrabold shrink-0 ${
+                          isActive ? 'text-[#007B36]' : 'text-[#7A827A]'
+                        }`}
+                      >
+                        0{idx + 1}
+                      </span>
+                      <span className="text-xs font-bold whitespace-nowrap lg:truncate">{s.tabLabel}</span>
                     </button>
                   );
                 })}
-              </motion.div>
-
-              {/* CENTERED STUDIO SPEC & INTERACTIVE DOCK */}
-              <div className="w-full max-w-[960px] mt-1 rounded-2xl bg-white/95 backdrop-blur-md border border-[#E5DEC9] shadow-lg p-2.5 sm:px-4 sm:py-3 relative z-20 overflow-hidden">
-                {/* GPU Scroll Progress Rail across top edge of dock */}
-                <motion.div
-                  aria-hidden="true"
-                  style={{ scaleX: heroTrackProgress, transformOrigin: '0% 50%' }}
-                  className="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-[#007B36] via-[#F8D000] to-[#C22768]"
-                />
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                  {/* Live Detail Summary */}
-                  <div className="flex items-start sm:items-center gap-3 min-w-0 text-left">
-                    <span
-                      className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-xl font-mono-num text-xs font-extrabold border shrink-0 transition-colors"
-                      style={{
-                        backgroundColor: activeHeroFinish.surfaceTint,
-                        borderColor: activeHeroFinish.borderTint,
-                        color: activeHeroFinish.accentHex,
-                      }}
-                    >
-                      0{heroCutoutIdx + 1}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#C22768] flex flex-wrap items-center gap-1.5">
-                        <span>{activeHeroCutout.category}</span>
-                        <span className="text-[#D4D7D0]">·</span>
-                        <span
-                          className="font-script text-sm lowercase"
-                          style={{ color: activeHeroFinish.accentHex }}
-                        >
-                          {activeHeroCutout.scriptTag}
-                        </span>
-                      </p>
-                      <h2 className="text-sm sm:text-base font-extrabold text-[#161A17] truncate">
-                        {activeHeroCutout.title}
-                      </h2>
-                      <p className="text-[11px] font-mono-num text-[#4D554E] leading-snug sm:truncate">
-                        {activeHeroCutout.dimensions} · {activeHeroCutout.ageGroup} ·{' '}
-                        <strong className="text-[#161A17] whitespace-nowrap">{activeHeroCutout.priceLabel}</strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Direct Dock Actions: Quick Add / Quote + Inspect Unit */}
-                  <div className="flex flex-wrap items-center justify-between md:justify-end gap-2 shrink-0">
-                    {activeHeroProduct && !activeHeroProduct.quoteOnly ? (
-                      <button
-                        type="button"
-                        data-testid="hero-dock-add-cart"
-                        onClick={() => onAddToCart(activeHeroProduct)}
-                        className="sd-btn-sheen inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        <span>Add to Cart</span>
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        data-testid="hero-dock-quote"
-                        onClick={() => onOpenQuote(activeHeroCutout.title)}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#FDF2F7] border border-[#F4C5D8] hover:border-[#C22768] text-[#C22768] text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
-                      >
-                        <FileText className="w-3.5 h-3.5" />
-                        <span>Request Quote</span>
-                      </button>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        openCutoutQuickView(
-                          activeHeroCutout.productHandle,
-                          activeHeroCutout.collectionHandle
-                        )
-                      }
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#161A17] hover:bg-[#323834] text-white text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Inspect Unit</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Live Active Hotspot Detail Note (Clean Hairline Bar) */}
-                {activeHeroHotspot && (
-                  <div
-                    data-testid="hero-hotspot-readout"
-                    className="mt-2 pt-1.5 border-t border-[#EFEAD9] flex flex-wrap items-baseline justify-between gap-2 text-left text-xs"
-                  >
-                    <p className="text-[#4D554E] leading-snug">
-                      <span
-                        className="font-mono-num font-bold mr-1.5"
-                        style={{ color: activeHeroFinish.accentHex }}
-                      >
-                        Detail 0{heroHotspotIdx + 1} · {activeHeroHotspot.label}:
-                      </span>
-                      <span>{activeHeroHotspot.detail}</span>
-                    </p>
-                  </div>
-                )}
-
-                {/* 4-Set Interactive Selector Strip */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mt-2 pt-2 border-t border-[#EFEAD9]">
-                  {CUTOUT_SHOWCASE_ITEMS.map((item, idx) => {
-                    const active = heroCutoutIdx === idx;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        data-testid={`hero-set-${idx}`}
-                        onClick={() => scrollToHeroSet(idx)}
-                        aria-pressed={active}
-                        className={`flex items-center gap-2 p-1.5 sm:p-2 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                          active
-                            ? 'bg-[#EFF7F2] text-[#161A17] border-[#007B36] shadow-xs'
-                            : 'bg-white hover:bg-[#FAF7F0] text-[#4D554E] border-[#E5DEC9]'
-                        }`}
-                      >
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white flex items-center justify-center p-1 shrink-0 border border-[#E5DEC9]">
-                          <img src={item.image} alt="" className="max-w-full max-h-full object-contain" />
-                        </div>
-                        <div className="min-w-0">
-                          <span className="block text-[9px] font-mono-num font-bold text-[#007B36]">
-                            0{idx + 1}
-                          </span>
-                          <span className="block text-[11px] font-bold text-[#161A17] truncate">
-                            {item.shortLabel}
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
-            </div>
-          </div>
 
-          {/* Slide Theme Navigation Controls */}
-          <div className="hidden lg:flex items-center justify-center gap-3 mt-1 relative z-20">
-            <button
-              type="button"
-              onClick={() => handleSlideChange(slideIdx - 1)}
-              aria-label="Previous hero theme"
-              className="w-7 h-7 rounded-full bg-white hover:bg-[#FAF7F0] border border-[#DDD5C3] text-[#181A18] inline-flex items-center justify-center transition-colors cursor-pointer"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <div className="flex gap-1.5">
-              {HERO_SLIDES.map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => handleSlideChange(idx)}
-                  aria-label={`Slide ${idx + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    slideIdx === idx ? 'w-6 bg-[#007B36]' : 'w-2 bg-[#D4D7D0] hover:bg-[#525852]'
-                  }`}
-                />
-              ))}
+              <button
+                type="button"
+                onClick={() => handleSlideChange(slideIdx + 1)}
+                aria-label="Next hero banner"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FAF7F0] hover:bg-[#EFEAD9] border border-[#E5DEC9] text-[#161A17] inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => handleSlideChange(slideIdx + 1)}
-              aria-label="Next hero theme"
-              className="w-7 h-7 rounded-full bg-white hover:bg-[#FAF7F0] border border-[#DDD5C3] text-[#181A18] inline-flex items-center justify-center transition-colors cursor-pointer"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-            <span className="ml-2 font-script text-lg text-[#525852] select-none">
-              scroll to converge &amp; explore sets ↓
-            </span>
           </div>
 
           {/* Organic Sweeping Wave Divider into Light Paper Section B */}
@@ -846,7 +488,7 @@ export function HomeView({
             aria-hidden="true"
             viewBox="0 0 1440 72"
             preserveAspectRatio="none"
-            className="absolute bottom-0 inset-x-0 w-full h-6 sm:h-10 pointer-events-none z-10"
+            className="absolute bottom-0 inset-x-0 w-full h-6 sm:h-9 pointer-events-none z-10"
           >
             <path
               d="M0,44 C260,76 520,8 860,34 C1120,54 1300,18 1440,36 L1440,72 L0,72 Z"
@@ -1145,62 +787,150 @@ export function HomeView({
                     </p>
                   </div>
 
-                  {/* Active Engineering Hotspot Callout Card */}
+                  {/* Component & Material Breakdown Explorer (Replaced Numbered Pins) */}
                   {activeHotspot && (
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={activeHotspot.id}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: 0.25 }}
-                        className="mt-3 rounded-xl bg-white border border-[#E5DEC9] shadow-sm p-3.5 text-left"
-                      >
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-[#C22768] flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-[#007B36]" />
-                          <span>
-                            Detail Pin 0{activeHotspotIdx + 1}: {activeHotspot.label}
-                          </span>
-                        </p>
-                        <p className="text-xs text-[#4D554E] mt-1 leading-relaxed">
+                    <div className="mt-3 rounded-xl bg-white border border-[#E5DEC9] shadow-sm p-3.5 text-left">
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#C22768] mb-2">
+                        Build &amp; Material Highlights
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mb-2.5" role="tablist" aria-label="Product build components">
+                        {activeStageItem.hotspots.map((spot, sIdx) => {
+                          const selected = activeHotspotIdx === sIdx;
+                          return (
+                            <button
+                              key={spot.id}
+                              type="button"
+                              role="tab"
+                              aria-selected={selected}
+                              onClick={() => setActiveHotspotIdx(sIdx)}
+                              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer border ${
+                                selected
+                                  ? 'bg-[#161A17] text-white border-[#161A17]'
+                                  : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:text-[#161A17]'
+                              }`}
+                            >
+                              {spot.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <AnimatePresence mode="wait">
+                        <motion.p
+                          key={activeHotspot.id}
+                          initial={{ opacity: 0, y: 5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.2 }}
+                          data-testid="cutout-component-detail"
+                          className="text-xs text-[#4D554E] leading-relaxed"
+                        >
                           {activeHotspot.detail}
-                        </p>
-                      </motion.div>
-                    </AnimatePresence>
+                        </motion.p>
+                      </AnimatePresence>
+                    </div>
                   )}
 
-                  <p className="mt-4 text-sm font-mono-num font-bold text-[#161A17]">
-                    {activeStageItem.priceLabel}
-                  </p>
+                  {/* Institutional Bulk Rate Selector & Quick Compare */}
+                  {(() => {
+                    const matchedProduct = PREVIEW_PRODUCTS.find(
+                      (p) => p.handle === activeStageItem.productHandle
+                    );
+                    const basePrice = matchedProduct && !matchedProduct.quoteOnly ? matchedProduct.price : 0;
+                    const bulkQuote = basePrice > 0 ? calculateBulkTierPricing(basePrice, cutoutTierQty) : null;
+                    const isCompared = matchedProduct ? compareIds.includes(matchedProduct.id) : false;
 
-                  <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-3">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        openCutoutQuickView(
-                          activeStageItem.productHandle,
-                          activeStageItem.collectionHandle
-                        )
-                      }
-                      className="sd-btn-sheen inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
-                    >
-                      <Eye className="w-4 h-4" />
-                      <span>Inspect Product</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        onNavigate({ page: 'collection', handle: activeStageItem.collectionHandle })
-                      }
-                      className="inline-flex items-center gap-1.5 px-5 py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-sm font-semibold transition-all duration-200 cursor-pointer"
-                    >
-                      <span>Explore Range</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
+                    return (
+                      <>
+                        <div className="mt-3 rounded-xl bg-white/95 border border-[#E5DEC9] p-3.5 text-left">
+                          {bulkQuote ? (
+                            <>
+                              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#007B36]">
+                                  Institutional Volume Rate
+                                </span>
+                                <span className="text-xs font-mono-num font-extrabold text-[#161A17]">
+                                  ₹{bulkQuote.unitPriceAfterDiscount.toLocaleString('en-IN')}{' '}
+                                  <span className="text-[10px] font-normal text-[#4D554E]">/ unit</span>
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                                {[
+                                  { qty: 1 as const, label: 'Single 1–19' },
+                                  { qty: 25 as const, label: 'Class 20+ (8% Off)' },
+                                  { qty: 60 as const, label: 'Wing 50+ (14% Off)' },
+                                ].map((t) => (
+                                  <button
+                                    key={t.qty}
+                                    type="button"
+                                    onClick={() => setCutoutTierQty(t.qty)}
+                                    className={`px-2 py-1.5 rounded-md text-[11px] sm:text-[10px] font-bold transition-colors cursor-pointer border ${
+                                      cutoutTierQty === t.qty
+                                        ? 'bg-[#007B36] text-white border-[#007B36]'
+                                        : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:text-[#161A17]'
+                                    }`}
+                                  >
+                                    {t.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </>
+                          ) : (
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <span className="text-[11px] font-bold text-[#161A17]">
+                                Site-Measured Lab Specification · Pan-India CAD Included
+                              </span>
+                              <span className="text-xs font-mono-num font-bold text-[#C22768]">
+                                Tender Pricing
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              openCutoutQuickView(
+                                activeStageItem.productHandle,
+                                activeStageItem.collectionHandle
+                              )
+                            }
+                            className="sd-btn-sheen inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                          >
+                            <Eye className="w-4 h-4" />
+                            <span>Inspect Product</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onNavigate({ page: 'collection', handle: activeStageItem.collectionHandle })
+                            }
+                            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-white hover:bg-[#FAF7F0] text-[#161A17] border border-[#D9D2C0] text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer"
+                          >
+                            <span>Explore Range</span>
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                          {matchedProduct && (
+                            <button
+                              type="button"
+                              onClick={() => onToggleCompare(matchedProduct)}
+                              className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full border text-xs font-bold transition-colors cursor-pointer ${
+                                isCompared
+                                  ? 'bg-[#161A17] text-white border-[#161A17]'
+                                  : 'bg-white text-[#161A17] border-[#D9D2C0] hover:border-[#C22768]'
+                              }`}
+                            >
+                              <Scale className="w-3.5 h-3.5" />
+                              <span>{isCompared ? 'Compared' : 'Compare Unit'}</span>
+                            </button>
+                          )}
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
 
-                <div className="lg:col-span-7 flex items-center justify-center gap-3 sm:gap-5 relative">
+                <div className="lg:col-span-7 flex items-center justify-center gap-2 sm:gap-5 relative">
                   <button
                     type="button"
                     aria-label="Previous featured cutout"
@@ -1210,12 +940,12 @@ export function HomeView({
                       );
                       setActiveHotspotIdx(0);
                     }}
-                    className="w-10 h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
 
-                  <div className="relative w-full max-w-[480px] h-[270px] sm:h-[350px] flex items-center justify-center">
+                  <div className="relative w-full max-w-[480px] h-[230px] sm:h-[350px] flex items-center justify-center">
                     <div
                       aria-hidden="true"
                       className="absolute inset-6 rounded-full blur-3xl pointer-events-none transition-colors duration-500"
@@ -1257,33 +987,6 @@ export function HomeView({
                           }
                           className="max-h-full max-w-full object-contain cursor-pointer sd-cutout-sticker sd-float-gentle"
                         />
-
-                        {/* Interactive Pulsing Detail Pins Around Cutout */}
-                        {activeStageItem.hotspots.map((spot, sIdx) => {
-                          const isHot = activeHotspotIdx === sIdx;
-                          return (
-                            <button
-                              key={spot.id}
-                              type="button"
-                              onClick={() => setActiveHotspotIdx(sIdx)}
-                              onMouseEnter={() => setActiveHotspotIdx(sIdx)}
-                              aria-label={`Inspect detail: ${spot.label}`}
-                              aria-pressed={isHot}
-                              style={{
-                                top: spot.top,
-                                left: spot.left,
-                                backgroundColor: isHot ? activeFinish.accentHex : '#161A17',
-                              }}
-                              className="absolute -translate-x-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-mono-num font-bold text-white shadow-md transition-transform hover:scale-110 ring-2 ring-white cursor-pointer"
-                            >
-                              <span
-                                aria-hidden="true"
-                                className="absolute inset-0 rounded-full bg-[#C22768]/35 sd-hotspot-ring pointer-events-none"
-                              />
-                              <span className="relative z-10">{sIdx + 1}</span>
-                            </button>
-                          );
-                        })}
                       </motion.div>
                     </AnimatePresence>
                   </div>
@@ -1295,9 +998,9 @@ export function HomeView({
                       setStageIdx((stageIdx + 1) % CUTOUT_SHOWCASE_ITEMS.length);
                       setActiveHotspotIdx(0);
                     }}
-                    className="w-10 h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/95 hover:bg-white border border-[#D9D2C0] text-[#161A17] shadow-sm inline-flex items-center justify-center shrink-0 transition-colors cursor-pointer"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
               </div>
@@ -1497,7 +1200,7 @@ export function HomeView({
               </h2>
             </div>
 
-            <div className="inline-flex p-1 bg-white border border-[#E5DEC9] rounded-xl shadow-2xs" role="tablist" aria-label="Featured product tabs">
+            <div className="inline-flex max-w-full overflow-x-auto no-scrollbar p-1 bg-white border border-[#E5DEC9] rounded-xl shadow-2xs" role="tablist" aria-label="Featured product tabs">
               {[
                 { key: 'best-sellers', label: 'Best Sellers' },
                 { key: 'new-arrivals', label: 'New Arrivals' },
@@ -1509,7 +1212,7 @@ export function HomeView({
                   role="tab"
                   aria-selected={activeTab === t.key}
                   onClick={() => setActiveTab(t.key as typeof activeTab)}
-                  className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  className={`px-3 sm:px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                     activeTab === t.key
                       ? 'bg-[#007B36] text-white shadow-xs'
                       : 'text-[#4D554E] hover:text-[#161A17]'
@@ -1528,7 +1231,7 @@ export function HomeView({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.32, ease: EASE_OUT_EXPO }}
-              className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 md:gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
             >
               {tabProducts.map((product, idx) => (
                 <motion.div
@@ -1568,10 +1271,11 @@ export function HomeView({
         </div>
       </section>
 
-      {/* SECTION D2: SMART CAMPUS ROOM & BOQ ARCHITECT */}
-      <SmartCampusPlanner
+      {/* SECTION D2: TURNKEY CAMPUS WING STARTER KITS */}
+      <CampusWingPackages
         onAddKitToCart={onAddKitToCart}
         onOpenQuoteWithBrief={onOpenQuoteWithBrief}
+        onNavigate={onNavigate}
       />
 
       {/* SECTION E: ABOUT SCHOOL DECOR + KERNJOSH TACTILE PROCESS ACCORDION */}
@@ -1684,7 +1388,7 @@ export function HomeView({
                             transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
                             className="overflow-hidden"
                           >
-                            <div className="px-5 pb-5 pl-17 space-y-3">
+                            <div className="px-4 pb-4 sm:px-5 sm:pb-5 sm:pl-17 space-y-3">
                               <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#EAF7EF] text-[#007B36] text-[10px] font-bold uppercase tracking-wider">
                                 {proc.phaseLabel}
                               </span>
@@ -1884,7 +1588,7 @@ export function HomeView({
               A visual look across classrooms, preschool interiors, Montessori rooms, laboratories, activity spaces, sensory rooms and playgrounds.
             </p>
           </motion.div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
             {ENVIRONMENT_GALLERY.map((tile, idx) => (
               <motion.button
                 key={tile.caption}
@@ -1895,7 +1599,7 @@ export function HomeView({
                 transition={{ duration: 0.52, delay: (idx % 4) * 0.06, ease: EASE_OUT_EXPO }}
                 onClick={() => onNavigate({ page: 'collection', handle: tile.handle })}
                 className={`group relative rounded-xl overflow-hidden border border-[#E3E5E0] text-left cursor-pointer p-0 transition-shadow duration-300 hover:shadow-lg ${
-                  tile.wide ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
+                  tile.wide ? 'sm:col-span-2 aspect-[16/9]' : 'aspect-[4/3]'
                 }`}
               >
                 <img
@@ -1905,7 +1609,7 @@ export function HomeView({
                   className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
                 <div
-                  className="absolute inset-x-0 bottom-0 p-4 text-white font-semibold text-sm transition-transform duration-200 group-hover:-translate-y-0.5"
+                  className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-white font-semibold text-xs sm:text-sm transition-transform duration-200 group-hover:-translate-y-0.5"
                   style={{
                     background: 'linear-gradient(180deg, transparent, rgba(14,28,20,0.84))',
                   }}
@@ -2155,7 +1859,7 @@ export function HomeView({
         <span className="bg-[#F8D000]" />
         <span className="bg-[#00A048]" />
       </div>
-      <section className="bg-gradient-to-br from-[#EAF6EF] via-[#FAF7F0] to-[#FDF0F5] text-[#181A18] py-16 md:py-20 border-b border-[#E6DFCE]">
+      <section className="bg-gradient-to-br from-[#FAF4EB] via-[#FFFFFF] to-[#FDF2F6] text-[#181A18] py-16 md:py-20 border-b border-[#E6DFCE]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

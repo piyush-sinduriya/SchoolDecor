@@ -58,5 +58,32 @@ test('Shopify OS 2.0 theme includes partner brands showcase and regional campus 
   assert.match(contactJson, /"campus_map"/);
 });
 
+test('Shopify OS 2.0 hero slider renders 5 architectural banner slides with existing photography assets', () => {
+  const themeRoot = path.resolve(process.cwd(), 'shopify-theme');
+  const indexObj = JSON.parse(fs.readFileSync(path.join(themeRoot, 'templates', 'index.json'), 'utf8'));
+  const hero = indexObj.sections?.hero;
+  assert.ok(hero, 'index.json should define hero section');
+  assert.equal(hero.block_order.length, 5, 'hero should have 5 banner slides');
+  for (const slideKey of hero.block_order) {
+    const block = hero.blocks[slideKey];
+    assert.ok(block, `Missing block ${slideKey}`);
+    const fallbackAsset = block.settings?.image_fallback;
+    assert.ok(fallbackAsset, `Missing image_fallback on ${slideKey}`);
+    assert.equal(
+      fs.existsSync(path.join(themeRoot, 'assets', fallbackAsset)),
+      true,
+      `Missing banner asset ${fallbackAsset}`
+    );
+  }
+});
 
-
+test('Shopify OS 2.0 index replaces Smart Campus Planner with Wing Starter Kits and uses warm champagne showcase bg', () => {
+  const themeRoot = path.resolve(process.cwd(), 'shopify-theme');
+  assert.equal(fs.existsSync(path.join(themeRoot, 'sections', 'wing-packages.liquid')), true);
+  const indexObj = JSON.parse(fs.readFileSync(path.join(themeRoot, 'templates', 'index.json'), 'utf8'));
+  assert.ok(indexObj.sections?.wing_packages, 'index.json should define wing_packages');
+  assert.equal(indexObj.sections?.smart_campus_planner, undefined, 'smart_campus_planner should be removed from index.json');
+  assert.ok(indexObj.order.includes('wing_packages'), 'order should include wing_packages');
+  assert.equal(indexObj.order.includes('smart_campus_planner'), false, 'order should not include smart_campus_planner');
+  assert.equal(indexObj.sections?.cutout_showcase?.settings?.bg_color, '#FAF3EB');
+});

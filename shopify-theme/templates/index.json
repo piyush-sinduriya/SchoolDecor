@@ -3,8 +3,8 @@
     "hero": {
       "type": "hero-slider",
       "settings": {
-        "autoplay": false,
-        "autoplay_speed": 7,
+        "autoplay": true,
+        "autoplay_speed": 6,
         "show_wave_divider": true,
         "wave_color": "#F5F1E6"
       },
@@ -12,109 +12,95 @@
         "slide-1": {
           "type": "slide",
           "settings": {
-            "short_label": "Desk & Chair",
-            "stage_tint": "#EAF6EF",
-            "split_left_fallback": "sd-cutout-hero-desk.png",
-            "split_right_fallback": "sd-cutout-hero-chair.png",
-            "cutout_fallback": "sd-cutout-student-desk.png",
-            "cutout_category": "School Furniture",
-            "cutout_title": "Ergonomic Birch & Steel Desk Set",
-            "cutout_price_label": "Available for Order",
-            "cutout_dimensions": "600 × 450 × 640–760 mm",
-            "cutout_age_group": "Grades 1–12",
-            "cutout_link": "/collections/senior",
+            "short_label": "Classrooms",
+            "image_fallback": "sd-hero-classroom.jpg",
             "eyebrow": "School Furniture & Educational Infrastructure",
             "heading": "Designing Better Spaces for",
             "heading_script": "Brighter Futures",
-            "description": "Discover thoughtfully designed furniture, innovative learning environments and educational play solutions for schools, preschools and institutions.",
-            "primary_label": "Explore Our Collection",
-            "primary_link": "/collections",
+            "accent_color": "#007B36",
+            "description": "Discover ergonomic classroom desks, contoured seating, modular storage and complete learning environments crafted for modern K-12 campuses.",
+            "highlight_stat": "Grades 1–12 Ergonomic Sizing · FSC 18mm Birchwood",
+            "primary_label": "Explore Classrooms",
+            "primary_link": "/collections/senior",
             "secondary_label": "Request a Quote",
             "secondary_opens_quote": true,
-            "text_alignment": "center",
-            "overlay_opacity": 85
+            "overlay_opacity": 95
           }
         },
         "slide-2": {
           "type": "slide",
           "settings": {
-            "short_label": "Montessori Unit",
-            "stage_tint": "#FDF0F5",
-            "split_left_fallback": "none",
-            "split_right_fallback": "none",
-            "cutout_fallback": "sd-cutout-montessori-shelf.png",
-            "cutout_category": "Kindergarten & Early Years",
-            "cutout_title": "Curved Montessori Birch Activity Unit",
-            "cutout_price_label": "Available for Order",
-            "cutout_dimensions": "1400 × 380 × 780 mm",
-            "cutout_age_group": "Ages 2–6 Yrs",
-            "cutout_link": "/collections/kindergarten-furniture",
-            "eyebrow": "Early Years & Montessori Environments",
-            "heading": "Spaces That Inspire",
-            "heading_script": "Curious Young Minds",
-            "description": "Child-scaled birchwood classrooms, Montessori shelving, sensory corners and safe active play rooms crafted for joyful early learning.",
+            "short_label": "Preschool & Play",
+            "image_fallback": "sd-hero-preschool.jpg",
+            "eyebrow": "Early Years, Montessori & Active Play",
+            "heading": "Crafted Classrooms That Spark",
+            "heading_script": "Curious Minds",
+            "accent_color": "#C22768",
+            "description": "Child-scaled birchwood classrooms, Montessori shelving bays, soft-play zones and tactile sensory corners crafted for joyful early learning.",
+            "highlight_stat": "R20 Safety Corners · EN-71 Zero-VOC Child-Safe Finishes",
             "primary_label": "Shop Kindergarten",
             "primary_link": "/collections/kindergarten-furniture",
             "secondary_label": "Request a Quote",
             "secondary_opens_quote": true,
-            "text_alignment": "center",
-            "overlay_opacity": 85
+            "overlay_opacity": 95
           }
         },
         "slide-3": {
           "type": "slide",
           "settings": {
-            "short_label": "Soft-Play Climber",
-            "stage_tint": "#FFF7DC",
-            "split_left_fallback": "none",
-            "split_right_fallback": "none",
-            "cutout_fallback": "sd-cutout-soft-play-climber.png",
-            "cutout_category": "Active Play Equipment",
-            "cutout_title": "Modular Soft-Play Foam Climber Set",
-            "cutout_price_label": "Available for Order",
-            "cutout_dimensions": "2400 × 1800 × 620 mm",
-            "cutout_age_group": "Pre-K & Toddler",
-            "cutout_link": "/collections/soft-play-zones",
-            "eyebrow": "Indoor Active & Sensory Play",
-            "heading": "Movement & Discovery for",
-            "heading_script": "Active Early Years",
-            "description": "High-resilience HR foam climbers, arches and safe balance modules upholstered in antimicrobial wipe-clean finishes.",
-            "primary_label": "Explore Active Play",
-            "primary_link": "/collections/soft-play-zones",
+            "short_label": "STEM & Science Labs",
+            "image_fallback": "sd-science-lab.jpg",
+            "eyebrow": "Academic, Robotics & STEM Laboratories",
+            "heading": "Future-Ready Labs Built for",
+            "heading_script": "STEM Discovery",
+            "accent_color": "#007B36",
+            "description": "19mm chemical-resistant phenolic resin worktops, integrated utility turrets and ventilated glass bays engineered for senior wings.",
+            "highlight_stat": "SEFA Chemical Grade Tops · Complete Turnkey Lab Utility Lines",
+            "primary_label": "Explore Science Labs",
+            "primary_link": "/collections/science-lab",
             "secondary_label": "Request a Quote",
             "secondary_opens_quote": true,
-            "text_alignment": "center",
-            "overlay_opacity": 85
+            "overlay_opacity": 95
           }
         },
         "slide-4": {
           "type": "slide",
           "settings": {
-            "short_label": "STEM Lab Island",
-            "stage_tint": "#EDF3F7",
-            "split_left_fallback": "none",
-            "split_right_fallback": "none",
-            "cutout_fallback": "sd-cutout-science-lab-bench.png",
-            "cutout_category": "Science & STEM Labs",
-            "cutout_title": "Chemistry & STEM Island Workbench",
-            "cutout_price_label": "Custom Institutional Quote",
-            "cutout_dimensions": "2400 × 1200 × 900 mm",
-            "cutout_age_group": "Grades 6–12 & Colleges",
-            "cutout_link": "/collections/science-lab",
-            "eyebrow": "Future-Ready School Laboratories",
-            "heading": "Built for Practical",
-            "heading_script": "STEM Innovation",
-            "description": "Acid-resistant phenolic resin worktops with dual brass lab fixtures and ventilated storage designed for senior wings.",
-            "primary_label": "Explore Laboratories",
-            "primary_link": "/collections/science-lab",
+            "short_label": "Outdoor Parks",
+            "image_fallback": "sd-outdoor-play.jpg",
+            "eyebrow": "Outdoor Playgrounds & Open-Air Gyms",
+            "heading": "Safe Outdoor Parks Made for",
+            "heading_script": "Active Growth",
+            "accent_color": "#C22768",
+            "description": "Hot-dip galvanized multi-play climbers, UV-8 stabilized LLDPE slides, sensory parks and outdoor campus benches built for every season.",
+            "highlight_stat": "Galvanized Steel Frames · UV-8 Weather-Stabilized Chutes",
+            "primary_label": "Explore Outdoor Parks",
+            "primary_link": "/collections/outdoor-fun-equipment",
             "secondary_label": "Request a Quote",
             "secondary_opens_quote": true,
-            "text_alignment": "center",
-            "overlay_opacity": 85
+            "overlay_opacity": 95
+          }
+        },
+        "slide-5": {
+          "type": "slide",
+          "settings": {
+            "short_label": "Libraries & Flooring",
+            "image_fallback": "sd-school-library.jpg",
+            "eyebrow": "Libraries, Surfacing & Turnkey Campuses",
+            "heading": "Complete Campus Solutions",
+            "heading_script": "Under One Roof",
+            "accent_color": "#007B36",
+            "description": "Acoustic reading pods, modular library shelving, shock-attenuating EPDM play surfacing and multi-sport courts with pan-India installation.",
+            "highlight_stat": "5 Regional Experience Studios · Pan-India Institutional Dispatch",
+            "primary_label": "Browse Full Catalog",
+            "primary_link": "/collections/all",
+            "secondary_label": "Request a Quote",
+            "secondary_opens_quote": true,
+            "overlay_opacity": 95
           }
         }
       },
-      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"]
+      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4", "slide-5"]
     },
     "trust": {
       "type": "trust-highlights",
@@ -148,7 +134,7 @@
         "button_label": "Shop All Products",
         "button_link": "/collections",
         "enable_scroll_parallax": true,
-        "bg_color": "#EAF6EF",
+        "bg_color": "#FAF3EB",
         "padding_y": 72
       },
       "blocks": {
@@ -166,9 +152,9 @@
             "age_group": "Grades 1–12",
             "materials": "18mm Birch Plywood + 1.6mm Steel",
             "spec_bullets": "Waterfall front comfort curve | Under-desk heavy steel book tray | Non-marking floor levelers",
-            "stage_bg": "#EAF6EF",
-            "tint_color": "#EAF6EF",
-            "bar_color": "#007B36"
+            "stage_bg": "#FAF3EB",
+            "tint_color": "#FAF3EB",
+            "bar_color": "#C22768"
           }
         },
         "cut2": {
@@ -275,19 +261,83 @@
       },
       "block_order": ["tab-1", "tab-2", "tab-3"]
     },
-    "smart_campus_planner": {
-      "type": "smart-campus-planner",
+    "wing_packages": {
+      "type": "wing-packages",
       "settings": {
-        "eyebrow": "Smart Room & BOQ Architect",
-        "heading": "Plan Your Classroom in",
-        "heading_script": "Real Time",
-        "description": "Dial in room dimensions, batch strength, and finish swatches to inspect live circulation flow and an instant Bill of Quantities.",
-        "default_length": 28,
-        "default_width": 24,
-        "default_students": 28,
-        "bg_color": "#EFF7F2",
+        "eyebrow": "Turnkey Campus Kits & Institutional Bundles",
+        "heading": "Ready-to-Launch",
+        "heading_script": "Wing Starter Kits",
+        "description": "Choose a pre-engineered campus wing kit tailored to student age, room capacity, and dispatch timeline.",
+        "bg_color": "#FAF6EE",
         "padding_y": 76
-      }
+      },
+      "blocks": {
+        "wk1": {
+          "type": "wing_kit",
+          "settings": {
+            "short_label": "Pre-K & Montessori",
+            "title": "Early Years & Montessori Wing Kit",
+            "age_group": "Ages 2–6 Years",
+            "capacity_label": "20 Children / Room",
+            "dispatch_timeline": "12–15 Days Pan-India",
+            "warranty_label": "5-Yr Timber Structural Warranty",
+            "safety_standard": "EN-71 Zero-VOC · R20 Rounded Corners",
+            "summary": "Complete toddler-height birch shelving, curved Montessori activity stations, and soft-play landing zones.",
+            "included_items": "3x Curved Montessori Birch Activity Unit | 1x Modular Soft-Play Foam Climber Set",
+            "standard_total": 67410,
+            "collection_link": "/collections/kindergarten-furniture"
+          }
+        },
+        "wk2": {
+          "type": "wing_kit",
+          "settings": {
+            "short_label": "K–5 Classroom",
+            "title": "Modern Primary Classroom Pack",
+            "age_group": "Grades 1–5 (Ages 6–10)",
+            "capacity_label": "30 Students + Teacher",
+            "dispatch_timeline": "10–14 Days Pan-India",
+            "warranty_label": "7-Yr Frame & Weld Warranty",
+            "safety_standard": "BIFMA Posture Grade · R16 Waterfall Edge",
+            "summary": "Uniform batch of posture-tuned 18mm birchwood desks and contoured chairs paired with side storage trays.",
+            "included_items": "30x Ergonomic Birch & Steel Desk Set | 2x Classroom Resource Birch Shelf Unit",
+            "standard_total": 285390,
+            "collection_link": "/collections/senior"
+          }
+        },
+        "wk3": {
+          "type": "wing_kit",
+          "settings": {
+            "short_label": "STEM & Science Lab",
+            "title": "Composite Science & STEM Lab Suite",
+            "age_group": "Grades 6–12 & Colleges",
+            "capacity_label": "24 Workstations",
+            "dispatch_timeline": "18–24 Days + Site Anchoring",
+            "warranty_label": "10-Yr Phenolic Chemical Resistance",
+            "safety_standard": "SEFA 19mm Phenolic · IP44 Utilities",
+            "summary": "Turnkey chemistry, physics, and robotics workbench islands with integrated brass water and gas turrets.",
+            "included_items": "4x Chemistry & STEM Island Workbench (Site Spec) | 6x Instructor Desk & Lab Stools",
+            "standard_total": 51030,
+            "collection_link": "/collections/science-lab"
+          }
+        },
+        "wk4": {
+          "type": "wing_kit",
+          "settings": {
+            "short_label": "Outdoor Park & Court",
+            "title": "Outdoor Multi-Play & Surfacing Package",
+            "age_group": "All Campus Wings (3–14 Yrs)",
+            "capacity_label": "35+ Simultaneous Children",
+            "dispatch_timeline": "15–21 Days + Civil Spec",
+            "warranty_label": "8-Yr UV-8 & Rust-Shield Frame",
+            "safety_standard": "Galvanized Steel · Shock EPDM Flooring",
+            "summary": "Weather-stabilized multi-play climbing towers paired with shock-attenuating EPDM play safety mats.",
+            "included_items": "1x Outdoor Multi-Play Slide System (Site Spec) | 2x Shock-Attenuating Play Mat Kit",
+            "standard_total": 44100,
+            "collection_link": "/collections/outdoor-fun-equipment"
+          }
+        }
+      },
+      "block_order": ["wk1", "wk2", "wk3", "wk4"]
     },
     "about_split": {
       "type": "about-split",
@@ -591,7 +641,7 @@
     "cutout_showcase",
     "collections",
     "featured_products",
-    "smart_campus_planner",
+    "wing_packages",
     "about_split",
     "process_accordion",
     "cat_classrooms",

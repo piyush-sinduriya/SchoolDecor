@@ -36,8 +36,22 @@ export function CollectionView({
   const [productType, setProductType] = useState('all');
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc'>('featured');
+  const [ageWing, setAgeWing] = useState<'all' | 'early' | 'k12' | 'stem-outdoor'>('all');
   const [columns, setColumns] = useState<3 | 4>(3);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const AGE_WING_GROUPS: Record<'early' | 'k12' | 'stem-outdoor', string[]> = {
+    early: [
+      'kindergarten-furniture',
+      'soft-play-zones',
+      'interactive-wall-panels',
+      'montessori-material',
+      'day-care',
+      'sensory-room',
+    ],
+    k12: ['senior', 'library'],
+    'stem-outdoor': ['science-lab', 'stem-lab', 'outdoor-fun-equipment', 'flooring'],
+  };
 
   const matchedCollection = COLLECTIONS_SHOWCASE.find((c) => c.handle === handle);
   const matchedBrand = findBrandByCollection(handle);
@@ -48,16 +62,19 @@ export function CollectionView({
       : handle.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()));
 
   const baseMatches = filterAndSortProducts(PREVIEW_PRODUCTS, {
-    collectionHandle: handle === 'all' ? undefined : handle,
+    collectionHandle: handle === 'all' || ageWing !== 'all' ? undefined : handle,
     availabilityOnly,
     quoteOnlyFilter: quoteMode,
     productType,
     maxPrice,
     sortBy,
+  }).filter((p) => {
+    if (ageWing === 'all') return true;
+    return AGE_WING_GROUPS[ageWing].includes(p.collectionHandle);
   });
 
   const displayed =
-    baseMatches.length > 0 || availabilityOnly || quoteMode !== 'all' || productType !== 'all' || maxPrice !== null
+    baseMatches.length > 0 || availabilityOnly || quoteMode !== 'all' || productType !== 'all' || maxPrice !== null || ageWing !== 'all'
       ? baseMatches
       : PREVIEW_PRODUCTS;
 
@@ -186,6 +203,44 @@ export function CollectionView({
       </section>
 
       <section className="max-w-[1320px] mx-auto px-4 md:px-6 py-10">
+        {/* Quick Student Age Wing Segmented Filter */}
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by student age wing">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E] mr-1">
+              Age Wing:
+            </span>
+            {[
+              { id: 'all' as const, label: 'All Wings' },
+              { id: 'early' as const, label: 'Toddlers & Pre-K (2–6 Yrs)' },
+              { id: 'k12' as const, label: 'Grades 1–12 & Library' },
+              { id: 'stem-outdoor' as const, label: 'STEM Labs & Outdoor' },
+            ].map((w) => (
+              <button
+                key={w.id}
+                type="button"
+                data-testid={`age-wing-${w.id}`}
+                onClick={() => setAgeWing(w.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
+                  ageWing === w.id
+                    ? 'bg-[#161A17] text-white border-[#161A17] shadow-2xs'
+                    : 'bg-[#FAF3EB] text-[#4D554E] border-[#E5DEC9] hover:border-[#161A17] hover:text-[#161A17]'
+                }`}
+              >
+                {w.label}
+              </button>
+            ))}
+          </div>
+          {ageWing !== 'all' && (
+            <button
+              type="button"
+              onClick={() => setAgeWing('all')}
+              className="text-xs font-bold text-[#C22768] hover:underline bg-transparent border-0 p-0 cursor-pointer"
+            >
+              Reset Age Wing
+            </button>
+          )}
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-7 border-b border-[#E5DEC9]">
           <div className="flex items-center gap-3">
             <button
@@ -343,7 +398,7 @@ export function CollectionView({
             ) : (
               <MotionStagger
                 key={`${handle}-${sortBy}-${columns}`}
-                className={`grid grid-cols-2 gap-3.5 md:gap-5 ${
+                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 ${
                   columns === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
                 }`}
               >
@@ -366,7 +421,7 @@ export function CollectionView({
         </div>
 
         {/* Custom Institutional Turnkey Strip */}
-        <MotionReveal className="mt-14 rounded-3xl bg-gradient-to-r from-[#EFF7F2] via-[#FAF7F0] to-[#FDF2F7] border border-[#E5DEC9] p-6 sm:p-8 flex flex-wrap items-center justify-between gap-4">
+        <MotionReveal className="mt-14 rounded-3xl bg-gradient-to-r from-[#FAF3EB] via-[#FAF7F0] to-[#FDF2F7] border border-[#E5DEC9] p-6 sm:p-8 flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
             <p className="text-xs font-bold uppercase tracking-widest text-[#C22768] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />

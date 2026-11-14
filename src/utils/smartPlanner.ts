@@ -85,9 +85,9 @@ export const FINISH_PALETTES: FinishPaletteSpec[] = [
     woodTone: 'FSC Natural Birch Veneer',
     accentHex: '#007B36',
     accentDarkHex: '#005D28',
-    surfaceTint: '#EFF7F2',
-    stageGlow: '#DDF2E5',
-    borderTint: '#BDE2CB',
+    surfaceTint: '#FAF3EB',
+    stageGlow: '#F2E7D8',
+    borderTint: '#DFD2BE',
   },
   {
     id: 'maple-rose',

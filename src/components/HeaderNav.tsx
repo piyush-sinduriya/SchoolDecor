@@ -8,6 +8,7 @@ import {
   X,
   ChevronDown,
   MessageCircle,
+  Scale,
 } from 'lucide-react';
 import { LOGO_SRC, MEGA_MENUS, PREVIEW_PRODUCTS } from '../data/previewCatalog';
 import { buildWhatsAppUrl, SCHOOL_DECOR_CONTACT } from '../utils/storefrontHelpers';
@@ -26,17 +27,21 @@ export type PreviewRoute =
 interface HeaderNavProps {
   route: PreviewRoute;
   cartCount: number;
+  compareCount?: number;
   onNavigate: (r: PreviewRoute) => void;
   onOpenCart: () => void;
   onOpenQuote: (productTitle?: string) => void;
+  onOpenCompare?: () => void;
 }
 
 export function HeaderNav({
   route,
   cartCount,
+  compareCount = 0,
   onNavigate,
   onOpenCart,
   onOpenQuote,
+  onOpenCompare,
 }: HeaderNavProps) {
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -67,10 +72,27 @@ export function HeaderNav({
   return (
     <>
       <div className="bg-[#005D28] text-white text-xs py-2">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6 flex flex-wrap items-center justify-between gap-2">
-          <p className="font-medium m-0">
-            Complete School Furniture, Play Zones, Laboratories &amp; Campus Flooring Across India
+        <div className="max-w-[1320px] mx-auto px-4 md:px-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+          <p className="font-medium m-0 text-[11px] sm:text-xs">
+            <span className="sm:hidden">School Furniture, Play Zones &amp; Labs · Pan-India</span>
+            <span className="hidden sm:inline">
+              Complete School Furniture, Play Zones, Laboratories &amp; Campus Flooring Across India
+            </span>
           </p>
+          <div className="flex md:hidden items-center gap-3 text-[11px]">
+            <a href={SCHOOL_DECOR_CONTACT.telHref} className="font-mono-num font-semibold underline-offset-2 hover:underline">
+              {SCHOOL_DECOR_CONTACT.phoneDisplay}
+            </a>
+            <a
+              href={buildWhatsAppUrl(SCHOOL_DECOR_CONTACT.whatsappNumber)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-semibold underline-offset-2 hover:underline"
+            >
+              <MessageCircle className="w-3 h-3" aria-hidden="true" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
           <div className="hidden md:flex items-center gap-5">
             <a href={SCHOOL_DECOR_CONTACT.telHref} className="hover:underline opacity-95 font-medium">
               {SCHOOL_DECOR_CONTACT.name} · {SCHOOL_DECOR_CONTACT.phoneDisplay}
@@ -186,6 +208,20 @@ export function HeaderNav({
           </nav>
 
           <div className="flex items-center gap-1 shrink-0">
+            {onOpenCompare && compareCount > 0 && (
+              <button
+                type="button"
+                onClick={onOpenCompare}
+                aria-label={`Open specification comparison (${compareCount} units)`}
+                className="relative inline-flex items-center gap-1.5 h-10 px-2.5 rounded-md border border-[#E5DEC9] bg-[#FAF3EB] hover:border-[#C22768] text-xs font-bold text-[#161A17] cursor-pointer transition-colors"
+              >
+                <Scale className="w-4 h-4 text-[#C22768]" />
+                <span className="hidden xl:inline">Compare</span>
+                <span className="font-mono-num text-[11px] text-[#007B36] font-extrabold">
+                  {compareCount}
+                </span>
+              </button>
+            )}
             <button
               type="button"
               onClick={() => setSearchOpen((v) => !v)}
@@ -300,6 +336,21 @@ export function HeaderNav({
                   <X className="w-5 h-5" />
                 </button>
               </div>
+              <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#4D554E]">
+                  Popular Wings:
+                </span>
+                {['Student Desk', 'Montessori', 'Soft Play', 'Science Lab', 'Outdoor'].map((term) => (
+                  <button
+                    key={term}
+                    type="button"
+                    onClick={() => setSearchQuery(term)}
+                    className="px-2.5 py-1 rounded-md border border-[#E5DEC9] bg-[#FAF3EB] hover:border-[#C22768] text-xs font-semibold text-[#161A17] cursor-pointer transition-colors"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
               {searchQuery.trim().length >= 2 && (
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {searchMatches.length === 0 ? (
@@ -371,6 +422,13 @@ export function HeaderNav({
               ))}
               <button
                 type="button"
+                onClick={() => handleNav({ page: 'collection', handle: 'all' })}
+                className="block w-full text-left py-2 font-semibold text-sm border-b border-[#E3E5E0] bg-transparent"
+              >
+                School Decor (All Products)
+              </button>
+              <button
+                type="button"
                 onClick={() => handleNav({ page: 'about' })}
                 className="block w-full text-left py-2 font-semibold text-sm border-b border-[#E3E5E0] bg-transparent"
               >
@@ -382,6 +440,13 @@ export function HeaderNav({
                 className="block w-full text-left py-2 font-semibold text-sm border-b border-[#E3E5E0] bg-transparent"
               >
                 Projects
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNav({ page: 'faq' })}
+                className="block w-full text-left py-2 font-semibold text-sm border-b border-[#E3E5E0] bg-transparent"
+              >
+                FAQ
               </button>
               <button
                 type="button"
@@ -400,6 +465,16 @@ export function HeaderNav({
               >
                 Request a Quote
               </button>
+
+              <div className="mt-4 pt-4 border-t border-[#E3E5E0] space-y-1.5 text-xs text-[#4D554E]">
+                <p className="font-bold text-[#161A17]">{SCHOOL_DECOR_CONTACT.name}</p>
+                <a href={SCHOOL_DECOR_CONTACT.telHref} className="block font-mono-num font-semibold text-[#007B36] hover:underline">
+                  {SCHOOL_DECOR_CONTACT.phoneDisplay}
+                </a>
+                <a href={`mailto:${SCHOOL_DECOR_CONTACT.email}`} className="block text-[#C22768] hover:underline">
+                  {SCHOOL_DECOR_CONTACT.email}
+                </a>
+              </div>
             </div>
           </div>
         </div>
