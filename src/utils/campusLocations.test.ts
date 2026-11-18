@@ -7,13 +7,14 @@ import {
 } from './campusLocations';
 
 describe('campusLocations utilities', () => {
-  it('contains 6 regional campus hubs including Laxmi Nagar Head Office and Delhi NCR Factory with valid coordinates', () => {
-    assert.equal(REGIONAL_CAMPUS_HUBS.length, 6);
+  it('contains the 2 official School Decor locations: Laxmi Nagar Head Office and School Decor Factory', () => {
+    assert.equal(REGIONAL_CAMPUS_HUBS.length, 2);
     assert.equal(REGIONAL_CAMPUS_HUBS[0].id, 'delhi-ncr');
     assert.ok(REGIONAL_CAMPUS_HUBS[0].address.includes('Lalita Park'));
     assert.ok(REGIONAL_CAMPUS_HUBS[0].address.includes('110092'));
     assert.equal(REGIONAL_CAMPUS_HUBS[1].id, 'delhi-factory');
     assert.equal(REGIONAL_CAMPUS_HUBS[1].category, 'dispatch');
+    assert.equal(REGIONAL_CAMPUS_HUBS[1].googleMapsUrl, 'https://share.google/Hae3hZvBg7ArvS5dc');
 
     for (const hub of REGIONAL_CAMPUS_HUBS) {
       assert.ok(hub.lat > 8 && hub.lat < 36, `Invalid lat for ${hub.city}`);
@@ -25,13 +26,12 @@ describe('campusLocations utilities', () => {
 
   it('filters hubs by category accurately', () => {
     const studios = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'studio');
-    assert.equal(studios.length, 2);
-    assert.ok(studios.every((h) => h.category === 'studio'));
+    assert.equal(studios.length, 1);
+    assert.equal(studios[0].id, 'delhi-ncr');
 
     const dispatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'dispatch');
-    assert.equal(dispatch.length, 2);
+    assert.equal(dispatch.length, 1);
     assert.equal(dispatch[0].id, 'delhi-factory');
-    assert.equal(dispatch[1].id, 'jaipur');
   });
 
   it('filters hubs by search query across city, address, and specialty', () => {
@@ -40,11 +40,8 @@ describe('campusLocations utilities', () => {
     assert.equal(lalitaMatch[0].id, 'delhi-ncr');
 
     const factoryMatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'Factory');
-    assert.ok(factoryMatch.some((h) => h.id === 'delhi-factory'));
-
-    const stemMatch = filterCampusHubs(REGIONAL_CAMPUS_HUBS, 'all', 'robotics');
-    assert.equal(stemMatch.length, 1);
-    assert.equal(stemMatch[0].id, 'bengaluru');
+    assert.equal(factoryMatch.length, 1);
+    assert.equal(factoryMatch[0].id, 'delhi-factory');
   });
 
   it('returns first hub as fallback when id is not found', () => {

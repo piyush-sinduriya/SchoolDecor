@@ -8,6 +8,8 @@ import {
   ChevronDown,
   MapPin,
   MessageCircle,
+  Phone,
+  Mail,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
@@ -30,7 +32,7 @@ export function AboutPage({
   const stats = [
     { num: '12+', label: 'Specialized Campus Wings', tone: '#007B36' },
     { num: '18mm', label: 'FSC European Birchwood Spec', tone: '#C22768' },
-    { num: '6', label: 'Head Office, Factory & Regional Hubs', tone: '#B88900' },
+    { num: '2', label: 'Laxmi Nagar Office & Factory Units', tone: '#B88900' },
     { num: '100%', label: 'Rounded Child-Safe Chamfers', tone: '#D91B22' },
   ];
 
@@ -744,101 +746,229 @@ export function PolicyPage({ kind }: { kind: 'privacy' | 'terms' | 'shipping' })
 }
 
 export function StorefrontFooter({ onNavigate }: { onNavigate: (r: PreviewRoute) => void }) {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [activeMapTab, setActiveMapTab] = useState<'office' | 'factory'>('office');
+
+  const mapQuery =
+    activeMapTab === 'office'
+      ? 'School+Decor+1/26A+Lalita+Park+Laxmi+Nagar+New+Delhi+110092'
+      : 'School+Decor+Factory+Delhi';
 
   return (
-    <footer className="bg-[#FAF7F0] border-t border-[#E5DEC9] pt-12 md:pt-14">
-      <div className="max-w-[1320px] mx-auto px-4 md:px-6 grid grid-cols-2 lg:grid-cols-12 gap-8 md:gap-9 pb-10 md:pb-12 text-left">
-        <div className="col-span-2 lg:col-span-4 space-y-3">
-          <img
-            src={LOGO_SRC}
-            alt="School Decor"
-            className="h-9 sm:h-10 w-auto max-w-[128px] object-contain"
-          />
-          <p className="text-sm text-[#4D554E] max-w-[40ch] leading-relaxed">
-            School Decor designs and manufactures ergonomic school furniture, Montessori classrooms, active soft-play zones, STEM laboratories, outdoor playground equipment, and campus flooring across India.
-          </p>
-          <div className="pt-1 space-y-1 text-xs text-[#4D554E]">
-            <p>
-              <strong className="text-[#161A17]">Head Office:</strong> {SCHOOL_DECOR_CONTACT.headOfficeAddress}
-            </p>
-            <p>
-              <strong className="text-[#161A17]">Factory Unit:</strong> {SCHOOL_DECOR_CONTACT.factoryAddress}
-            </p>
+    <footer className="bg-[#FFF4F8] border-t border-[#F7D4E3] pt-10 sm:pt-12 pb-6 text-[#333333]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
+        {/* Centered Top Brand Logo */}
+        <div className="flex flex-col items-center justify-center text-center mb-8 sm:mb-10">
+          <button
+            type="button"
+            onClick={() => onNavigate({ page: 'home' })}
+            className="bg-transparent border-0 p-0 cursor-pointer"
+          >
+            <img
+              src={LOGO_SRC}
+              alt="School Decor"
+              className="h-12 sm:h-14 w-auto max-w-[170px] object-contain mx-auto"
+            />
+          </button>
+        </div>
+
+        {/* 2-Column Split: Left Google Map Embed + Right Contact Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start pb-8 border-b border-[#F7D4E3]">
+          {/* Left: Embedded Google Map with Laxmi Nagar Head Office / School Decor Factory Switcher */}
+          <div className="lg:col-span-6 bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-[#F7D4E3]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div className="inline-flex rounded-lg bg-[#FFF6FA] p-1 border border-[#F7D4E3]">
+                <button
+                  type="button"
+                  onClick={() => setActiveMapTab('office')}
+                  className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+                    activeMapTab === 'office'
+                      ? 'bg-[#EE7DA8] text-white'
+                      : 'text-[#555555] hover:text-[#212529]'
+                  }`}
+                >
+                  Laxmi Nagar Office
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveMapTab('factory')}
+                  className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer ${
+                    activeMapTab === 'factory'
+                      ? 'bg-[#EE7DA8] text-white'
+                      : 'text-[#555555] hover:text-[#212529]'
+                  }`}
+                >
+                  School Decor Factory
+                </button>
+              </div>
+              <a
+                href={
+                  activeMapTab === 'office'
+                    ? SCHOOL_DECOR_CONTACT.googleMapsUrl
+                    : SCHOOL_DECOR_CONTACT.factoryMapsUrl
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-[#E56B98] hover:underline"
+              >
+                Open in Google Maps ↗
+              </a>
+            </div>
+
+            <div className="w-full h-[230px] sm:h-[260px] rounded-xl overflow-hidden bg-[#F5F5F5] border border-[#E6E6E6]">
+              <iframe
+                title={
+                  activeMapTab === 'office'
+                    ? 'School Decor Corporate Office Laxmi Nagar New Delhi'
+                    : 'School Decor Factory New Delhi'
+                }
+                src={`https://maps.google.com/maps?q=${mapQuery}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+
+          {/* Right: Contact Details with Soft Pastel Pink Icons */}
+          <div className="lg:col-span-6 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#333333]">Our 2 Official Locations</h3>
+
+            <div className="space-y-3.5 text-sm text-[#444444]">
+              <div className="flex items-start gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#FADCE8] text-[#D95B8A] inline-flex items-center justify-center shrink-0 mt-0.5">
+                  <Building2 className="w-4 h-4" />
+                </span>
+                <p className="leading-relaxed">
+                  <strong className="text-[#212529]">Laxmi Nagar Office &amp; Showroom:</strong>{' '}
+                  {SCHOOL_DECOR_CONTACT.headOfficeAddress}{' '}
+                  <a
+                    href={SCHOOL_DECOR_CONTACT.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-[#E56B98] hover:underline ml-1"
+                  >
+                    (View Map ↗)
+                  </a>
+                </p>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#FADCE8] text-[#D95B8A] inline-flex items-center justify-center shrink-0 mt-0.5">
+                  <MapPin className="w-4 h-4" />
+                </span>
+                <p className="leading-relaxed">
+                  <strong className="text-[#212529]">School Decor Factory:</strong>{' '}
+                  {SCHOOL_DECOR_CONTACT.factoryAddress}{' '}
+                  <a
+                    href={SCHOOL_DECOR_CONTACT.factoryMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-bold text-[#E56B98] hover:underline ml-1"
+                  >
+                    (Open Factory Map ↗)
+                  </a>
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#FADCE8] text-[#D95B8A] inline-flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4" />
+                </span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono-num font-bold text-[#212529]">
+                  <a href={SCHOOL_DECOR_CONTACT.telHref} className="hover:text-[#E56B98]">
+                    {SCHOOL_DECOR_CONTACT.phoneDisplay} ({SCHOOL_DECOR_CONTACT.name})
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-full bg-[#FADCE8] text-[#D95B8A] inline-flex items-center justify-center shrink-0">
+                  <Mail className="w-4 h-4" />
+                </span>
+                <a
+                  href={`mailto:${SCHOOL_DECOR_CONTACT.email}`}
+                  className="font-medium text-[#212529] hover:text-[#E56B98]"
+                >
+                  {SCHOOL_DECOR_CONTACT.email}
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Category & Page Links */}
+            <div className="pt-3 border-t border-[#F7D4E3]">
+              <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-[#444444]">
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: 'kindergarten-furniture' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  Kindergarten Furniture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: 'libraries' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  Library Furniture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: 'senior' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  School Furniture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'collection', handle: 'science-lab' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  Lab Furniture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'projects' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  Delivered Projects
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate({ page: 'contact' })}
+                  className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+                >
+                  All Locations
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="col-span-1 lg:col-span-2">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#161A17] mb-3">Quick Links</h3>
-          <ul className="space-y-2 text-sm text-[#4D554E]">
-            <li><button type="button" onClick={() => onNavigate({ page: 'about' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">About Us</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'projects' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Projects</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'quote' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Request a Quote</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'faq' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">FAQ</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'contact' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Contact &amp; Studios</button></li>
-          </ul>
-        </div>
-
-        <div className="col-span-1 lg:col-span-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#161A17] mb-3">Product Categories</h3>
-          <ul className="space-y-2 text-sm text-[#4D554E]">
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'kindergarten-furniture' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Kindergarten &amp; Preschool</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'senior' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">School Furniture</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'soft-play-zones' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Active Play &amp; Sensory</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'science-lab' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Science &amp; STEM Labs</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'outdoor-fun-equipment' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">Outdoor Playgrounds</button></li>
-            <li><button type="button" onClick={() => onNavigate({ page: 'collection', handle: 'flooring' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer text-left">School Flooring</button></li>
-          </ul>
-        </div>
-
-        <div className="col-span-2 lg:col-span-3 space-y-2.5">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#161A17]">Contact &amp; Newsletter</h3>
-          <p className="text-xs font-bold text-[#161A17]">{SCHOOL_DECOR_CONTACT.name}</p>
-          <p className="text-sm text-[#4D554E]">
-            <a href={SCHOOL_DECOR_CONTACT.telHref} className="font-mono-num font-bold hover:text-[#007B36]">
-              {SCHOOL_DECOR_CONTACT.phoneDisplay}
-            </a>
-          </p>
-          <p className="text-sm text-[#4D554E]">
-            <a href={`mailto:${SCHOOL_DECOR_CONTACT.email}`} className="hover:text-[#C22768]">
-              {SCHOOL_DECOR_CONTACT.email}
-            </a>
-          </p>
-          <p className="text-xs text-[#4D554E]">
-            Laxmi Nagar, New Delhi · Delhi NCR Factory · Mumbai · Bengaluru · Hyderabad · Jaipur
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (email.includes('@')) setSubscribed(true);
-            }}
-            className="flex gap-2 pt-1"
-          >
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Institutional email"
-              aria-label="Newsletter email"
-              className="flex-1 h-9 px-3 text-xs rounded-full border border-[#E5DEC9] bg-white"
-            />
-            <button type="submit" className="px-4 h-9 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs font-bold cursor-pointer">
-              Subscribe
+        {/* Bottom Copyright & Policies */}
+        <div className="pt-5 pb-14 sm:pb-2 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#555555]">
+          <p>© {new Date().getFullYear()} School Decor. All Rights Reserved.</p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'policy', kind: 'privacy' })}
+              className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+            >
+              Privacy Policy
             </button>
-          </form>
-          {subscribed && <p className="text-xs text-[#007B36] font-medium">Subscribed to School Decor updates.</p>}
-        </div>
-      </div>
-
-      <div className="border-t border-[#E5DEC9] py-4">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-6 pb-20 sm:pb-2 sm:pr-44 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#4D554E] text-center sm:text-left">
-          <p>© {new Date().getFullYear()} School Decor. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-4">
-            <button type="button" onClick={() => onNavigate({ page: 'policy', kind: 'privacy' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer">Privacy Policy</button>
-            <button type="button" onClick={() => onNavigate({ page: 'policy', kind: 'terms' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer">Terms &amp; Conditions</button>
-            <button type="button" onClick={() => onNavigate({ page: 'policy', kind: 'shipping' })} className="hover:text-[#C22768] bg-transparent border-0 p-0 cursor-pointer">Shipping &amp; Returns</button>
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'policy', kind: 'terms' })}
+              className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+            >
+              Terms &amp; Conditions
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate({ page: 'policy', kind: 'shipping' })}
+              className="hover:text-[#E56B98] bg-transparent border-0 p-0 cursor-pointer"
+            >
+              Shipping &amp; Delivery
+            </button>
           </div>
         </div>
       </div>

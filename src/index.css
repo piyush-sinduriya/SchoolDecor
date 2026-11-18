@@ -111,6 +111,14 @@
   animation-play-state: paused;
 }
 
+.sd-ticker-nonstop {
+  display: flex;
+  width: max-content;
+  animation: sdMarqueeLeft 24s linear infinite !important;
+  animation-play-state: running !important;
+  will-change: transform;
+}
+
 .sd-float-gentle {
   animation: sdFloatGentle 4.2s ease-in-out infinite;
   will-change: transform;

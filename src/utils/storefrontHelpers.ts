@@ -46,11 +46,10 @@ export const SCHOOL_DECOR_CONTACT = {
   headOfficeAddress:
     'No. 1/26A, 2nd Floor, Lalita Park (Near Gurudwara, Opp. Metro Pillar No. 24, Vikas Marg), Laxmi Nagar, New Delhi - 110092',
   factoryAddress:
-    'School Decor Manufacturing & Industrial Works, Bawana–Patparganj Industrial Corridor, New Delhi - 110039',
+    'School Decor Factory, Manufacturing & Dispatch Unit, New Delhi / Delhi NCR',
   googleMapsUrl:
     'https://www.google.com/maps/search/?api=1&query=School+Decor+1%2F26A+Lalita+Park+Laxmi+Nagar+New+Delhi+110092',
-  factoryMapsUrl:
-    'https://www.google.com/maps/search/?api=1&query=Bawana+Industrial+Area+New+Delhi+110039',
+  factoryMapsUrl: 'https://share.google/Hae3hZvBg7ArvS5dc',
 } as const;
 
 export function buildWhatsAppUrl(

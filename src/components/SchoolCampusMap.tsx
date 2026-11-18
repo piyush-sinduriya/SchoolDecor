@@ -214,25 +214,24 @@ export const SchoolCampusMap: React.FC<SchoolCampusMapProps> = ({
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-5 mb-6 md:mb-10">
         <div className="text-left">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10.5px] sm:text-xs font-bold uppercase tracking-widest text-[#C85A32] mb-1.5 sm:mb-2">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10.5px] sm:text-xs font-bold uppercase tracking-widest text-[#D95B8A] mb-1.5 sm:mb-2">
             <Sparkles className="w-3.5 h-3.5 shrink-0" />
-            <span>Head Office, Manufacturing Factory &amp; Regional Hubs</span>
+            <span>Corporate Head Office (Laxmi Nagar) &amp; School Decor Factory</span>
           </div>
           <h2 className="font-serif text-[22px] sm:text-3xl md:text-4xl text-[#1E1E1C] leading-[1.15]">
-            Visit School Decor Showroom &amp; Factory
+            Visit School Decor Office &amp; Factory
           </h2>
           <p className="text-[#5C5A54] text-xs sm:text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
-            Inspect our 18mm FSC birch joinery, non-toxic Montessori learning kits, and heavy-duty school furniture at our Google-verified <strong>Laxmi Nagar, New Delhi Head Office</strong>, our <strong>Delhi NCR Manufacturing Factory</strong>, or our regional hubs across India.
+            Inspect our 18mm FSC birch joinery, non-toxic Montessori learning kits, and heavy-duty school furniture at our <strong>Laxmi Nagar, New Delhi Head Office</strong> or our official <strong>School Decor Factory</strong>.
           </p>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2">
+        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-1.5 sm:gap-2">
           {[
-            { id: 'all', label: 'All 6 Locations' },
-            { id: 'studio', label: 'Head Office & Studios' },
-            { id: 'dispatch', label: 'Factory & Craft' },
-            { id: 'stem', label: 'STEM & Labs' },
+            { id: 'all', label: 'Both Locations (2)' },
+            { id: 'studio', label: 'Laxmi Nagar Office' },
+            { id: 'dispatch', label: 'School Decor Factory' },
           ].map((tab) => {
             const active = activeCategory === tab.id;
             return (
@@ -249,8 +248,8 @@ export const SchoolCampusMap: React.FC<SchoolCampusMapProps> = ({
                 }}
                 className={`px-2.5 sm:px-4 py-2 rounded-lg text-[10.5px] sm:text-xs font-bold uppercase tracking-wider transition-all cursor-pointer text-center truncate ${
                   active
-                    ? 'bg-[#2C4C3E] text-white shadow-sm'
-                    : 'bg-white text-[#1E1E1C] border border-[#E5DEC9] hover:border-[#2C4C3E]'
+                    ? 'bg-[#EE7DA8] text-white shadow-sm'
+                    : 'bg-white text-[#1E1E1C] border border-[#F3DCE6] hover:border-[#EE7DA8]'
                 }`}
               >
                 {tab.label}

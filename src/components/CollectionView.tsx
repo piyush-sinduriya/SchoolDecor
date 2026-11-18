@@ -42,15 +42,25 @@ export function CollectionView({
 
   const AGE_WING_GROUPS: Record<'early' | 'k12' | 'stem-outdoor', string[]> = {
     early: [
+      'activity-room',
       'kindergarten-furniture',
       'soft-play-zones',
+      'jungle-play-zone',
+      'sensory-equipment',
       'interactive-wall-panels',
       'montessori-material',
       'day-care',
       'sensory-room',
     ],
     k12: ['senior', 'library'],
-    'stem-outdoor': ['science-lab', 'stem-lab', 'outdoor-fun-equipment', 'flooring'],
+    'stem-outdoor': [
+      'outdoor-musical-instruments',
+      'science-lab',
+      'stem-lab',
+      'computer-lab',
+      'outdoor-fun-equipment',
+      'flooring',
+    ],
   };
 
   const matchedCollection = COLLECTIONS_SHOWCASE.find((c) => c.handle === handle);

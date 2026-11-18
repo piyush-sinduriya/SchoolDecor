@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion, useScroll, useSpring } from 'motion/react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Phone, ChevronUp } from 'lucide-react';
 import { EntryLogoCurtain } from './components/EntryLogoCurtain';
 import { HeaderNav, type PreviewRoute } from './components/HeaderNav';
 import { HomeView } from './components/HomeView';
@@ -30,11 +30,7 @@ import {
 function shouldPlayInitialIntro(): boolean {
   if (typeof window === 'undefined') return false;
   const params = new URLSearchParams(window.location.search);
-  if (params.get('autostart') === '1') return false;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return false;
-  }
-  return true;
+  return params.get('intro') !== '0';
 }
 
 export default function App() {
@@ -182,11 +178,11 @@ export default function App() {
           </span>
         </div>
       )}
-      {/* Fixed 4-Color Architectural Scroll Progress Bar */}
+      {/* Fixed Scroll Progress Bar */}
       <motion.div
         aria-hidden="true"
         style={{ scaleX: scaleProgress, transformOrigin: '0% 50%' }}
-        className="fixed top-0 inset-x-0 h-[3px] z-[90] pointer-events-none bg-gradient-to-r from-[#F088B0] via-[#F8D000] to-[#00A048]"
+        className="fixed top-0 inset-x-0 h-[3px] z-[90] pointer-events-none bg-[#F088B0]"
       />
       <EntryLogoCurtain visible={showIntro} onDismiss={() => setShowIntro(false)} />
 
@@ -291,17 +287,33 @@ export default function App() {
 
           <StorefrontFooter onNavigate={setRoute} />
 
-          {/* Floating WhatsApp Corner Button */}
-          <a
-            href={buildWhatsAppUrl('919312254660')}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp Enquiry"
-            className="fixed right-3 bottom-3 sm:right-4 sm:bottom-4 z-30 inline-flex items-center justify-center gap-2 w-11 h-11 sm:w-auto sm:h-auto sm:px-4 sm:py-3 rounded-full bg-[#007B36] hover:bg-[#005D28] text-white text-xs font-semibold shadow-lg border border-white/25 transition-transform hover:scale-105"
-          >
-            <MessageCircle className="w-5 h-5 sm:w-4 sm:h-4" />
-            <span className="hidden sm:inline">WhatsApp</span>
-          </a>
+          {/* Floating Right Action Stack: WhatsApp + Phone Call + Scroll Top */}
+          <div className="fixed right-3 bottom-4 sm:right-4 sm:bottom-5 z-30 flex flex-col items-center gap-2.5">
+            <a
+              href={buildWhatsAppUrl('919312254660')}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp Enquiry"
+              className="w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#1EB958] text-white inline-flex items-center justify-center shadow-lg ring-2 ring-[#F5A8C7] transition-transform hover:scale-105"
+            >
+              <MessageCircle className="w-5 h-5 fill-current" />
+            </a>
+            <a
+              href="tel:+919312254660"
+              aria-label="Call School Decor"
+              className="w-11 h-11 rounded-full bg-[#E53935] hover:bg-[#C62828] text-white inline-flex items-center justify-center shadow-lg ring-2 ring-[#F5A8C7] transition-transform hover:scale-105"
+            >
+              <Phone className="w-5 h-5 fill-current" />
+            </a>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="Scroll to top"
+              className="w-10 h-10 rounded-md bg-[#EE7DA8] hover:bg-[#E06694] text-white inline-flex items-center justify-center shadow-md cursor-pointer transition-transform hover:scale-105"
+            >
+              <ChevronUp className="w-5 h-5" />
+            </button>
+          </div>
 
           <CompareTrayBar
             products={comparedProducts}

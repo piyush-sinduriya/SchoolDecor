@@ -343,25 +343,29 @@ export function QuoteModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Request a Custom Quote">
-      <div className="fixed inset-0 bg-black/55" onClick={onClose} />
-      <div className="relative z-10 bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl">
+      <div className="fixed inset-0 bg-black/55 backdrop-blur-xs" onClick={onClose} />
+      <div className="relative z-10 bg-gradient-to-b from-[#FFF7FA] via-white to-[#FFF5F9] border border-[#F3BBD2] rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl">
         <button
           type="button"
           onClick={onClose}
           aria-label="Close quote modal"
-          className="absolute top-4 right-4 w-9 h-9 inline-flex items-center justify-center rounded-md hover:bg-[#F7F7F5] cursor-pointer"
+          className="absolute top-4 right-4 w-9 h-9 inline-flex items-center justify-center rounded-full bg-[#FFF0F6] hover:bg-[#FADCE8] text-[#212529] cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <p className="text-xs font-bold uppercase tracking-wider text-[#C22768]">Institutional Enquiry</p>
-        <h2 className="text-2xl font-bold text-[#181A18] mt-1">Request a Custom Quote</h2>
-        <p className="text-sm text-[#525852] mt-1">
-          Share your school details and requirements. In Shopify, this form delivers directly to your store contact email or configured CRM webhook.
-        </p>
+        <div className="pb-4 border-b border-[#F5D0E0]">
+          <span className="inline-block px-3 py-1 rounded-full bg-[#FADCE8] text-[#C74B7B] text-[10.5px] font-extrabold uppercase tracking-wider">
+            Direct Factory Institutional Desk
+          </span>
+          <h2 className="text-2xl font-extrabold text-[#212529] mt-2">Request a Custom Quote</h2>
+          <p className="text-xs sm:text-sm text-[#555555] mt-1">
+            Share your school details and furniture requirements for factory-direct institutional pricing &amp; complimentary 2D/3D layout planning.
+          </p>
+        </div>
 
         {errors.length > 0 && (
-          <div role="alert" className="mt-4 p-3.5 rounded-md bg-red-50 border border-red-200 text-red-800 text-xs space-y-1">
+          <div role="alert" className="mt-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs space-y-1">
             <div className="flex items-center gap-1.5 font-semibold">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>Please check the following fields:</span>
@@ -375,12 +379,12 @@ export function QuoteModal({
         )}
 
         {submitted ? (
-          <div role="status" className="mt-6 p-5 rounded-lg bg-[#EAF7EF] border border-[#BCE3CB] text-[#007B36] space-y-3">
+          <div role="status" className="mt-6 p-5 rounded-2xl bg-white border border-[#F2C2D5] text-[#007B36] space-y-3 shadow-xs">
             <div className="flex items-center gap-2 font-bold text-base">
               <CheckCircle2 className="w-5 h-5" />
               <span>Quotation Request Ready</span>
             </div>
-            <p className="text-sm text-[#181A18]">
+            <p className="text-sm text-[#212529]">
               Validated enquiry for <strong>{form.institution}</strong> ({form.location}). You can also send these exact details immediately via WhatsApp:
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
@@ -391,7 +395,7 @@ export function QuoteModal({
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-[#007B36] text-white text-xs font-semibold"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#EE7DA8] hover:bg-[#E06694] text-white text-xs font-bold"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Send via WhatsApp</span>
@@ -399,7 +403,7 @@ export function QuoteModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-md border border-[#007B36] text-[#007B36] text-xs font-semibold cursor-pointer"
+                className="px-4 py-2.5 rounded-xl border border-[#F088B0] text-[#D95B8A] text-xs font-bold cursor-pointer"
               >
                 Done
               </button>
@@ -408,7 +412,7 @@ export function QuoteModal({
         ) : (
           <form onSubmit={handleSubmit} noValidate className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label htmlFor="qm-name" className="block text-xs font-semibold mb-1">Full Name *</label>
+              <label htmlFor="qm-name" className="block text-xs font-bold text-[#333333] mb-1">Full Name *</label>
               <input
                 id="qm-name"
                 type="text"
@@ -416,11 +420,11 @@ export function QuoteModal({
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Principal / Procurement Lead"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div>
-              <label htmlFor="qm-phone" className="block text-xs font-semibold mb-1">Phone Number *</label>
+              <label htmlFor="qm-phone" className="block text-xs font-bold text-[#333333] mb-1">Phone Number *</label>
               <input
                 id="qm-phone"
                 type="tel"
@@ -428,11 +432,11 @@ export function QuoteModal({
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 placeholder="+91 98XXXXXXXX"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div>
-              <label htmlFor="qm-email" className="block text-xs font-semibold mb-1">Email Address *</label>
+              <label htmlFor="qm-email" className="block text-xs font-bold text-[#333333] mb-1">Email Address *</label>
               <input
                 id="qm-email"
                 type="email"
@@ -440,11 +444,11 @@ export function QuoteModal({
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="office@school.edu.in"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div>
-              <label htmlFor="qm-inst" className="block text-xs font-semibold mb-1">Institution Name *</label>
+              <label htmlFor="qm-inst" className="block text-xs font-bold text-[#333333] mb-1">Institution Name *</label>
               <input
                 id="qm-inst"
                 type="text"
@@ -452,45 +456,45 @@ export function QuoteModal({
                 value={form.institution}
                 onChange={(e) => setForm({ ...form, institution: e.target.value })}
                 placeholder="School or Preschool Name"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div>
-              <label htmlFor="qm-prod" className="block text-xs font-semibold mb-1">Product / Category</label>
+              <label htmlFor="qm-prod" className="block text-xs font-bold text-[#333333] mb-1">Product / Category</label>
               <input
                 id="qm-prod"
                 type="text"
                 value={form.productName}
                 onChange={(e) => setForm({ ...form, productName: e.target.value })}
                 placeholder="e.g. Kindergarten Furniture / Lab"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div>
-              <label htmlFor="qm-qty" className="block text-xs font-semibold mb-1">Quantity</label>
+              <label htmlFor="qm-qty" className="block text-xs font-bold text-[#333333] mb-1">Quantity</label>
               <input
                 id="qm-qty"
                 type="text"
                 value={form.quantity}
                 onChange={(e) => setForm({ ...form, quantity: e.target.value })}
                 placeholder="e.g. 60 Desks / 3 Rooms"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div className="sm:col-span-2">
-              <label htmlFor="qm-loc" className="block text-xs font-semibold mb-1">Location (City, State) *</label>
+              <label htmlFor="qm-loc" className="block text-xs font-bold text-[#333333] mb-1">Location (City, State) *</label>
               <input
                 id="qm-loc"
                 type="text"
                 required
                 value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
-                placeholder="e.g. Bengaluru, Karnataka"
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                placeholder="e.g. New Delhi / Gurugram"
+                className="w-full h-10 px-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div className="sm:col-span-2">
-              <label htmlFor="qm-req" className="block text-xs font-semibold mb-1">Project Requirements *</label>
+              <label htmlFor="qm-req" className="block text-xs font-bold text-[#333333] mb-1">Project Requirements *</label>
               <textarea
                 id="qm-req"
                 rows={3}
@@ -498,13 +502,13 @@ export function QuoteModal({
                 value={form.requirements}
                 onChange={(e) => setForm({ ...form, requirements: e.target.value })}
                 placeholder="Share age group, room count, timeline or customization details..."
-                className="w-full px-3 py-2 text-sm rounded-md border border-[#E3E5E0]"
+                className="w-full p-3.5 text-sm rounded-xl bg-white border border-[#F0C4D6] focus:outline-none focus:ring-2 focus:ring-[#EE7DA8]/35 focus:border-[#EE7DA8]"
               />
             </div>
             <div className="sm:col-span-2 pt-2">
               <button
                 type="submit"
-                className="w-full py-3 px-4 rounded-md bg-[#007B36] hover:bg-[#005D28] text-white font-semibold text-sm cursor-pointer"
+                className="w-full h-12 px-4 rounded-xl bg-[#EE7DA8] hover:bg-[#E06694] text-white font-bold text-sm shadow-[0_8px_20px_rgba(238,125,168,0.35)] cursor-pointer transition-colors"
               >
                 Submit Quote Request
               </button>
